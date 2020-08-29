@@ -20,15 +20,18 @@ The suite contains the following tools:
 
 If you use PeakRanger in your research, please cite:
 
-Feng X, Grossman R, Stein L: PeakRanger:A cloud-enabled peak caller for ChIP-seq data.BMC Bioinformatics 2011, 12(1):139.(http://www.biomedcentral.com/1471-2105/12/139/)
+Feng X, Grossman R, Stein L: [PeakRanger:A cloud-enabled peak caller for ChIP-seq data.](http://www.biomedcentral.com/1471-2105/12/139/)  
+BMC Bioinformatics 2011, 12(1):139.
 
 If you use the `ccat` tool, please also cite:
 
-Xu, H., L. Handoko, et al. (2010).A signal-noise model for significance analysis of ChIP-seq with negative control.Bioinformatics 26(9): 1199-1204.(http://bioinformatics.oxfordjournals.org/content/26/9/1199)
+Xu, H., L. Handoko, et al. (2010). [A signal-noise model for significance analysis of ChIP-seq with negative control.](http://bioinformatics.oxfordjournals.org/content/26/9/1199)   
+Bioinformatics 26(9): 1199-1204.  
 
 If you use the `bcp` tool, please also cite:
 
-Xing H, Mo Y, Liao W, Zhang MQ (2012) Genome-Wide Localization of Protein-DNA Binding and Histone Modification by a Bayesian Change-Point Method with ChIP-seq Data. PLoS Comput Biol 8(7): e1002613. doi:10.1371/journal.pcbi.1002613.(http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1002613)
+Xing H, Mo Y, Liao W, Zhang MQ (2012) [Genome-Wide Localization of Protein-DNA Binding and Histone Modification by a Bayesian Change-Point Method with ChIP-seq Data.](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1002613)  
+PLoS Comput Biol 8(7): e1002613. doi:10.1371/journal.pcbi.1002613.
 
 System Requirement
 ===================
@@ -39,44 +42,47 @@ System Requirement
 How PeakRanger works 
 =================
 
-##ranger
- Calling narrow peaks
+## ranger
+**Calling narrow peaks**  
 It turns out that ranger servers better as a narrow-peak caller. It behaves in a conservative but sensitive way compared to similar algorithms.
 
- The algorithm
+**The algorithm**  
 ranger uses a staged algorithm to discover enriched regions and the summits within them. In the first step, PeakRanger implements a FDR based adapative thresholding algorithm, which was originally proposed by PeakSeq. PeakRanger uses this thresholder to find regions with enriched reads that exceed expects. After that, PeakRanger searches for summits in these regions. The summit-search algorithm first looks for the location with largest number of reads. It then searchs for sub-summits with the sensitivity, the delta -r, specified by the user. Smaller -r will generate more summits.The coverage profiles are smoothed and padded before calling summits. The smoothing grade varies with -b. Higher smoothing bandwidth results less false summits at the cost of degraded summit accuracy .To measure the significance of the enriched regions, PeakRanger uses binormial distribution to model the relative enrichment of sample over control. A p value is generated as a result. Users can thus select highly significant peaks by using a smaller -p.
 
- Reads extending
+**Reads extending**  
 ranger extends reads before calling peaks. The default reads extension length is 200. However, users can change this by -l if the datasets come with a different fragment size. The extension length will change the reads coverages generated from the raw reads as it will change the heights of peaks.
 
-##wigpe and wig
+## wigpe and wig
 To help visualizing the results, wigpe and wig generates reads coverage files in the wig format. These files can then be loaded into browsers to evaluate the authenticity of called peaks. Since smaller wiggle files take less time and memory to load, --split can be set to generate one small wig file per chromosome.
 
-##ccat
- Calling broad peaks
+## ccat
+**Calling broad peaks**  
 Calling broad peaks remain unsolved for the ChIP-Seq community. It seems the CCAT algorithm is one of those that is designed for this problem, especially for calling histone modification marks.
 
- The algorithm
+**The algorithm**  
 For details of the algorithm, please refer to the original manuscript of CCAT:
 
-Xu, H., L. Handoko, et al. (2010).A signal-noise model for significance analysis of ChIP-seq with negative control.Bioinformatics 26(9): 1199-1204.(http://bioinformatics.oxfordjournals.org/content/26/9/1199)
+Xu, H., L. Handoko, et al. (2010). [A signal-noise model for significance analysis of ChIP-seq with negative control.](http://bioinformatics.oxfordjournals.org/content/26/9/1199)   
+Bioinformatics 26(9): 1199-1204.
 
-##bcp
- Calling broad peaks
+## bcp
+**Calling broad peaks**  
 bcp also serves as a broad peak caller. In many situations we perfer bcp over ccat while there are certain scenarios ccat outperforms. A drawback of the current implementation is that it does not support summit calling which is supported by `ranger` and `ccat`.
 
- The algorithm
+**The algorithm**  
 For details of the algorithm, please refer to the original manuscript of bcp:
 
-Xing H, Mo Y, Liao W, Zhang MQ (2012) Genome-Wide Localization of Protein-DNA Binding and Histone Modification by a Bayesian Change-Point Method with ChIP-seq Data. PLoS Comput Biol 8(7): e1002613. doi:10.1371/journal.pcbi.1002613.(http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1002613)
+Xing H, Mo Y, Liao W, Zhang MQ (2012) [Genome-Wide Localization of Protein-DNA Binding and Histone Modification by a Bayesian Change-Point Method with ChIP-seq Data.](http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1002613)  
+PLoS Comput Biol 8(7): e1002613. doi:10.1371/journal.pcbi.1002613.
 
-##nr
-nr is a module of the original CCAT algorithm that estimates the similarity of data and control. It indicates roughly how data departs from control
+## nr
+`nr` is a module of the original CCAT algorithm that estimates the similarity of data and control. It indicates roughly how data departs from control.
 
-##lc
-lc measures the percentage of unique reads. The result measures how diversified the reads are in the dataset. The idea is from:
+## lc
+`lc` measures the percentage of unique reads. The result measures how diversified the reads are in the dataset. The idea is from:
 
-Chen, Yiwen, Nicolas Negre, Qunhua Li, Joanna O. Mieczkowska, Matthew Slattery, Tao Liu, Yong Zhang, et al. 2012. Systematic evaluation of factors influencing ChIP-seq fidelity. Nature Methods 9(6): 609-614.(http://www.nature.com/nmeth/journal/v9/n6/full/nmeth.1985.html)
+Chen, Yiwen, Nicolas Negre, Qunhua Li, Joanna O. Mieczkowska, Matthew Slattery, Tao Liu, Yong Zhang, et al. 2012. [Systematic evaluation of factors influencing ChIP-seq fidelity.](http://www.nature.com/nmeth/journal/v9/n6/full/nmeth.1985.html)  
+Nature Methods 9(6): 609-614.
 
 Compiling PeakRanger from source codes
 ======================================
@@ -143,6 +149,7 @@ Not supported but should be possible.
 
 Synopsis
 ===================
+```
   peakranger lc sample.bam 
   
   peakranger nr --format bam sample.bam control.bam
@@ -176,6 +183,7 @@ Synopsis
   peakranger bcp --format bam sample.bam contro.bam bcp_result 
   
   peakranger bcp --format bam sample.bam contro.bam bcp_result_with_HTML_report_5kb_region --report --gene_annot_file hg19refGene.txt --plot_region 10000
+```
 
 Command line options
 ===================
@@ -583,17 +591,17 @@ Similar to ranger
   bcp
 Similar to ranger but it does not provide the `_summit.bed` file.
 
-PeakRanger: http://ranger.sourceforge.net
-modENCODE: http://www.modencode.org
-PeakSeq: http://info.gersteinlab.org/PeakSeq
-sourceforge: http://ranger.sourceforge.net
-ChIP-Seq: http://en.wikipedia.org/wiki/Chip-Sequencing
-GNU Scientific Library (GSL): http://www.gnu.org/software/gsl/
-Ubuntu: http://www.ubuntu.com
-confuse option file parser: http://www.nongnu.org/confuse/
-Bowtie: http://bowtie-bio.sourceforge.net
-Hadoop: http://hadoop.apache.org/
-Boost: http://www.boost.org/
-IGV: http://www.broadinstitute.org/igv/
-Hadoop Streaming: http://hadoop.apache.org/common/docs/r0.15.2/streaming.html
-NGS: http://en.wikipedia.org/wiki/DNA_sequencing
+PeakRanger: http://ranger.sourceforge.net  
+modENCODE: http://www.modencode.org  
+PeakSeq: http://info.gersteinlab.org/PeakSeq  
+sourceforge: http://ranger.sourceforge.net  
+ChIP-Seq: http://en.wikipedia.org/wiki/Chip-Sequencing  
+GNU Scientific Library (GSL): http://www.gnu.org/software/gsl/  
+Ubuntu: http://www.ubuntu.com  
+confuse option file parser: http://www.nongnu.org/confuse/  
+Bowtie: http://bowtie-bio.sourceforge.net  
+Hadoop: http://hadoop.apache.org/  
+Boost: http://www.boost.org/  
+IGV: http://www.broadinstitute.org/igv/  
+Hadoop Streaming: http://hadoop.apache.org/common/docs/r0.15.2/streaming.html  
+NGS: http://en.wikipedia.org/wiki/DNA_sequencing  
