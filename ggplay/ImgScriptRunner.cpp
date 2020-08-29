@@ -13,18 +13,18 @@ using namespace threads;
 
 namespace ggplay {
 
-ImgScriptRunner::ImgScriptRunner(const std::vector<std::string>& mScripts,
-        uint32_t threads) :
-        mScripts(mScripts), mThreads(threads) {
-}
+    ImgScriptRunner::ImgScriptRunner(const std::vector<std::string> &mScripts,
+                                     uint32_t threads) :
+            mScripts(mScripts), mThreads(threads) {
+    }
 
-ImgScriptRunner::~ImgScriptRunner() {
-}
+    ImgScriptRunner::~ImgScriptRunner() {
+    }
 
-void ImgScriptRunner::run() {
-    LinuxRCmd r;
-    IndependentRunner<std::string, LinuxRCmd> scriptCPU(mScripts, r, mThreads);
-    scriptCPU.run();
-}
+    void ImgScriptRunner::run() {
+        LinuxRCmd r;
+        IndependentRunner<std::string, LinuxRCmd> scriptCPU(mScripts, r, mThreads);
+        scriptCPU.run();
+    }
 
 } /* namespace ggplay */

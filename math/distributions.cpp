@@ -19,13 +19,13 @@ distributions::distributions() {
 }
 
 double distributions::binomCDF(uint32_t n, uint32_t k, double prob) {
-	using boost::math::binomial;
-	binomial binom(n, prob);
-	return cdf(binom, k);
+    using boost::math::binomial;
+    binomial binom(n, prob);
+    return cdf(binom, k);
 }
 
 double distributions::binomPDF(uint32_t n, uint32_t k, double prob) {
-	using boost::math::binomial;
-	binomial binom(n, prob);
-	return pdf(binom, k);
+    using boost::math::binomial;
+    binomial binom(n, prob);
+    return pdf(binom, k);
 }

@@ -15,10 +15,11 @@
 #include <fstream>
 #include <stdio.h>
 #include <utility>
+
 using namespace std;
 
-void samParser::parse(Reads& outputreads,
-                      string& filename) {
+void samParser::parse(Reads &outputreads,
+                      string &filename) {
     ifstream ifs(filename.c_str());
     if (!(ifs.good())) {
         throw FileNotGood(filename);
@@ -28,8 +29,8 @@ void samParser::parse(Reads& outputreads,
     ifs.close();
 }
 
-void samParser::parse(Reads& outputreads,
-                      istream& ifs) {
+void samParser::parse(Reads &outputreads,
+                      istream &ifs) {
     bool dir, dir2;
     size_t ploc;
     string chr, seq, line, preLine, chr2, seq2;
@@ -49,7 +50,7 @@ void samParser::parse(Reads& outputreads,
         try {
             read.parseLine(line);
         }
-        catch (DataLineNotValid& e) {
+        catch (DataLineNotValid &e) {
             cout << "Warning: can not parse the line:\n" << line << endl;
             continue;
         }
@@ -63,7 +64,7 @@ void samParser::parse(Reads& outputreads,
         uint32_t tmp = (uint32_t) loc;
         dir = (read.IsReverseStrand() ? false : true);
         if (read.IsPaired() && read.IsProperPair() && !(read.IsFailedQC())
-        && read.IsMateMapped() && read.IsFirstMate() && !(read.IsDuplicate())) {
+            && read.IsMateMapped() && read.IsFirstMate() && !(read.IsDuplicate())) {
             //paired reads
             loc2 = read.MatePosition;
             if (loc2 < 0) continue;
@@ -119,9 +120,9 @@ void samParser::parse(Reads& outputreads,
     outputreads.setReadlength(seq.size());
 }
 
-void samParser::parse(Reads & outputreads,
-                      string & filename,
-                      vector<string> & chrs_to_parse) {
+void samParser::parse(Reads &outputreads,
+                      string &filename,
+                      vector<string> &chrs_to_parse) {
     ifstream ifs(filename.c_str());
     if (!(ifs.good())) {
         throw FileNotGood(filename);
@@ -132,9 +133,9 @@ void samParser::parse(Reads & outputreads,
     ifs.close();
 }
 
-void samParser::parse(Reads & outputreads,
-                      istream & ifs,
-                      vector<string> & chrs_to_parse) {
+void samParser::parse(Reads &outputreads,
+                      istream &ifs,
+                      vector<string> &chrs_to_parse) {
     bool dir, dir2;
     size_t ploc;
     string chr, seq, line, preLine, chr2, seq2;
@@ -154,7 +155,7 @@ void samParser::parse(Reads & outputreads,
         try {
             read.parseLine(line);
         }
-        catch (DataLineNotValid& e) {
+        catch (DataLineNotValid &e) {
             cout << "Warning: invalid line skipped:\n" << line << endl;
             continue;
         }
@@ -171,8 +172,8 @@ void samParser::parse(Reads & outputreads,
                       chrs_to_parse.end(),
                       chr) != chrs_to_parse.end()) {
             if (read.IsPaired() && read.IsProperPair() && !(read.IsFailedQC())
-            && read.IsMateMapped() && read.IsFirstMate()
-            && !(read.IsDuplicate())) {
+                && read.IsMateMapped() && read.IsFirstMate()
+                && !(read.IsDuplicate())) {
                 //paired reads
                 loc2 = read.MatePosition;
                 if (loc2 < 0) continue;

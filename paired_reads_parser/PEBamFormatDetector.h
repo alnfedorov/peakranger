@@ -10,14 +10,17 @@
 
 #include <string>
 #include <stdint.h>
+
 namespace parser {
 
-class PEBamFormatDetector {
-public:
-    PEBamFormatDetector();
-    virtual ~PEBamFormatDetector();
-    virtual bool isPairEndBamFile(const std::string& file,uint32_t linesToTest);
-};
+    class PEBamFormatDetector {
+    public:
+        PEBamFormatDetector();
+
+        virtual ~PEBamFormatDetector();
+
+        virtual bool isPairEndBamFile(const std::string &file, uint32_t linesToTest);
+    };
 
 } /* namespace parser */
 #endif /* PEBAMFORMATDETECTOR_H_ */

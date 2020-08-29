@@ -12,9 +12,10 @@
 #include "BlockedRead.h"
 #include "Read.h"
 #include "common/stl_header.h"
+
 namespace reads {
 
-void getReadsInChr(PairEndedReads<BlockedRead>& rds, const std::string& chr,
-		std::vector<Read>& results);
+    void getReadsInChr(PairEndedReads<BlockedRead> &rds, const std::string &chr,
+                       std::vector<Read> &results);
 }
 #endif /* PAIRENDEDREADSAUX_H_ */

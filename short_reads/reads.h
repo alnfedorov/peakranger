@@ -18,6 +18,7 @@
 #include <iostream>
 #include <stdint.h>
 #include <boost/foreach.hpp>
+
 #define foreach BOOST_FOREACH
 
 
@@ -38,7 +39,7 @@ class Reads {
 public:
     Reads() :
             pos_reads(*this), neg_reads(*this), _noMorePosReads(false), _noMoreNegReads(
-                    false), _pos_is_sorted(false), _neg_is_sorted(false) {
+            false), _pos_is_sorted(false), _neg_is_sorted(false) {
     }
 
     struct pos_reads {
@@ -49,88 +50,107 @@ public:
          * access to all reads;
          */
         pritr begin() const;
+
         pritr end() const;
 
         /*
          * access to reads of a chr
          */
-        ritr begin_of(std::string& chr) const;
-        ritr end_of(std::string& chr) const;
+        ritr begin_of(std::string &chr) const;
+
+        ritr end_of(std::string &chr) const;
 
         /*
          * Access to reads in a region
          */
-        void getReads(std::string& chr, uint32_t start, uint32_t end,
-                std::vector<uint32_t>::iterator& rstart,
-                std::vector<uint32_t>::iterator& rend);
+        void getReads(std::string &chr, uint32_t start, uint32_t end,
+                      std::vector<uint32_t>::iterator &rstart,
+                      std::vector<uint32_t>::iterator &rend);
+
         /*
          * reads insertion
          */
-        void insertRead(std::string& chr, uint32_t& read);
+        void insertRead(std::string &chr, uint32_t &read);
+
         /*
          * properties
          */
         uint64_t size() const;
+
         std::vector<std::string> chrs() const;
-        bool hasReadsOnChr(std::string& chr) const;
+
+        bool hasReadsOnChr(std::string &chr) const;
 
     private:
         inline void _posReadsInsertionComplete();
-        Reads& _reads;
-        pos_reads(Reads& reads) :
+
+        Reads &_reads;
+
+        pos_reads(Reads &reads) :
                 _reads(reads) {
         }
+
         /*
          * modification
          */
-        void remove(std::string& chr);
+        void remove(std::string &chr);
 
     } pos_reads;
 
     struct neg_reads {
     public:
         friend class Reads;
+
         typedef std::map<std::string, std::vector<uint32_t> >::iterator pritr;
+
         /*
          * access to all reads;
          */
         pritr begin() const;
+
         pritr end() const;
 
         /*
          * access to reads of a chr
          */
-        ritr begin_of(std::string& chr) const;
-        ritr end_of(std::string& chr) const;
+        ritr begin_of(std::string &chr) const;
+
+        ritr end_of(std::string &chr) const;
 
         /*
          * Access to reads in a region
          */
-        void getReads(std::string& chr, uint32_t start, uint32_t end,
-                std::vector<uint32_t>::iterator& rstart,
-                std::vector<uint32_t>::iterator& rend);
+        void getReads(std::string &chr, uint32_t start, uint32_t end,
+                      std::vector<uint32_t>::iterator &rstart,
+                      std::vector<uint32_t>::iterator &rend);
 
         /*
          * reads insertion
          */
-        void insertRead(std::string& chr, uint32_t& read);
+        void insertRead(std::string &chr, uint32_t &read);
+
         /*
          * properties
          */
         uint64_t size() const;
+
         std::vector<std::string> chrs() const;
-        bool hasReadsOnChr(std::string& chr) const;
+
+        bool hasReadsOnChr(std::string &chr) const;
 
     private:
         inline void _negReadsInsertionComplete();
-        neg_reads(Reads& reads) :
+
+        neg_reads(Reads &reads) :
                 _reads(reads) {
         }
+
         /*
          * modification
          */
-        void remove(std::string& chr);
-        Reads& _reads;
+        void remove(std::string &chr);
+
+        Reads &_reads;
 
     } neg_reads;
 
@@ -143,12 +163,13 @@ public:
      * Properties
      */
     uint32_t getReadlength() const;
+
     void setReadlength(uint32_t _readlength);
 
     /*
      * modification
      */
-    void remove(std::string& chr);
+    void remove(std::string &chr);
 
     /*
      * Quality control
@@ -156,21 +177,21 @@ public:
     void removeUnequalChrs();
 
 protected:
-    void _insertRead(std::string& chr, uint32_t read, reads_t& reads);
+    void _insertRead(std::string &chr, uint32_t read, reads_t &reads);
 
-    void sortReadsOnEachChromosome(reads_t& reads) {
+    void sortReadsOnEachChromosome(reads_t &reads) {
         reads_t::iterator itr = reads.begin();
         for (; itr != reads.end(); itr++) {
-            LOG_DEBUG3("Sorted "<<itr->first);
+            LOG_DEBUG3("Sorted " << itr->first);
             sort(itr->second.begin(), itr->second.end());
         }
     }
 
-    void extractChrs(reads_t& reads, std::vector<std::string>& chrs) {
+    void extractChrs(reads_t &reads, std::vector<std::string> &chrs) {
         std::pair<std::string, reads_vec> r;
-        foreach(r, reads) {
-            chrs.push_back(r.first);
-        }
+                foreach(r, reads) {
+                        chrs.push_back(r.first);
+                    }
         sort(chrs.begin(), chrs.end());
     }
 
@@ -186,4 +207,5 @@ protected:
     bool _neg_is_sorted;
 
 };
+
 #endif /* READS_H_ */

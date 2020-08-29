@@ -10,14 +10,16 @@
 
 namespace ccat_aux {
 
-class bin_t {
-public:
-    bin_t();
-    virtual ~bin_t();
-    int l1Counts;
-    int l2Counts;
+    class bin_t {
+    public:
+        bin_t();
 
-};
+        virtual ~bin_t();
+
+        int l1Counts;
+        int l2Counts;
+
+    };
 
 } /* namespace ccat_aux */
 #endif /* CCAT_BINT_H_ */

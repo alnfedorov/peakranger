@@ -7,70 +7,75 @@
 
 #ifndef PAIRENDEDREADS_H_
 #define PAIRENDEDREADS_H_
+
 #include "ReadPair.h"
 #include "common/stl_header.h"
 #include "common/boost_header.h"
+
 namespace reads {
 
-template<typename R>
-class PairEndedReads {
-public:
-    PairEndedReads() :
-            mData() {
+    template<typename R>
+    class PairEndedReads {
+    public:
+        PairEndedReads() :
+                mData() {
+        }
+
+        virtual ~PairEndedReads() {
+        }
+
+        template<typename Itr>
+        void addReadPairs(Itr l, Itr r);
+
+        void addReadPair(const ReadPair<R> &rp);
+
+        void getReadPairs(const char *chr, std::vector<ReadPair<R> > &result);
+
+        typename std::vector<ReadPair<R> >::iterator beginOf(
+                const std::string &chr);
+
+        typename std::vector<ReadPair<R> >::iterator endOf(const std::string &chr);
+
+        std::vector<std::string> getChrs() const;
+
+        size_t size();
+
+    private:
+
+        std::map<std::string, std::vector<ReadPair<R> > > mData;
+
+    };
+
+    template<typename R>
+    void PairEndedReads<R>::addReadPair(const ReadPair<R> &rp) {
+        mData[rp.r1().getChr()].push_back(rp);
     }
 
-    virtual ~PairEndedReads() {
+    template<typename R>
+    void PairEndedReads<R>::getReadPairs(const char *chr,
+                                         std::vector<ReadPair<R> > &result) {
+        result = mData[std::string(chr)];
     }
 
+    template<typename R>
     template<typename Itr>
-    void addReadPairs(Itr l, Itr r);
-    void addReadPair(const ReadPair<R>& rp);
-
-    void getReadPairs(const char* chr, std::vector<ReadPair<R> >& result);
-
-    typename std::vector<ReadPair<R> >::iterator beginOf(
-            const std::string& chr);
-
-    typename std::vector<ReadPair<R> >::iterator endOf(const std::string& chr);
-
-    std::vector<std::string> getChrs() const;
-    size_t size();
-private:
-
-    std::map<std::string, std::vector<ReadPair<R> > > mData;
-
-};
-
-template<typename R>
-void PairEndedReads<R>::addReadPair(const ReadPair<R>& rp) {
-    mData[rp.r1().getChr()].push_back(rp);
-}
-
-template<typename R>
-void PairEndedReads<R>::getReadPairs(const char* chr,
-        std::vector<ReadPair<R> >& result) {
-    result = mData[std::string(chr)];
-}
-
-template<typename R>
-template<typename Itr>
-void PairEndedReads<R>::addReadPairs(Itr l, Itr r) {
-    while (l != r) {
-        addReadPair(*l++);
+    void PairEndedReads<R>::addReadPairs(Itr l, Itr r) {
+        while (l != r) {
+            addReadPair(*l++);
+        }
     }
-}
 
-template<typename R>
-typename std::vector<ReadPair<R> >::iterator PairEndedReads<R>::beginOf(
-        const std::string& chr) {
-    return mData[chr].begin();
-}
+    template<typename R>
+    typename std::vector<ReadPair<R> >::iterator PairEndedReads<R>::beginOf(
+            const std::string &chr) {
+        return mData[chr].begin();
+    }
 
-template<typename R>
-typename std::vector<ReadPair<R> >::iterator PairEndedReads<R>::endOf(
-        const std::string& chr) {
-    return mData[chr].end();
-}
+    template<typename R>
+    typename std::vector<ReadPair<R> >::iterator PairEndedReads<R>::endOf(
+            const std::string &chr) {
+        return mData[chr].end();
+    }
 }
 
 template<typename R>
@@ -92,7 +97,7 @@ inline size_t reads::PairEndedReads<R>::size() {
     typename dataType::const_iterator it;
 
     for (it = mData.begin(); it != mData.end(); ++it) {
-        res+= it->second.size();
+        res += it->second.size();
     }
     return res;
 }

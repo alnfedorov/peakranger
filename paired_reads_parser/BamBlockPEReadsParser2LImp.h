@@ -11,7 +11,7 @@
 #include "BamBlockPEReadsParserImp.h"
 
 namespace parser {
-namespace aux {
+    namespace aux {
 
 /*
  * This parser works as long as the bam file is sorted
@@ -25,21 +25,24 @@ namespace aux {
  * OK.
  */
 
-class BamBlockPEReadsParser2LImp: public parser::aux::BamBlockPEReadsParserImp {
-public:
-    BamBlockPEReadsParser2LImp();
-    virtual ~BamBlockPEReadsParser2LImp();
-    void parse(const BamTools::BamAlignment & read,
-            reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector & ref);
-    void flush(reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector& ref);
+        class BamBlockPEReadsParser2LImp : public parser::aux::BamBlockPEReadsParserImp {
+        public:
+            BamBlockPEReadsParser2LImp();
+
+            virtual ~BamBlockPEReadsParser2LImp();
+
+            void parse(const BamTools::BamAlignment &read,
+                       reads::PairEndedReads<reads::BlockedRead> &reads,
+                       const BamTools::RefVector &ref);
+
+            void flush(reads::PairEndedReads<reads::BlockedRead> &reads,
+                       const BamTools::RefVector &ref);
 
 
-private:
-    BamTools::BamAlignment mPRead;
-};
+        private:
+            BamTools::BamAlignment mPRead;
+        };
 
-} /* namespace aux */
+    } /* namespace aux */
 } /* namespace parser */
 #endif /* BAMBLOCKPEREADSPARSER2LIMP_H_ */

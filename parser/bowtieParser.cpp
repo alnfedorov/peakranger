@@ -17,6 +17,7 @@
 #include "utils/logger.h"
 #include "utils/exceptions.h"
 #include "short_reads/reads.h"
+
 using namespace std;
 //void bowtieParser::parse(Reads& outputreads) {
 //	char _line[4096];
@@ -64,8 +65,8 @@ using namespace std;
  sys	0m29.106s
  *
  */
-void bowtieParser::parse(Reads& outputreads,
-                         string& filename) {
+void bowtieParser::parse(Reads &outputreads,
+                         string &filename) {
 
     ifstream ifs(filename.c_str());
 
@@ -79,8 +80,8 @@ void bowtieParser::parse(Reads& outputreads,
     ifs.close();
 }
 
-void bowtieParser::parse(Reads& outputreads,
-                         istream& ifs) {
+void bowtieParser::parse(Reads &outputreads,
+                         istream &ifs) {
 
     char dir;
     size_t ploc;
@@ -99,8 +100,8 @@ void bowtieParser::parse(Reads& outputreads,
             ploc = line.find("\t-\t");
             if (ploc == string::npos) {
                 cout << "Warning: Didnt find direction character (+/-)"
-                    " in the line: \n" << line << "\nThis line was skipped"
-                << endl;
+                        " in the line: \n" << line << "\nThis line was skipped"
+                     << endl;
                 continue;
             }
         }
@@ -108,7 +109,7 @@ void bowtieParser::parse(Reads& outputreads,
                            line.end());
         istringstream iss(nameTrimmed);
         iss >> dir >> chr >> loc >> seq;
-        LOG_DEBUG4("In bowtie parser, Inserted read: "<<loc);
+        LOG_DEBUG4("In bowtie parser, Inserted read: " << loc);
         if (dir == '-') {
             outputreads.neg_reads.insertRead(chr,
                                              loc);
@@ -120,9 +121,9 @@ void bowtieParser::parse(Reads& outputreads,
     outputreads.setReadlength(seq.size());
 }
 
-void bowtieParser::parse(Reads & outputreads,
-                         string & filename,
-                         vector<string> & chrs_to_parse) {
+void bowtieParser::parse(Reads &outputreads,
+                         string &filename,
+                         vector<string> &chrs_to_parse) {
     ifstream ifs(filename.c_str());
 
     if (!(ifs.good())) {
@@ -136,9 +137,9 @@ void bowtieParser::parse(Reads & outputreads,
     ifs.close();
 }
 
-void bowtieParser::parse(Reads & outputreads,
-                         istream & ifs,
-                         vector<string> & chrs_to_parse) {
+void bowtieParser::parse(Reads &outputreads,
+                         istream &ifs,
+                         vector<string> &chrs_to_parse) {
     char dir;
     size_t ploc;
     string chr, seq, line;
@@ -156,8 +157,8 @@ void bowtieParser::parse(Reads & outputreads,
             ploc = line.find("\t-\t");
             if (ploc == string::npos) {
                 cout << "Warning: Didnt find direction character (+/-)"
-                    " in the line: \n" << line << "\nThis line was skipped"
-                << endl;
+                        " in the line: \n" << line << "\nThis line was skipped"
+                     << endl;
                 continue;
             }
         }
@@ -168,7 +169,7 @@ void bowtieParser::parse(Reads & outputreads,
         if (std::find(chrs_to_parse.begin(),
                       chrs_to_parse.end(),
                       chr) != chrs_to_parse.end()) {
-            LOG_DEBUG4("In bowtie parser, Inserted read: "<<loc);
+            LOG_DEBUG4("In bowtie parser, Inserted read: " << loc);
             if (dir == '-') {
                 outputreads.neg_reads.insertRead(chr,
                                                  loc);

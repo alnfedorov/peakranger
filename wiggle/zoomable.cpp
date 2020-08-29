@@ -7,14 +7,12 @@
 
 #include "zoomable.h"
 
-zoomable::zoomable()
-{
+zoomable::zoomable() {
 
-    
+
 }
 
-zoomable::~zoomable()
-{
+zoomable::~zoomable() {
 
 }
 

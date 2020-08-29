@@ -13,7 +13,8 @@
 #include <iostream>
 
 class called_peak {
-    friend std::ostream& operator<<(std::ostream& os, const called_peak& pk);
+    friend std::ostream &operator<<(std::ostream &os, const called_peak &pk);
+
 public:
 
     called_peak() {
@@ -27,7 +28,7 @@ public:
     }
 
     called_peak(uint32_t f, uint32_t s, double _p, double fd, uint32_t tr,
-            uint32_t cr, std::vector<uint32_t> sum) {
+                uint32_t cr, std::vector<uint32_t> sum) {
         first = f;
         second = s;
         p = _p;

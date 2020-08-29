@@ -13,31 +13,34 @@
 #include "common/stl_header.h"
 #include "BamBlockPEReadsParserImp.h"
 #include "utils/Tracer.h"
+
 namespace parser {
 
-class BamBlockPEReadsParser {
-public:
-    BamBlockPEReadsParser(utils::TimeStampTracer& tracer);
-    ~BamBlockPEReadsParser();
-    BamBlockPEReadsParser(utils::TimeStampTracer& tracer,aux::BamBlockPEReadsParserImp* parser);
+    class BamBlockPEReadsParser {
+    public:
+        BamBlockPEReadsParser(utils::TimeStampTracer &tracer);
 
-    void parse(reads::PairEndedReads<reads::BlockedRead>& reads,
-            const std::string& file);
+        ~BamBlockPEReadsParser();
 
-    aux::BamBlockPEReadsParserImp* getParser() const {
-        return mParser;
-    }
+        BamBlockPEReadsParser(utils::TimeStampTracer &tracer, aux::BamBlockPEReadsParserImp *parser);
 
-    void setParser(aux::BamBlockPEReadsParserImp* parser) {
-        mParser = parser;
-    }
+        void parse(reads::PairEndedReads<reads::BlockedRead> &reads,
+                   const std::string &file);
 
-protected:
-    utils::TimeStampTracer& tracer;
-private:
-    aux::BamBlockPEReadsParserImp* mParser;
-    uint32_t mCnt;
-};
+        aux::BamBlockPEReadsParserImp *getParser() const {
+            return mParser;
+        }
+
+        void setParser(aux::BamBlockPEReadsParserImp *parser) {
+            mParser = parser;
+        }
+
+    protected:
+        utils::TimeStampTracer &tracer;
+    private:
+        aux::BamBlockPEReadsParserImp *mParser;
+        uint32_t mCnt;
+    };
 
 } /* namespace parser */
 #endif /* BAMBLOCKPEREADSPARSER_H_ */

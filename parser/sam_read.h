@@ -18,12 +18,14 @@
 #include <utility>
 
 
-class sam_read{
+class sam_read {
 
     // constructors & destructor
 public:
     sam_read(void);
-    void parseLine(std::string& line);
+
+    void parseLine(std::string &line);
+
     ~sam_read(void);
 
     // Queries against alignment flags
@@ -56,23 +58,26 @@ public:
 
     // Tag data access methods
 public:
-    bool GetEditDistance(uint8_t& editDistance) const; // get "NM" tag data - contributed by Aaron Quinlan
-    bool GetReadGroup(std::string& readGroup) const; // get "RG" tag data
+    bool GetEditDistance(uint8_t &editDistance) const; // get "NM" tag data - contributed by Aaron Quinlan
+    bool GetReadGroup(std::string &readGroup) const; // get "RG" tag data
 
-    bool GetTag(const std::string& tag,
-                std::string& destination);
-    template<typename T> bool GetTag(const std::string& tag,
-                                     T& destination);
+    bool GetTag(const std::string &tag,
+                std::string &destination);
+
+    template<typename T>
+    bool GetTag(const std::string &tag,
+                T &destination);
 
     // Additional data access methods
 public:
-    int GetEndPosition(bool usePadded = false) const; // calculates alignment end position, based on starting position and CIGAR operations
+    int GetEndPosition(
+            bool usePadded = false) const; // calculates alignment end position, based on starting position and CIGAR operations
 
     // 'internal' utility methods
 private:
     static void SkipToNextTag(const char storageType,
-                              char* &pTagData,
-                              unsigned int& numBytesParsed);
+                              char *&pTagData,
+                              unsigned int &numBytesParsed);
 
     // Data members
 public:
@@ -109,6 +114,7 @@ private:
         sDUPLICATE = 1024
     };
 };
+
 inline sam_read::sam_read(void) {
 }
 
@@ -120,33 +126,43 @@ inline sam_read::~sam_read(void) {
 inline bool sam_read::IsDuplicate(void) const {
     return ((AlignmentFlag & sDUPLICATE) != 0);
 }
+
 inline bool sam_read::IsFailedQC(void) const {
     return ((AlignmentFlag & sQC_FAILED) != 0);
 }
+
 inline bool sam_read::IsFirstMate(void) const {
     return ((AlignmentFlag & sREAD_1) != 0);
 }
+
 inline bool sam_read::IsMapped(void) const {
     return ((AlignmentFlag & sUNMAPPED) == 0);
 }
+
 inline bool sam_read::IsMateMapped(void) const {
     return ((AlignmentFlag & sMATE_UNMAPPED) == 0);
 }
+
 inline bool sam_read::IsMateReverseStrand(void) const {
     return ((AlignmentFlag & sMATE_REVERSE) != 0);
 }
+
 inline bool sam_read::IsPaired(void) const {
     return ((AlignmentFlag & sPAIRED) != 0);
 }
+
 inline bool sam_read::IsPrimaryAlignment(void) const {
     return ((AlignmentFlag & sSECONDARY) == 0);
 }
+
 inline bool sam_read::IsProperPair(void) const {
     return ((AlignmentFlag & sPROPER_PAIR) != 0);
 }
+
 inline bool sam_read::IsReverseStrand(void) const {
     return ((AlignmentFlag & sREVERSE) != 0);
 }
+
 inline bool sam_read::IsSecondMate(void) const {
     return ((AlignmentFlag & sREAD_2) != 0);
 }
@@ -156,43 +172,53 @@ inline void sam_read::SetIsDuplicate(bool ok) {
     if (ok) AlignmentFlag |= sDUPLICATE;
     else AlignmentFlag &= ~sDUPLICATE;
 }
+
 inline void sam_read::SetIsFailedQC(bool ok) {
     if (ok) AlignmentFlag |= sQC_FAILED;
     else AlignmentFlag &= ~sQC_FAILED;
 }
+
 inline void sam_read::SetIsFirstMate(bool ok) {
     if (ok) AlignmentFlag |= sREAD_1;
     else AlignmentFlag &= ~sREAD_1;
 }
+
 inline void sam_read::SetIsMateUnmapped(bool ok) {
     if (ok) AlignmentFlag |= sMATE_UNMAPPED;
     else AlignmentFlag &= ~sMATE_UNMAPPED;
 }
+
 inline void sam_read::SetIsMateReverseStrand(bool ok) {
     if (ok) AlignmentFlag |= sMATE_REVERSE;
     else AlignmentFlag &= ~sMATE_REVERSE;
 }
+
 inline void sam_read::SetIsPaired(bool ok) {
     if (ok) AlignmentFlag |= sPAIRED;
     else AlignmentFlag &= ~sPAIRED;
 }
+
 inline void sam_read::SetIsProperPair(bool ok) {
     if (ok) AlignmentFlag |= sPROPER_PAIR;
     else AlignmentFlag &= ~sPROPER_PAIR;
 }
+
 inline void sam_read::SetIsReverseStrand(bool ok) {
     if (ok) AlignmentFlag |= sREVERSE;
     else AlignmentFlag &= ~sREVERSE;
 }
+
 inline void sam_read::SetIsSecondaryAlignment(bool ok) {
     if (ok) AlignmentFlag |= sSECONDARY;
     else AlignmentFlag &= ~sSECONDARY;
 }
+
 inline void sam_read::SetIsSecondMate(bool ok) {
     if (ok) AlignmentFlag |= sREAD_2;
     else AlignmentFlag &= ~sREAD_2;
 }
-inline void sam_read::parseLine(std::string & readline) {
+
+inline void sam_read::parseLine(std::string &readline) {
     uint32_t flag;
     size_t ploc;
     std::string chr, seq, line, chr2, seq2;
@@ -203,9 +229,9 @@ inline void sam_read::parseLine(std::string & readline) {
         throw DataLineNotValid(readline);
     }
     std::string name(line.begin(),
-                line.begin() + ploc);
+                     line.begin() + ploc);
     std::string nameTrimmed(line.begin() + ploc,
-                       line.end());
+                            line.end());
     std::stringstream iss(nameTrimmed);
     iss >> flag >> chr >> loc;
     iss >> seq;

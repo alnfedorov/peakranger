@@ -14,20 +14,21 @@ namespace threads {
  * threads facility such as
  * IndependentRunner
  */
-template<typename Job>
-class Runnable {
-public:
-    Runnable(){};
-    virtual ~Runnable(){};
+    template<typename Job>
+    class Runnable {
+    public:
+        Runnable() {};
 
-    /**
-     * The details on running the job
-     */
-    virtual void runJob(Job& job) = 0;
-};
+        virtual ~Runnable() {};
+
+        /**
+         * The details on running the job
+         */
+        virtual void runJob(Job &job) = 0;
+    };
 
 }
 
 
- /* namespace threads */
+/* namespace threads */
 #endif /* RUNNABLE_H_ */

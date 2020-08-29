@@ -9,13 +9,13 @@
 
 namespace bam_app {
 
-OnlineSortedByNameAppImp::OnlineSortedByNameAppImp() {
-    // TODO Auto-generated constructor stub
+    OnlineSortedByNameAppImp::OnlineSortedByNameAppImp() {
+        // TODO Auto-generated constructor stub
 
-}
+    }
 
-OnlineSortedByNameAppImp::~OnlineSortedByNameAppImp() {
-    // TODO Auto-generated destructor stub
-}
+    OnlineSortedByNameAppImp::~OnlineSortedByNameAppImp() {
+        // TODO Auto-generated destructor stub
+    }
 
 } /* namespace bam_app */

@@ -10,11 +10,12 @@
 
 namespace bam_app {
 
-class OnlineSortedByNameAppImp {
-public:
-    OnlineSortedByNameAppImp();
-    virtual ~OnlineSortedByNameAppImp();
-};
+    class OnlineSortedByNameAppImp {
+    public:
+        OnlineSortedByNameAppImp();
+
+        virtual ~OnlineSortedByNameAppImp();
+    };
 
 } /* namespace bam_app */
 #endif /* ONLINESORTEDBYNAMEAPPIMP_H_ */

@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <utility>
 #include <sstream>
+
 using namespace std;
 
 typedef map<string, vector<called_peak> > enriched_regions;
@@ -24,9 +25,8 @@ bed6_result_reporter::~bed6_result_reporter() {
 
 }
 
-void bed6_result_reporter::report_fdr_summit(enriched_regions & regions,
-                                             std::ostream & om)
-                                             {
+void bed6_result_reporter::report_fdr_summit(enriched_regions &regions,
+                                             std::ostream &om) {
     enriched_regions::iterator it = regions.begin();
     string chr;
     print_cite(om);
@@ -41,20 +41,19 @@ void bed6_result_reporter::report_fdr_summit(enriched_regions & regions,
         for (; rit != it->second.end(); rit++) {
             std::ostringstream s;
             s << "PeakRanger_" << cnt++ << "_region_" << rit->first << "_"
-            << rit->second << "_pval_" << rit->p << "_FDR_"
-            << rit->q;
+              << rit->second << "_pval_" << rit->p << "_FDR_"
+              << rit->q;
             vector<uint32_t>::iterator sit = rit->summits.begin();
             for (; sit != rit->summits.end(); sit++) {
                 om << chr << "\t" << *sit << "\t" << (*sit) + 1 << "\t"
-                << s.str() << "\t" << rit->q << "\t+\n";
+                   << s.str() << "\t" << rit->q << "\t+\n";
             }
         }
     }
 }
 
-void bed6_result_reporter::report_pval_region(enriched_regions & regions,
-                                              std::ostream & om)
-                                              {
+void bed6_result_reporter::report_pval_region(enriched_regions &regions,
+                                              std::ostream &om) {
     enriched_regions::iterator it = regions.begin();
     string chr;
     print_cite(om);
@@ -68,21 +67,20 @@ void bed6_result_reporter::report_pval_region(enriched_regions & regions,
         for (; rit != it->second.end(); rit++) {
             std::ostringstream s;
             s << "PeakRanger_" << cnt++ << "_pval_" << rit->p << "_FDR_"
-            << rit->q;
+              << rit->q;
             om << chr << "\t" << rit->first << "\t" << rit->second << "\t"
-            << s.str() << "\t" << rit->p << "\t+\n";
+               << s.str() << "\t" << rit->p << "\t+\n";
         }
     }
 }
 
-void bed6_result_reporter::report_pval_summit(enriched_regions & regions,
-                                              std::ostream & om)
-                                              {
-    cout <<"Not implemented yet.\n";
+void bed6_result_reporter::report_pval_summit(enriched_regions &regions,
+                                              std::ostream &om) {
+    cout << "Not implemented yet.\n";
 }
 
-void bed6_result_reporter::report_fdr_region(enriched_regions& regions,
-                                             std::ostream& om) {
+void bed6_result_reporter::report_fdr_region(enriched_regions &regions,
+                                             std::ostream &om) {
     enriched_regions::iterator it = regions.begin();
     string chr;
     print_cite(om);
@@ -97,9 +95,9 @@ void bed6_result_reporter::report_fdr_region(enriched_regions& regions,
         for (; rit != it->second.end(); rit++) {
             std::ostringstream s;
             s << "PeakRanger_" << cnt++ << "_pval_" << rit->p << "_FDR_"
-            << rit->q;
+              << rit->q;
             om << chr << "\t" << rit->first << "\t" << rit->second << "\t"
-            << s.str() << "\t" << rit->q << "\t+\n";
+               << s.str() << "\t" << rit->q << "\t+\n";
         }
     }
 }

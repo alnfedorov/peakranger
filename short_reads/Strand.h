@@ -12,30 +12,40 @@
 
 namespace reads {
 
-class Strand {
-    friend std::ostream& operator<<(std::ostream& os, const Strand& rhs) {
-        if (rhs.isPos()) {
-            os << "+";
-        } else {
-            os << "-";
+    class Strand {
+        friend std::ostream &operator<<(std::ostream &os, const Strand &rhs) {
+            if (rhs.isPos()) {
+                os << "+";
+            } else {
+                os << "-";
+            }
+            return os;
         }
-        return os;
-    }
-public:
-    Strand();
-    Strand(bool pos);
-    Strand(const Strand& str);
-    virtual ~Strand();
-    void operator=(bool dir);
-    bool operator==(const Strand& rhs) const;
-    bool isPos() const;
-    bool isNeg() const;
-    void toPos();
-    void toNeg();
 
-private:
-    bool mDir;
-};
+    public:
+        Strand();
+
+        Strand(bool pos);
+
+        Strand(const Strand &str);
+
+        virtual ~Strand();
+
+        void operator=(bool dir);
+
+        bool operator==(const Strand &rhs) const;
+
+        bool isPos() const;
+
+        bool isNeg() const;
+
+        void toPos();
+
+        void toNeg();
+
+    private:
+        bool mDir;
+    };
 
 } /* namespace reads */
 #endif /* STRAND_H_ */

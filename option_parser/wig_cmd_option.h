@@ -14,24 +14,38 @@
 #include <iostream>
 
 
-class wig_cmd_option: public cmd_option_parser {
+class wig_cmd_option : public cmd_option_parser {
 public:
-    wig_cmd_option(int argc, char** argv,const std::string& version);
+    wig_cmd_option(int argc, char **argv, const std::string &version);
+
     ~wig_cmd_option();
+
     void parse();
-    void print_option(std::ostream& os);
+
+    void print_option(std::ostream &os);
 
     bool isSplit() const;
+
     void setSplit(bool _split);
+
     bool isGz() const;
+
     bool isStranded() const;
+
     void setGz(bool _gz);
+
     void setStranded(bool _stranded);
-    void print_option_file(std::ostream & os) const;
+
+    void print_option_file(std::ostream &os) const;
+
     uint32_t getOverlapSz() const;
+
     uint32_t getWinwdowSz() const;
+
     void setOverlapSz(uint32_t overlapSz);
+
     void setWinwdowSz(uint32_t winwdowSz);
+
     std::string version;
 private:
 

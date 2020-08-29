@@ -11,42 +11,43 @@
 #include "utils/Guarded.h"
 #include "common/boost_header.h"
 #include "BamFileSortOrderAux.h"
+
 using namespace BamTools;
 using namespace utils;
 using namespace std;
 namespace parser {
 
-BamFileSortOrder::BamFileSortOrder() {
+    BamFileSortOrder::BamFileSortOrder() {
 
-}
+    }
 
-BamFileSortOrder::~BamFileSortOrder() {
+    BamFileSortOrder::~BamFileSortOrder() {
 
-}
+    }
 
-bool BamFileSortOrder::match(const std::string& file, uint32_t n) {
+    bool BamFileSortOrder::match(const std::string &file, uint32_t n) {
 
-    return true;
-}
+        return true;
+    }
 
-bool BamFileCoordinateSortedOrder::match(const std::string& file, uint32_t n) {
+    bool BamFileCoordinateSortedOrder::match(const std::string &file, uint32_t n) {
 
 //    return headerSaysCoordSorted(file) || readsSayCoordSorted(file, n);
-    return  readsSayCoordSorted(file, n);
-}
+        return readsSayCoordSorted(file, n);
+    }
 
-bool BamFileCoordinateUnSortedOrder::match(const std::string& file,
-        uint32_t n) {
-    return !readsSayCoordSorted(file, n);
-}
+    bool BamFileCoordinateUnSortedOrder::match(const std::string &file,
+                                               uint32_t n) {
+        return !readsSayCoordSorted(file, n);
+    }
 
-bool BamFileReadNameSortedOrder::match(const std::string& file, uint32_t n) {
-    return readsSayReadNameSorted(file, n);
-}
+    bool BamFileReadNameSortedOrder::match(const std::string &file, uint32_t n) {
+        return readsSayReadNameSorted(file, n);
+    }
 
-bool BamFileReadNameUnSortedOrder::match(const std::string& file, uint32_t n) {
-    return !readsSayReadNameSorted(file, n);
-}
+    bool BamFileReadNameUnSortedOrder::match(const std::string &file, uint32_t n) {
+        return !readsSayReadNameSorted(file, n);
+    }
 
 }
 

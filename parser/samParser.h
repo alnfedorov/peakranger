@@ -13,22 +13,22 @@
 #include "short_reads/reads.h"
 
 
-class samParser: public readsParser {
+class samParser : public readsParser {
 public:
     samParser() :
             readsParser() {
 
     }
 
-    void parse(Reads& reads, std::string& filename);
+    void parse(Reads &reads, std::string &filename);
 
-    void parse(Reads& reads, std::istream& is);
+    void parse(Reads &reads, std::istream &is);
 
-    void parse(Reads& reads, std::istream& is,
-            std::vector<std::string>& chrs_to_parse);
+    void parse(Reads &reads, std::istream &is,
+               std::vector<std::string> &chrs_to_parse);
 
-    void parse(Reads& reads, std::string& filename,
-            std::vector<std::string>& chrs_to_parse);
+    void parse(Reads &reads, std::string &filename,
+               std::vector<std::string> &chrs_to_parse);
 };
 
 #endif /* SAMPARSER_H_ */

@@ -12,13 +12,14 @@
 #include "wigbuilder.h"
 #include <stdint.h>
 
-class zoomable{
+class zoomable {
 public:
     zoomable();
+
     virtual ~zoomable();
 
-    virtual void smooth(wigs& _wigs,
-                        wigs& result,
+    virtual void smooth(wigs &_wigs,
+                        wigs &result,
                         uint32_t window,
                         uint32_t overlap) = 0;
 };

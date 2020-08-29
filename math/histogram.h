@@ -14,27 +14,27 @@
 
 namespace ranger_math {
 
-template<typename C, typename T, typename M>
-void getHist(const T& vals,
-             M pf,
-             C& res) {
+    template<typename C, typename T, typename M>
+    void getHist(const T &vals,
+                 M pf,
+                 C &res) {
 
-    typename T::const_iterator it;
-    for (it = vals.begin(); it != vals.end(); it++) {
-        res.at(pf(*it))++;
+        typename T::const_iterator it;
+        for (it = vals.begin(); it != vals.end(); it++) {
+            res.at(pf(*it))++;
         }
 
     }
 
-template<typename C,typename T,typename M,typename R>
-void getHist(const T& vals, C& res) {
+    template<typename C, typename T, typename M, typename R>
+    void getHist(const T &vals, C &res) {
 
-    typename T::const_iterator it;
-    for (it = vals.begin(); it != vals.end(); it++) {
-        R::map(res.at(M::map(*it)))++;
+        typename T::const_iterator it;
+        for (it = vals.begin(); it != vals.end(); it++) {
+            R::map(res.at(M::map(*it)))++;
+        }
+
     }
-
-}
 
 } /* namespace ranger_math */
 #endif /* HISTOGRAM_H_ */

@@ -7,11 +7,13 @@
 
 #ifndef ONLINEBAMAPP_H_
 #define ONLINEBAMAPP_H_
+
 #include <string>
 #include <ostream>
 #include <stdint.h>
 
 #include "OnlineBamAppImp.h"
+
 namespace bam_app {
 
 /*
@@ -20,31 +22,31 @@ namespace bam_app {
  * bam file.
  */
 
-class OnlineBamApp {
-public:
-    OnlineBamApp();
-    virtual ~OnlineBamApp();
+    class OnlineBamApp {
+    public:
+        OnlineBamApp();
 
-    OnlineBamApp(aux::OnlineBamAppImp* imp);
+        virtual ~OnlineBamApp();
 
-    virtual void processReads(const std::string& file, std::ostream& os);
-    virtual void report(std::ostream& os);
+        OnlineBamApp(aux::OnlineBamAppImp *imp);
 
-    uint32_t getCntToReport() const
-    {
-        return mCntToReport;
-    }
+        virtual void processReads(const std::string &file, std::ostream &os);
 
-    void setCntToReport(uint32_t cntToReport)
-    {
-        mCntToReport = cntToReport;
-    }
+        virtual void report(std::ostream &os);
 
-private:
-    aux::OnlineBamAppImp* mImp;
+        uint32_t getCntToReport() const {
+            return mCntToReport;
+        }
+
+        void setCntToReport(uint32_t cntToReport) {
+            mCntToReport = cntToReport;
+        }
+
+    private:
+        aux::OnlineBamAppImp *mImp;
 //    uint32_t mCnt;
-    uint32_t mCntToReport;
-};
+        uint32_t mCntToReport;
+    };
 
 } /* namespace bam_app */
 #endif /* ONLINEBAMAPP_H_ */

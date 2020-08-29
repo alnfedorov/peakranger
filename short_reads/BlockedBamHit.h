@@ -10,16 +10,18 @@
 
 #include "BlockedRead.h"
 #include "bamtools/BamAux.h"
+
 namespace reads {
 
-class BlockedBamHit: public BlockedRead {
-public:
-    BlockedBamHit();
-    virtual ~BlockedBamHit();
+    class BlockedBamHit : public BlockedRead {
+    public:
+        BlockedBamHit();
 
-    BlockedBamHit(const BamTools::BamAlignment& bam, const BamTools::RefVector& ref);
+        virtual ~BlockedBamHit();
 
-};
+        BlockedBamHit(const BamTools::BamAlignment &bam, const BamTools::RefVector &ref);
+
+    };
 
 } /* namespace reads */
 #endif /* BLOCKEDBAMHIT_H_ */

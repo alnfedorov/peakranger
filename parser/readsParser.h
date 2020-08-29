@@ -11,7 +11,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
+
 class Reads;
+
 class readsParser {
 public:
     readsParser() {
@@ -22,15 +24,15 @@ public:
     }
 
 public:
-    void virtual parse(Reads& reads, std::string& filename);
+    void virtual parse(Reads &reads, std::string &filename);
 
-    void virtual parse(Reads& reads, std::istream& is);
+    void virtual parse(Reads &reads, std::istream &is);
 
-    void virtual parse(Reads& reads, std::istream& is,
-            std::vector<std::string>& chrs_to_parse);
+    void virtual parse(Reads &reads, std::istream &is,
+                       std::vector<std::string> &chrs_to_parse);
 
-    void virtual parse(Reads& reads, std::string& filename,
-            std::vector<std::string>& chrs_to_parse);
+    void virtual parse(Reads &reads, std::string &filename,
+                       std::vector<std::string> &chrs_to_parse);
 };
 
 #endif /* READSPARSER_H_ */

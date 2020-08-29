@@ -15,33 +15,33 @@
 #include "short_reads/BlockedBamHit.h"
 #include "BamParserAux.h"
 #include "common/ranger_debug.h"
+
 using namespace BamTools;
 using namespace std;
 using namespace reads;
 namespace parser {
-namespace aux {
+    namespace aux {
 
-BamBlockPEReadsParser1LImp::BamBlockPEReadsParser1LImp()
-       {
-    mPRead.RefID = -1;
-    parserID="BamBlockPEReadsParser1LImp";
-}
+        BamBlockPEReadsParser1LImp::BamBlockPEReadsParser1LImp() {
+            mPRead.RefID = -1;
+            parserID = "BamBlockPEReadsParser1LImp";
+        }
 
-BamBlockPEReadsParser1LImp::~BamBlockPEReadsParser1LImp() {
-}
+        BamBlockPEReadsParser1LImp::~BamBlockPEReadsParser1LImp() {
+        }
 
-void BamBlockPEReadsParser1LImp::parse(const BamTools::BamAlignment& read,
-        reads::PairEndedReads<reads::BlockedRead>& rds,
-        const BamTools::RefVector& ref) {
+        void BamBlockPEReadsParser1LImp::parse(const BamTools::BamAlignment &read,
+                                               reads::PairEndedReads<reads::BlockedRead> &rds,
+                                               const BamTools::RefVector &ref) {
 //	cout <<"[BamBlockPEReadsParser1LImp]parse "<<read.Position<<"\n";
-    insertRead(read, mPRead, rds, ref);
-}
+            insertRead(read, mPRead, rds, ref);
+        }
 
-void BamBlockPEReadsParser1LImp::flush(
-        reads::PairEndedReads<reads::BlockedRead>& reads,
-        const BamTools::RefVector& ref) {
-}
+        void BamBlockPEReadsParser1LImp::flush(
+                reads::PairEndedReads<reads::BlockedRead> &reads,
+                const BamTools::RefVector &ref) {
+        }
 
 
-} /* namespace aux */
+    } /* namespace aux */
 } /* namespace parser */

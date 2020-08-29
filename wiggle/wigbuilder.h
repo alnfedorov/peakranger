@@ -21,41 +21,45 @@
 class wig_builder {
 public:
     void _process_wig(uint32_t start, uint32_t end, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, std::ostream& r);
+                      uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
+                      std::vector<uint32_t>::iterator readsEnd,
+                      std::vector<uint32_t>::iterator nreadsStart,
+                      std::vector<uint32_t>::iterator nreadsEnd, std::ostream &r);
+
     void _process_wig(uint32_t start, uint32_t end, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, wigs& r);
+                      uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
+                      std::vector<uint32_t>::iterator readsEnd,
+                      std::vector<uint32_t>::iterator nreadsStart,
+                      std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
 
     void _process_wig(uint32_t readlength, uint32_t readextlength,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, wigs& r);
+                      std::vector<uint32_t>::iterator readsStart,
+                      std::vector<uint32_t>::iterator readsEnd,
+                      std::vector<uint32_t>::iterator nreadsStart,
+                      std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
+
     void _process(uint32_t start, uint32_t end, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, wigs& r);
+                  uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
+                  std::vector<uint32_t>::iterator readsEnd,
+                  std::vector<uint32_t>::iterator nreadsStart,
+                  std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
+
     void _process(uint32_t readlength, uint32_t readextlength,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, wigs& r);
+                  std::vector<uint32_t>::iterator readsStart,
+                  std::vector<uint32_t>::iterator readsEnd,
+                  std::vector<uint32_t>::iterator nreadsStart,
+                  std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
+
     template<class _T>
     void _process(uint32_t readlength, uint32_t readextlength,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd, wigs& r, _T trans) {
+                  std::vector<uint32_t>::iterator readsStart,
+                  std::vector<uint32_t>::iterator readsEnd, wigs &r, _T trans) {
 
         LOG_DEBUG1("Entering wig_builder::_process");
 
-        LOG_DEBUG1("readlength:"<<readlength);
+        LOG_DEBUG1("readlength:" << readlength);
 
-        LOG_DEBUG1("readextlength:"<<readextlength);
+        LOG_DEBUG1("readextlength:" << readextlength);
 
         uint32_t a;
         uint32_t b;
@@ -76,22 +80,22 @@ public:
 
     template<class _T>
     void _process(uint32_t start, uint32_t end, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd, wigs& r, _T trans) {
+                  uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
+                  std::vector<uint32_t>::iterator readsEnd, wigs &r, _T trans) {
 
         LOG_DEBUG1("Entering wig_builder::_process");
 
-        LOG_DEBUG1("readlength:"<<readlength);
+        LOG_DEBUG1("readlength:" << readlength);
 
-        LOG_DEBUG1("readextlength:"<<readextlength);
+        LOG_DEBUG1("readextlength:" << readextlength);
 
         assert_gt(end, 2)
 
         assert_gt(end - 2, start)
 
-        assert_gt(end-start+1, readlength)
+        assert_gt(end - start + 1, readlength)
 
-        assert_gt(end-start+1, readextlength)
+        assert_gt(end - start + 1, readextlength)
 
         uint32_t a;
         uint32_t b;
@@ -102,7 +106,7 @@ public:
         bool inRange = false;
         LOG_DEBUG1("start mapping  reads");
 
-        LOG_DEBUG1("Total reads: "<<readsEnd-readsStart);
+        LOG_DEBUG1("Total reads: " << readsEnd - readsStart);
         while (readsStart != readsEnd) {
 
             read = *readsStart;
@@ -110,7 +114,7 @@ public:
             trans(read, readlength, readextlength, a, b);
             arrayStart = 0;
             arrayEnd = 0;
-            LOG_DEBUG2("Get read : " <<read<<" a:"<<a <<" b:"<<b);
+            LOG_DEBUG2("Get read : " << read << " a:" << a << " b:" << b);
             if (a < end && b > start) {
                 inRange = true;
                 /*
@@ -163,22 +167,22 @@ public:
     }
 
     void _binned_wig_compiler(uint32_t binlength, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
-            std::vector<uint32_t>::iterator preadsend,
-            std::vector<uint32_t>::iterator npreadsstart,
-            std::vector<uint32_t>::iterator npreadsend, std::ostream& pof);
+                              uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
+                              std::vector<uint32_t>::iterator preadsend,
+                              std::vector<uint32_t>::iterator npreadsstart,
+                              std::vector<uint32_t>::iterator npreadsend, std::ostream &pof);
 
     void _binned_wig_compiler(uint32_t binlength, uint32_t readlength,
-            uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
-            std::vector<uint32_t>::iterator preadsend,
-            std::vector<uint32_t>::iterator npreadsstart,
-            std::vector<uint32_t>::iterator npreadsend, wigs & pof);
+                              uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
+                              std::vector<uint32_t>::iterator preadsend,
+                              std::vector<uint32_t>::iterator npreadsstart,
+                              std::vector<uint32_t>::iterator npreadsend, wigs &pof);
 
     template<typename _T>
     void _binned_wig_compiler(uint32_t _binlength, uint32_t _readlength,
-            uint32_t _readextlength, std::vector<uint32_t>::iterator preadsstart,
-            std::vector<uint32_t>::iterator preadsend, std::ostream& pof,
-            const char* _neg, _T trans) {
+                              uint32_t _readextlength, std::vector<uint32_t>::iterator preadsstart,
+                              std::vector<uint32_t>::iterator preadsend, std::ostream &pof,
+                              const char *_neg, _T trans) {
         LOG_DEBUG1("wig_builder::_binned_wig_compiler");
         std::vector<uint32_t>::iterator ppreadsstart, pppreadsstart, ppreadsend,
                 pppreadsend;
@@ -189,9 +193,9 @@ public:
         uint32_t binind = 0;
         uint32_t binstart = 0, binend = 0;
 
-        LOG_DEBUG1(" chr length:"<<pchrlength);
+        LOG_DEBUG1(" chr length:" << pchrlength);
 
-        LOG_DEBUG1(" chr bins:"<<noofbins);
+        LOG_DEBUG1(" chr bins:" << noofbins);
 
         assert_gt(_binlength, 1)
         bool _pb = false;
@@ -201,12 +205,12 @@ public:
             if (noofbins > 0) {
                 binstart = _binlength * binind + 1;
                 binend = _binlength * (binind + 1);
-                LOG_DEBUG2("in bin:"<<binstart<<":"<<binend);
+                LOG_DEBUG2("in bin:" << binstart << ":" << binend);
                 binind++;
                 ppreadsstart = lower_bound(preadsstart, preadsend, binstart);
                 ppreadsend = upper_bound(ppreadsstart, preadsend, binend);
                 _process(binstart, binend, _readlength, _readextlength,
-                        ppreadsstart, ppreadsend, _wigs, trans);
+                         ppreadsstart, ppreadsend, _wigs, trans);
 
                 noofbins--;
             } else {
@@ -222,13 +226,15 @@ public:
         }
     }
 
-    void _compile_wig(wigs& _r, wigs& r);
-    void _compile_wig(wigs& _r, std::ostream& r, const char *neg = "");
+    void _compile_wig(wigs &_r, wigs &r);
+
+    void _compile_wig(wigs &_r, std::ostream &r, const char *neg = "");
+
     static void _get_ab(uint32_t read, uint32_t readlength, uint32_t ext,
-            uint32_t& a, uint32_t& b);
+                        uint32_t &a, uint32_t &b);
 
     static void _get_ab_re(uint32_t read, uint32_t readlength, uint32_t ext,
-            uint32_t& a, uint32_t& b);
+                           uint32_t &a, uint32_t &b);
 };
 
 #endif /* WIGBUILDER_H_ */

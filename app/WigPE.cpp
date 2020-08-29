@@ -15,68 +15,71 @@
 #include "utils/Tracer.h"
 #include "app/WigPE.h"
 #include <boost/algorithm/string.hpp>
+
 using namespace std;
 using namespace bam_app;
 using namespace boost;
 using namespace options::aux;
 namespace app {
 
-WigPE::WigPE() {
+    WigPE::WigPE() {
 
-}
+    }
 
-WigPE::~WigPE() {
+    WigPE::~WigPE() {
 
-}
-std::string WigPE::version = "";
-void WigPE::run(int argc, char** argv) {
+    }
 
-	options::WigPEOption opts(version);
-	try {
-		opts.parse(argc, argv);
-	} catch (std::exception& e) {
-		cout << "\n" << e.what() << "\n";
-		cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
-		exit(0);
-	} catch (FileNotGood& e) {
-		e.debugPrint();
-		cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
-		exit(0);
-	} catch (...) {
-		cout << "\n"
-				<< "Unknown fatal exception caught while parsing command lines\n";
-		cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
-		exit(0);
-	}
+    std::string WigPE::version = "";
 
-	utils::TimeStampTracer tracer(std::cout, opts.mVM.count("verbose"));
-	string input(opts.mVM["data"].as<string>());
-	string output(normOutFileName(opts.mVM["output"].as<string>()));
-	tracer << opts.printParsedOpts() << "\n";
+    void WigPE::run(int argc, char **argv) {
 
-	aux::WigPEOnline w(tracer);
+        options::WigPEOption opts(version);
+        try {
+            opts.parse(argc, argv);
+        } catch (std::exception &e) {
+            cout << "\n" << e.what() << "\n";
+            cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
+            exit(0);
+        } catch (FileNotGood &e) {
+            e.debugPrint();
+            cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
+            exit(0);
+        } catch (...) {
+            cout << "\n"
+                 << "Unknown fatal exception caught while parsing command lines\n";
+            cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv) << "\n";
+            exit(0);
+        }
 
-	w.setExt(opts.mVM["ext_length"].as<uint32_t>());
-	w.setSplitByChr(opts.mVM.count("split"));
-	w.setSplitByStrand(opts.mVM.count("strand"));
-	w.setGzip(opts.mVM.count("gzip"));
+        utils::TimeStampTracer tracer(std::cout, opts.mVM.count("verbose"));
+        string input(opts.mVM["data"].as<string>());
+        string output(normOutFileName(opts.mVM["output"].as<string>()));
+        tracer << opts.printParsedOpts() << "\n";
 
-	OnlineBamMultiReportApp wigpe(tracer, &w);
-	wigpe.processReads(input, output);
+        aux::WigPEOnline w(tracer);
 
-	tracer << "Total reads:\n";
-	tracer << " On pos strand:\t" << w.getPosCnt() << "\n";
-	tracer << " On neg strand:\t" << w.getNegCnt() << "\n";
-	tracer << "\nWiggle file generation completed.\n\n";
+        w.setExt(opts.mVM["ext_length"].as<uint32_t>());
+        w.setSplitByChr(opts.mVM.count("split"));
+        w.setSplitByStrand(opts.mVM.count("strand"));
+        w.setGzip(opts.mVM.count("gzip"));
 
-}
+        OnlineBamMultiReportApp wigpe(tracer, &w);
+        wigpe.processReads(input, output);
 
-std::string WigPE::normOutFileName(const std::string& fn) {
-	std::string res(fn);
-	if (boost::find_first(res, ".wig")) {
-		erase_all(res, ".wig");
-	}
-	return res;
-}
+        tracer << "Total reads:\n";
+        tracer << " On pos strand:\t" << w.getPosCnt() << "\n";
+        tracer << " On neg strand:\t" << w.getNegCnt() << "\n";
+        tracer << "\nWiggle file generation completed.\n\n";
+
+    }
+
+    std::string WigPE::normOutFileName(const std::string &fn) {
+        std::string res(fn);
+        if (boost::find_first(res, ".wig")) {
+            erase_all(res, ".wig");
+        }
+        return res;
+    }
 
 } /* namespace app */

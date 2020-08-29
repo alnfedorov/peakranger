@@ -12,21 +12,22 @@
 #include "short_reads/PairEndedReads.h"
 #include "bamtools/BamAux.h"
 #include "short_reads/Read.h"
+
 namespace parser {
 
-class BamPEReadsParser {
-public:
+    class BamPEReadsParser {
+    public:
 
-    void parse(reads::PairEndedReads<reads::Read>& reads,
-            const std::string& file);
+        void parse(reads::PairEndedReads<reads::Read> &reads,
+                   const std::string &file);
 
-private:
+    private:
 
-    void insertRead(const BamTools::BamAlignment& read,
-            reads::PairEndedReads<reads::Read>& reads,
-            const BamTools::RefVector& ref);
+        void insertRead(const BamTools::BamAlignment &read,
+                        reads::PairEndedReads<reads::Read> &reads,
+                        const BamTools::RefVector &ref);
 
-};
+    };
 
 } /* namespace parser */
 #endif /* BAMPEREADSPARSER_H_ */

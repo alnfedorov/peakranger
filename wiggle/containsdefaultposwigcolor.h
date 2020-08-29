@@ -7,17 +7,21 @@
 
 #ifndef CONTAINSDEFAULTPOSWIGCOLOR_H_
 #define CONTAINSDEFAULTPOSWIGCOLOR_H_
+
 #include <ostream>
 #include <vector>
 #include <string>
 #include <stdint.h>
 
 
-class contains_default_pos_wig_color{
+class contains_default_pos_wig_color {
 public:
     contains_default_pos_wig_color();
+
     virtual ~contains_default_pos_wig_color();
+
     std::vector<uint32_t> getPosRgb() const;
+
     void setPosRgb(std::vector<uint32_t> _posRGB);
 
 private:

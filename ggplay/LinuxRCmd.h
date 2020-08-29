@@ -10,18 +10,20 @@
 
 #include "threading/Runnable.h"
 #include <string>
+
 namespace ggplay {
 
-class LinuxRCmd: public threads::Runnable<std::string> {
-public:
-    LinuxRCmd();
-    virtual ~LinuxRCmd();
+    class LinuxRCmd : public threads::Runnable<std::string> {
+    public:
+        LinuxRCmd();
 
-    void runJob(std::string& RCmd);
+        virtual ~LinuxRCmd();
 
-private:
-    int rmScript(std::string& rf);
-};
+        void runJob(std::string &RCmd);
+
+    private:
+        int rmScript(std::string &rf);
+    };
 
 } /* namespace ggplay */
 #endif /* LINUXRCMD_H_ */

@@ -8,23 +8,23 @@
 #include "paired_reads_parser/BamBlockPEReadsParserImp.h"
 
 namespace parser {
-namespace aux {
+    namespace aux {
 
-BamBlockPEReadsParserImp::BamBlockPEReadsParserImp():parserID("Null Imp") {
-}
+        BamBlockPEReadsParserImp::BamBlockPEReadsParserImp() : parserID("Null Imp") {
+        }
 
-BamBlockPEReadsParserImp::~BamBlockPEReadsParserImp() {
-}
+        BamBlockPEReadsParserImp::~BamBlockPEReadsParserImp() {
+        }
 
-void BamBlockPEReadsParserImp::parse(const BamTools::BamAlignment& read,
-        reads::PairEndedReads<reads::BlockedRead>& reads,
-        const BamTools::RefVector& ref) {
-}
+        void BamBlockPEReadsParserImp::parse(const BamTools::BamAlignment &read,
+                                             reads::PairEndedReads<reads::BlockedRead> &reads,
+                                             const BamTools::RefVector &ref) {
+        }
 
-void BamBlockPEReadsParserImp::flush(
-        reads::PairEndedReads<reads::BlockedRead>& reads,
-        const BamTools::RefVector& ref) {
-}
+        void BamBlockPEReadsParserImp::flush(
+                reads::PairEndedReads<reads::BlockedRead> &reads,
+                const BamTools::RefVector &ref) {
+        }
 
-} /* namespace aux */
+    } /* namespace aux */
 } /* namespace parser */

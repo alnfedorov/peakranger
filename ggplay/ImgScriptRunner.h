@@ -7,21 +7,24 @@
 
 #ifndef IMGSCRIPTRUNNER_H_
 #define IMGSCRIPTRUNNER_H_
+
 #include <string>
 #include <vector>
+
 namespace ggplay {
 
-class ImgScriptRunner {
-public:
-    ImgScriptRunner(const std::vector<std::string>& mScripts, uint32_t threads);
-    virtual ~ImgScriptRunner();
+    class ImgScriptRunner {
+    public:
+        ImgScriptRunner(const std::vector<std::string> &mScripts, uint32_t threads);
 
-    void run();
+        virtual ~ImgScriptRunner();
 
-private:
-    std::vector<std::string> mScripts;
-    uint32_t mThreads;
-};
+        void run();
+
+    private:
+        std::vector<std::string> mScripts;
+        uint32_t mThreads;
+    };
 
 } /* namespace ggplay */
 #endif /* IMGSCRIPTRUNNER_H_ */

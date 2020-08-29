@@ -13,78 +13,72 @@
 #include "bar/BarHist.h"
 #include "bar/BarAux.h"
 #include <algorithm>
+
 namespace bam_app {
-namespace aux {
+    namespace aux {
 
-class WigPEOnline: public OnlineBamMultiReportAppImp {
-public:
-    WigPEOnline(utils::TimeStampTracer& tracer);
-    virtual ~WigPEOnline();
-    void process(const BamTools::BamAlignment & read,
-            const BamTools::RefVector & ref);
-    void report(std::string& file_prefix);
+        class WigPEOnline : public OnlineBamMultiReportAppImp {
+        public:
+            WigPEOnline(utils::TimeStampTracer &tracer);
 
-    bool isGzip() const
-    {
-        return gz;
-    }
+            virtual ~WigPEOnline();
 
-    void setGzip(bool gzip)
-    {
-        this->gz = gzip;
-    }
+            void process(const BamTools::BamAlignment &read,
+                         const BamTools::RefVector &ref);
 
-    uint32_t getNegCnt() const
-    {
-        return mNegCnt;
-    }
+            void report(std::string &file_prefix);
 
-    uint32_t getPosCnt() const
-    {
-        return mPosCnt;
-    }
+            bool isGzip() const {
+                return gz;
+            }
 
-    bool isSplitByChr() const
-    {
-        return mbSplitByChr;
-    }
+            void setGzip(bool gzip) {
+                this->gz = gzip;
+            }
 
-    void setSplitByChr(bool mbSplitByChr)
-    {
-        this->mbSplitByChr = mbSplitByChr;
-    }
+            uint32_t getNegCnt() const {
+                return mNegCnt;
+            }
 
-    bool isSplitByStrand() const
-    {
-        return mbSplitByStrand;
-    }
+            uint32_t getPosCnt() const {
+                return mPosCnt;
+            }
 
-    void setSplitByStrand(bool mbSplitByStrand)
-    {
-        this->mbSplitByStrand = mbSplitByStrand;
-    }
+            bool isSplitByChr() const {
+                return mbSplitByChr;
+            }
 
-    uint32_t getExt() const
-    {
-        return mExt;
-    }
+            void setSplitByChr(bool mbSplitByChr) {
+                this->mbSplitByChr = mbSplitByChr;
+            }
 
-    void setExt(uint32_t ext)
-    {
-        mExt = ext;
-    }
+            bool isSplitByStrand() const {
+                return mbSplitByStrand;
+            }
 
-private:
-    std::map<std::string,ranger::bar::BarHist> mCounter;
-    std::map<std::string,ranger::bar::BarHist> mNCounter;
-    uint32_t mExt;
-    bool mbSplitByStrand;
-    bool mbSplitByChr;
-    uint32_t mPosCnt;
-    uint32_t mNegCnt;
-    bool gz;
-};
+            void setSplitByStrand(bool mbSplitByStrand) {
+                this->mbSplitByStrand = mbSplitByStrand;
+            }
 
-} /* namespace aux */
+            uint32_t getExt() const {
+                return mExt;
+            }
+
+            void setExt(uint32_t ext) {
+                mExt = ext;
+            }
+
+        private:
+            std::map<std::string, ranger::bar::BarHist> mCounter;
+            std::map<std::string, ranger::bar::BarHist> mNCounter;
+            uint32_t mExt;
+            bool mbSplitByStrand;
+            bool mbSplitByChr;
+            uint32_t mPosCnt;
+            uint32_t mNegCnt;
+            bool gz;
+        };
+
+    } /* namespace aux */
 } /* namespace bam_app */
 #endif /* WIGPEONLINE_H_ */

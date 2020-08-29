@@ -1,5 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
+
 #include "log.h"
 
 #include "common/stl_header.h"
@@ -14,7 +15,7 @@
 #define SET_LOG_LEVEL(level) \
         FILELog::ReportingLevel() = FILELog::FromString(level)
 #define MARK_FUN(msg) \
-		FunLogger dontmatchmedontdontdontdontdontdontmatchme(msg)
+        FunLogger dontmatchmedontdontdontdontdontdontmatchme(msg)
 #define LOG_DEBUG5(msg) \
         FILE_LOG(logDEBUG5) << msg
 #define LOG_DEBUG4(msg) \
@@ -51,23 +52,28 @@
 #define LOG_DONE()
 #endif
 
-class FunLogger{
+class FunLogger {
 public:
     FunLogger();
-    FunLogger(const char* msg)
-    : m(msg) {
-        LOG_DEBUG1("Entering "<<m);
+
+    FunLogger(const char *msg)
+            : m(msg) {
+        LOG_DEBUG1("Entering " << m);
     }
+
     FunLogger(std::string msg)
-    : m(msg) {
-        LOG_DEBUG1("Entering "<<m);
+            : m(msg) {
+        LOG_DEBUG1("Entering " << m);
     }
-    void setMsg(const char* msg) {
+
+    void setMsg(const char *msg) {
         m = std::string(msg);
     }
+
     ~FunLogger() {
-        LOG_DEBUG1("Leaving "<<m);
+        LOG_DEBUG1("Leaving " << m);
     }
+
 private:
     std::string m;
 };

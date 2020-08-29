@@ -29,6 +29,7 @@
 #include "gzstream.h"
 #include <iostream>
 #include <string.h>  // for memcpy
+
 #ifdef GZSTREAM_NAMESPACE
 namespace GZSTREAM_NAMESPACE {
 #endif
@@ -41,16 +42,16 @@ namespace GZSTREAM_NAMESPACE {
 // class gzstreambuf:
 // --------------------------------------
 
-gzstreambuf* gzstreambuf::open(const char* name, int open_mode) {
+gzstreambuf *gzstreambuf::open(const char *name, int open_mode) {
     if (is_open())
-        return (gzstreambuf*) 0;
+        return (gzstreambuf *) 0;
     mode = open_mode;
     // no append nor read/write mode
     if ((mode & std::ios::ate) || (mode & std::ios::app)
-            || ((mode & std::ios::in) && (mode & std::ios::out)))
-        return (gzstreambuf*) 0;
+        || ((mode & std::ios::in) && (mode & std::ios::out)))
+        return (gzstreambuf *) 0;
     char fmode[10];
-    char* fmodeptr = fmode;
+    char *fmodeptr = fmode;
     if (mode & std::ios::in)
         *fmodeptr++ = 'r';
     else if (mode & std::ios::out)
@@ -59,19 +60,19 @@ gzstreambuf* gzstreambuf::open(const char* name, int open_mode) {
     *fmodeptr = '\0';
     file = gzopen(name, fmode);
     if (file == 0)
-        return (gzstreambuf*) 0;
+        return (gzstreambuf *) 0;
     opened = 1;
     return this;
 }
 
-gzstreambuf * gzstreambuf::close() {
+gzstreambuf *gzstreambuf::close() {
     if (is_open()) {
         sync();
         opened = 0;
         if (gzclose(file) == Z_OK)
             return this;
     }
-    return (gzstreambuf*) 0;
+    return (gzstreambuf *) 0;
 }
 
 int gzstreambuf::underflow() { // used for input buffer only
@@ -92,8 +93,8 @@ int gzstreambuf::underflow() { // used for input buffer only
 
     // reset buffer pointers
     setg(buffer + (4 - n_putback), // beginning of putback area
-    buffer + 4, // read position
-    buffer + 4 + num); // end of buffer
+         buffer + 4, // read position
+         buffer + 4 + num); // end of buffer
 
     // return next character
     return *reinterpret_cast<unsigned char *>(gptr());
@@ -136,7 +137,7 @@ int gzstreambuf::sync() {
 // class gzstreambase:
 // --------------------------------------
 
-gzstreambase::gzstreambase(const char* name, int mode) {
+gzstreambase::gzstreambase(const char *name, int mode) {
     init(&buf);
     open(name, mode);
 }
@@ -145,7 +146,7 @@ gzstreambase::~gzstreambase() {
     buf.close();
 }
 
-void gzstreambase::open(const char* name, int open_mode) {
+void gzstreambase::open(const char *name, int open_mode) {
     if (!buf.open(name, open_mode))
         clear(rdstate() | std::ios::badbit);
 }

@@ -10,17 +10,17 @@
 
 using namespace std;
 
-void readsParser::parse(Reads & reads, istream & is,
-        vector<string> & chrs_to_parse) {
+void readsParser::parse(Reads &reads, istream &is,
+                        vector<string> &chrs_to_parse) {
 }
 
-void readsParser::parse(Reads & reads, istream & is) {
+void readsParser::parse(Reads &reads, istream &is) {
 }
 
-void readsParser::parse(Reads & reads, string & filename,
-        vector<string> & chrs_to_parse) {
+void readsParser::parse(Reads &reads, string &filename,
+                        vector<string> &chrs_to_parse) {
 }
 
-void readsParser::parse(Reads & reads, string & filename) {
+void readsParser::parse(Reads &reads, string &filename) {
 }
 

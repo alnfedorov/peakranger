@@ -7,25 +7,26 @@
 
 #include "peakseq_profile_thresholder.h"
 #include "utils/logger.h"
+
 using namespace std;
-typedef pair<uint32_t, uint32_t>  profile_pos_t;
+typedef pair<uint32_t, uint32_t> profile_pos_t;
 
 /*
  * WIll not work if the min(vec) == cutoff
  */
-void peakseq_profile_thresholder::threshold(vector<profile_pos_t>& vec,
+void peakseq_profile_thresholder::threshold(vector<profile_pos_t> &vec,
                                             uint32_t cutoff,
                                             uint32_t mergeDistance,
                                             uint32_t offset,
-                                            vector<peak_pos_t>& result) {
+                                            vector<peak_pos_t> &result) {
     uint32_t peakStart = 0, peakEnd = 0, i;
     bool peakUnfinished = false;
     peak_pos_t region;
 
     LOG_DEBUG1("IN THRESHOLDER with parameters:"
-    <<"\n size of input vec: "<<vec.size()
-    <<"\n cutoff: "<<cutoff
-    <<"\n offset:"<<offset
+                       << "\n size of input vec: " << vec.size()
+                       << "\n cutoff: " << cutoff
+                       << "\n offset:" << offset
     );
 
     for (i = 0; i < vec.size(); i++) {
@@ -57,5 +58,5 @@ void peakseq_profile_thresholder::threshold(vector<profile_pos_t>& vec,
         result[i].second += offset;
     }
 
-    LOG_DEBUG1("Total peaks found by thersholder: "<<result.size());
+    LOG_DEBUG1("Total peaks found by thersholder: " << result.size());
 }

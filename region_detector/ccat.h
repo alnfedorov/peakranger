@@ -12,6 +12,7 @@
 
 #ifndef CCAT_H_
 #define CCAT_H_
+
 #include "region_detector.h"
 #include "ccat_aux.h"
 #include "ccat_config.h"
@@ -20,28 +21,32 @@
 #include "CCATfdrAnalyzer.h"
 #include "CCATPeakFinder.h"
 #include <iostream>
-class ccat: public region_detector {
+
+class ccat : public region_detector {
 public:
     ccat();
-    virtual ~ccat();
-    virtual void detectSummits(Reads& treatment_reads, Reads& control_reads,
-            cmd_option_parser& option);
 
-    virtual void detectSummits(Reads& treatment_reads, Reads& control_reads,
-            cmd_option_parser& option, std::ostream& os) {
+    virtual ~ccat();
+
+    virtual void detectSummits(Reads &treatment_reads, Reads &control_reads,
+                               cmd_option_parser &option);
+
+    virtual void detectSummits(Reads &treatment_reads, Reads &control_reads,
+                               cmd_option_parser &option, std::ostream &os) {
     }
 
 private:
-    int UploadPeaks(std::vector<ccat_aux::chr_t>&chroms, size_t chromNum,
-            const char *projectName, const ccat_aux::ccat_config_t& config);
+    int UploadPeaks(std::vector<ccat_aux::chr_t> &chroms, size_t chromNum,
+                    const char *projectName, const ccat_aux::ccat_config_t &config);
 
-    void insertPeak(const std::string& chr, called_peak& pk);
+    void insertPeak(const std::string &chr, called_peak &pk);
 
-    void cmain(Reads& treads, Reads& creads, cmd_option_parser& option);
+    void cmain(Reads &treads, Reads &creads, cmd_option_parser &option);
 
-    void LoadData(std::vector<ccat_aux::chr_t> & chroms, Reads & treads,
-            Reads & creads, size_t & chromNum);
-    void SortAndDedup(std::vector<ccat_aux::chr_t> & chroms);
+    void LoadData(std::vector<ccat_aux::chr_t> &chroms, Reads &treads,
+                  Reads &creads, size_t &chromNum);
+
+    void SortAndDedup(std::vector<ccat_aux::chr_t> &chroms);
 
     std::vector<double> lookUpTable;
     std::vector<int> flag;

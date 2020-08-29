@@ -14,35 +14,44 @@
 #include "short_reads/Read.h"
 #include "bamtools/BamAux.h"
 #include <vector>
+
 namespace ranger {
-namespace bar {
+    namespace bar {
 
-class BarHist {
-    friend void operator+=(BarHist& b1, const BarHist& b2);
-    friend void operator+=(std::map<std::string, BarHist>& b1,
-             std::map<std::string, BarHist>& b2);
-    reads::Read extendReadToLength(const reads::Read& read, int32_t length);
-public:
-    BarHist();
-    virtual ~BarHist();
+        class BarHist {
+            friend void operator+=(BarHist &b1, const BarHist &b2);
 
-    void add(const reads::Read& read);
-    void add(const BamTools::BamAlignment& bam);
-    void add(const std::vector<reads::Read>& hits);
-    void getCount(const std::vector<reads::Read>& hits,
-            std::vector<RegionCount>& res);
-    void reset();
+            friend void operator+=(std::map<std::string, BarHist> &b1,
+                                   std::map<std::string, BarHist> &b2);
 
-    const boost::icl::BarCounter& counter() const {
-        return mCounter;
-    }
+            reads::Read extendReadToLength(const reads::Read &read, int32_t length);
 
-private:
-    boost::icl::BarCounter mCounter;
+        public:
+            BarHist();
 
-};
+            virtual ~BarHist();
 
-} /* namespace bar */
+            void add(const reads::Read &read);
+
+            void add(const BamTools::BamAlignment &bam);
+
+            void add(const std::vector<reads::Read> &hits);
+
+            void getCount(const std::vector<reads::Read> &hits,
+                          std::vector<RegionCount> &res);
+
+            void reset();
+
+            const boost::icl::BarCounter &counter() const {
+                return mCounter;
+            }
+
+        private:
+            boost::icl::BarCounter mCounter;
+
+        };
+
+    } /* namespace bar */
 }
 
 /* namespace ranger */

@@ -14,7 +14,8 @@
 #define MAX_CHR_NUM 10000
 using namespace std;
 typedef map<string, vector<uint32_t> > reads_t;
-void Reads::_insertRead(string& chr, uint32_t read, reads_t& reads) {
+
+void Reads::_insertRead(string &chr, uint32_t read, reads_t &reads) {
     reads_t::iterator ind;
     rt_assert_neq_msg(chr, "", "The name of chr is empty.")
     rt_assert_neq_msg(chr, "*", "The name of chr is *.")
@@ -24,6 +25,7 @@ void Reads::_insertRead(string& chr, uint32_t read, reads_t& reads) {
     }
     reads[chr].push_back(read);
 }
+
 /*
  * return the number of pos and neg reads
  */
@@ -51,7 +53,7 @@ pritr Reads::pos_reads::end() const {
     return _reads._posReads.end();
 }
 
-ritr Reads::pos_reads::end_of(string & chr) const {
+ritr Reads::pos_reads::end_of(string &chr) const {
     if (!_reads._noMorePosReads)
         _reads.pos_reads._posReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -64,7 +66,7 @@ ritr Reads::pos_reads::end_of(string & chr) const {
     }
 }
 
-ritr Reads::pos_reads::begin_of(string & chr) const {
+ritr Reads::pos_reads::begin_of(string &chr) const {
     if (!_reads._noMorePosReads)
         _reads.pos_reads._posReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -77,17 +79,17 @@ ritr Reads::pos_reads::begin_of(string & chr) const {
     }
 }
 
-void Reads::pos_reads::insertRead(string & chr, uint32_t & read) {
+void Reads::pos_reads::insertRead(string &chr, uint32_t &read) {
     _reads._insertRead(chr, read, _reads._posReads);
 }
 
 uint64_t Reads::pos_reads::size() const {
     uint64_t size = 0;
     pair<string, vector<uint32_t> > reads;
-    foreach(reads,
-            _reads._posReads) {
-        size += (uint64_t) (reads.second.size());
-    }
+            foreach(reads,
+                    _reads._posReads) {
+                    size += (uint64_t) (reads.second.size());
+                }
     return size;
 }
 
@@ -97,7 +99,7 @@ vector<string> Reads::pos_reads::chrs() const {
     return _reads._posChrs;
 }
 
-bool Reads::pos_reads::hasReadsOnChr(string & chr) const {
+bool Reads::pos_reads::hasReadsOnChr(string &chr) const {
     if (!_reads._noMorePosReads)
         _reads.pos_reads._posReadsInsertionComplete();
 
@@ -107,7 +109,7 @@ bool Reads::pos_reads::hasReadsOnChr(string & chr) const {
     return false;
 }
 
-void Reads::pos_reads::remove(string & chr) {
+void Reads::pos_reads::remove(string &chr) {
     if (!_reads._noMorePosReads)
         _reads.pos_reads._posReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -126,11 +128,12 @@ void Reads::pos_reads::_posReadsInsertionComplete() {
     _reads._pos_is_sorted = true;
 
 }
+
 /*
  * Access to reads in a region
  */
-void Reads::pos_reads::getReads(string& chr, uint32_t start, uint32_t end,
-        vector<uint32_t>::iterator& rstart, vector<uint32_t>::iterator& rend) {
+void Reads::pos_reads::getReads(string &chr, uint32_t start, uint32_t end,
+                                vector<uint32_t>::iterator &rstart, vector<uint32_t>::iterator &rend) {
     assert_gt(end, start)
     assert_neq(chr, "")
 
@@ -147,6 +150,7 @@ void Reads::pos_reads::getReads(string& chr, uint32_t start, uint32_t end,
         throw ChrNotFound(str);
     }
 }
+
 /*
  * For negative reads
  */
@@ -162,7 +166,7 @@ vector<string> Reads::neg_reads::chrs() const {
     return _reads._negChrs;
 }
 
-bool Reads::neg_reads::hasReadsOnChr(string & chr) const {
+bool Reads::neg_reads::hasReadsOnChr(string &chr) const {
     if (!_reads._noMoreNegReads)
         _reads.neg_reads._negReadsInsertionComplete();
 
@@ -171,10 +175,11 @@ bool Reads::neg_reads::hasReadsOnChr(string & chr) const {
     }
     return false;
 }
+
 /*
  * Remove reads on chr if it has reads on it.
  */
-void Reads::neg_reads::remove(string & chr) {
+void Reads::neg_reads::remove(string &chr) {
     if (!_reads._noMoreNegReads)
         _reads.neg_reads._negReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -185,7 +190,7 @@ void Reads::neg_reads::remove(string & chr) {
     }
 }
 
-ritr Reads::neg_reads::end_of(string & chr) const {
+ritr Reads::neg_reads::end_of(string &chr) const {
     if (!_reads._noMoreNegReads)
         _reads.neg_reads._negReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -204,7 +209,7 @@ pritr Reads::neg_reads::end() const {
     return _reads._negReads.end();
 }
 
-ritr Reads::neg_reads::begin_of(string & chr) const {
+ritr Reads::neg_reads::begin_of(string &chr) const {
     if (!_reads._noMoreNegReads)
         _reads.neg_reads._negReadsInsertionComplete();
     if (hasReadsOnChr(chr)) {
@@ -217,16 +222,16 @@ ritr Reads::neg_reads::begin_of(string & chr) const {
     }
 }
 
-void Reads::neg_reads::insertRead(string & chr, uint32_t & read) {
+void Reads::neg_reads::insertRead(string &chr, uint32_t &read) {
     _reads._insertRead(chr, read, _reads._negReads);
 }
 
 uint64_t Reads::neg_reads::size() const {
     uint64_t size = 0;
     pair<string, vector<uint32_t> > reads;
-    foreach(reads, _reads._negReads) {
-        size += (uint64_t) (reads.second.size());
-    }
+            foreach(reads, _reads._negReads) {
+                    size += (uint64_t) (reads.second.size());
+                }
     return size;
 }
 
@@ -239,8 +244,8 @@ void Reads::neg_reads::_negReadsInsertionComplete() {
 
 }
 
-void Reads::neg_reads::getReads(string& chr, uint32_t start, uint32_t end,
-        vector<uint32_t>::iterator& rstart, vector<uint32_t>::iterator& rend) {
+void Reads::neg_reads::getReads(string &chr, uint32_t start, uint32_t end,
+                                vector<uint32_t>::iterator &rstart, vector<uint32_t>::iterator &rend) {
     vector<uint32_t>::iterator preadsstart, preadsend;
     rt_assert_gt(end, start)
     if (hasReadsOnChr(chr)) {
@@ -256,7 +261,7 @@ void Reads::neg_reads::getReads(string& chr, uint32_t start, uint32_t end,
     }
 }
 
-void Reads::remove(string & chr) {
+void Reads::remove(string &chr) {
     this->pos_reads.remove(chr);
     this->neg_reads.remove(chr);
 }
@@ -281,46 +286,46 @@ void Reads::removeUnequalChrs() {
     // todo: test this module
     if (neg_reads.chrs().size() < 1 && pos_reads.chrs().size() > 1) {
         chrs_to_remove = pos_reads.chrs();
-        foreach(string chr, chrs_to_remove) {
-            cerr << "Warning: " << chr
-                    << " only contains reads in the positive strand."
-                    << " The chromosome is removed.\n";
-            pos_reads.remove(chr);
-        }
+                foreach(string chr, chrs_to_remove) {
+                        cerr << "Warning: " << chr
+                             << " only contains reads in the positive strand."
+                             << " The chromosome is removed.\n";
+                        pos_reads.remove(chr);
+                    }
         return;
     }
     if (pos_reads.chrs().size() < 1 && neg_reads.chrs().size() > 1) {
         chrs_to_remove = neg_reads.chrs();
-        foreach(string chr, chrs_to_remove) {
-            cerr << "Warning: " << chr
-                    << " only contains reads in the negative strand."
-                    << " The chromosome is removed.\n";
-            neg_reads.remove(chr);
-        }
+                foreach(string chr, chrs_to_remove) {
+                        cerr << "Warning: " << chr
+                             << " only contains reads in the negative strand."
+                             << " The chromosome is removed.\n";
+                        neg_reads.remove(chr);
+                    }
         return;
     }
     //I dont trust the implementation of set_difference
     //so I have to make sure .begin() and .end() is not 0x0
     it = std::set_difference(_posChrs.begin(), _posChrs.end(), _negChrs.begin(),
-            _negChrs.end(), chrs_to_remove.begin());
+                             _negChrs.end(), chrs_to_remove.begin());
     chrs_to_remove.resize(it - chrs_to_remove.begin());
-    foreach(string chr, chrs_to_remove) {
-        cerr << "Warning: " << chr
-                << " only contains reads in the positive strand."
-                << " The chromosome is removed.\n";
-        pos_reads.remove(chr);
-    }
+            foreach(string chr, chrs_to_remove) {
+                    cerr << "Warning: " << chr
+                         << " only contains reads in the positive strand."
+                         << " The chromosome is removed.\n";
+                    pos_reads.remove(chr);
+                }
     vector<string> chrs_to_remove2(
             neg_reads.chrs().size() + pos_reads.chrs().size());
 
     it = std::set_difference(_negChrs.begin(), _negChrs.end(), _posChrs.begin(),
-            _posChrs.end(), chrs_to_remove2.begin());
+                             _posChrs.end(), chrs_to_remove2.begin());
     chrs_to_remove2.resize(it - chrs_to_remove2.begin());
-    foreach(string chr, chrs_to_remove2) {
-        cerr << "Warning: " << chr
-                << " only contains reads in the negative strand."
-                << " The chromosome is removed.\n";
-        neg_reads.remove(chr);
-    }
+            foreach(string chr, chrs_to_remove2) {
+                    cerr << "Warning: " << chr
+                         << " only contains reads in the negative strand."
+                         << " The chromosome is removed.\n";
+                    neg_reads.remove(chr);
+                }
 }
 

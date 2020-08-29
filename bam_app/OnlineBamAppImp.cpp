@@ -8,22 +8,22 @@
 #include "bam_app/OnlineBamAppImp.h"
 
 namespace bam_app {
-namespace aux {
+    namespace aux {
 
-OnlineBamAppImp::OnlineBamAppImp() {
+        OnlineBamAppImp::OnlineBamAppImp() {
 
-}
+        }
 
-OnlineBamAppImp::~OnlineBamAppImp() {
+        OnlineBamAppImp::~OnlineBamAppImp() {
 
-}
+        }
 
-void OnlineBamAppImp::process(const BamTools::BamAlignment& read,
-        const BamTools::RefVector & ref) {
-}
+        void OnlineBamAppImp::process(const BamTools::BamAlignment &read,
+                                      const BamTools::RefVector &ref) {
+        }
 
-void OnlineBamAppImp::report(std::ostream& os) {
-}
+        void OnlineBamAppImp::report(std::ostream &os) {
+        }
 
-} /* namespace aux */
+    } /* namespace aux */
 } /* namespace bam_app */

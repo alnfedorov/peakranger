@@ -14,7 +14,7 @@
 template<typename T>
 class profile_padder {
 public:
-    static void pad(std::vector<T>& region) {
+    static void pad(std::vector<T> &region) {
 
         uint32_t start_ind = 0;
         uint32_t end_ind = 0;
@@ -37,7 +37,7 @@ public:
                                 (T) ((region[start_ind] + region[end_ind]) / 2);
 
                         for (uint32_t ind = start_ind + 1; ind < end_ind;
-                                ind++) {
+                             ind++) {
                             region[ind] = pad_val;
                         }
                     }

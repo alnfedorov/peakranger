@@ -24,11 +24,13 @@
 #include <algorithm>
 #include <vector>
 #include <boost/algorithm/string.hpp>
+
 using namespace utils;
 using namespace std;
 using namespace ggplay;
 using namespace ranger::concepts;
 using namespace tab_file;
+
 chipseq_html_reporter::chipseq_html_reporter() {
 
     _binlength = 1000000; //for wig builder
@@ -37,7 +39,7 @@ chipseq_html_reporter::chipseq_html_reporter() {
     format_name();
 }
 
-void chipseq_html_reporter::print_head(ostream& os, uint32_t reportLength) {
+void chipseq_html_reporter::print_head(ostream &os, uint32_t reportLength) {
 
     os
             << "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">";
@@ -262,10 +264,10 @@ void chipseq_html_reporter::print_head(ostream& os, uint32_t reportLength) {
     os << "<tbody>";
 }
 
-void chipseq_html_reporter::print_r_head(ostream& os) {
+void chipseq_html_reporter::print_r_head(ostream &os) {
 
     os << "drawGene <- "
-            << "function(xl,y,y2,utr5,utr3,e_s,e_e,gene_id,strand=TRUE,trs_h=4){\n";
+       << "function(xl,y,y2,utr5,utr3,e_s,e_e,gene_id,strand=TRUE,trs_h=4){\n";
     os << "xl1=xl[1];\n";
     os << "xl2=xl[2];\n";
     os << "e_col=rgb(51/255,51/255,51/255)\n";
@@ -379,7 +381,7 @@ void chipseq_html_reporter::print_r_head(ostream& os) {
     os << " hei=wid*0.618;";
 }
 
-void chipseq_html_reporter::print_r_tc_drawing(ostream& os) {
+void chipseq_html_reporter::print_r_tc_drawing(ostream &os) {
     os << "width=wid,height=hei,\n";
     os << "units=\"px\",\n";
     os << "pointsize=25);\n";
@@ -456,18 +458,18 @@ void chipseq_html_reporter::print_r_tc_drawing(ostream& os) {
 }
 
 void chipseq_html_reporter::filter_in_range_anno(
-        std::vector<tab_file::TabGene> & genes_to_filter,
-        std::vector<tab_file::TabGene> & genes_to_print) {
+        std::vector<tab_file::TabGene> &genes_to_filter,
+        std::vector<tab_file::TabGene> &genes_to_print) {
     sort(genes_to_filter.begin(), genes_to_filter.end(), tab_file::name_lex_lt);
     unique_copy(genes_to_filter.begin(), genes_to_filter.end(),
-            std::back_inserter(genes_to_print), tab_file::sameID);
+                std::back_inserter(genes_to_print), tab_file::sameID);
 }
 
-void chipseq_html_reporter::addCitation(const std::string& citation) {
+void chipseq_html_reporter::addCitation(const std::string &citation) {
     _cite = citation;
 }
 
-void chipseq_html_reporter::printCitation(std::ostream& os) {
+void chipseq_html_reporter::printCitation(std::ostream &os) {
     os << "<p>For further information on PeakRanger please visit ";
     os << "<a href=\"http://ranger.sourceforge.net/\"";
     os << ">http://ranger.sourceforge.net</a>.</p>";
@@ -475,8 +477,8 @@ void chipseq_html_reporter::printCitation(std::ostream& os) {
     os << _cite << "      </p>";
 }
 
-void chipseq_html_reporter::get_genes_to_filter(const string & chr,
-        tab_file::Region & pkrg, vector<tab_file::TabGene> & genes_to_filter) {
+void chipseq_html_reporter::get_genes_to_filter(const string &chr,
+                                                tab_file::Region &pkrg, vector<tab_file::TabGene> &genes_to_filter) {
     pair<vector<TabGene>::iterator, vector<TabGene>::iterator> bounds;
     TabGene tgg;
     tgg.utr5.setL(pkrg.getL());
@@ -485,8 +487,8 @@ void chipseq_html_reporter::get_genes_to_filter(const string & chr,
     copy(bounds.first, bounds.second, std::back_inserter(genes_to_filter));
 }
 
-void chipseq_html_reporter::print_gene_annot(const called_peak& pk,
-        const string& chr, ostream& os) {
+void chipseq_html_reporter::print_gene_annot(const called_peak &pk,
+                                             const string &chr, ostream &os) {
     size_t mid = (pk.first + pk.second) / 2;
     size_t l = 0;
     if (mid > _d) {
@@ -533,7 +535,8 @@ void chipseq_html_reporter::print_gene_annot(const called_peak& pk,
         }
     }
 }
-void chipseq_html_reporter::print_axis_to_end(ostream& os) {
+
+void chipseq_html_reporter::print_axis_to_end(ostream &os) {
     os
             << "lines(pk, rep(9,2),lwd=10,col=rgb(30/255,144/255,255/255),lend=1);\n";
     os << "cord=xl[1]\n";
@@ -545,7 +548,7 @@ void chipseq_html_reporter::print_axis_to_end(ostream& os) {
     os << "dev.off();\n";
 }
 
-void chipseq_html_reporter::print_css(cmd_option_parser& option) {
+void chipseq_html_reporter::print_css(cmd_option_parser &option) {
     string dir = option.getOutput_dir();
     string dir_r = dir + "/" + _report_name;
     string scripts = dir_r + "/scripts/";
@@ -562,16 +565,17 @@ void chipseq_html_reporter::print_css(cmd_option_parser& option) {
     ggplay::printJQuery(jqo);
 
 }
-void chipseq_html_reporter::print_peak(called_peak & pk, string chr,
-        ostream& os) {
+
+void chipseq_html_reporter::print_peak(called_peak &pk, string chr,
+                                       ostream &os) {
 
     std::ostringstream pkname;
     std::stringstream geneNamess;
     pkname << "./imgs/" << chr << "_" << pk.first << "_" << pk.second;
     os << " <tr class=\"odd\"> "
-            "<td rowspan=\"2\"  class=\"collapsible\"> "
-            "<a href=\"\" class=\"collapsed\"></a></td>"
-            " <td rowspan=\"2\"  class=\"collapsible_alt\">";
+          "<td rowspan=\"2\"  class=\"collapsible\"> "
+          "<a href=\"\" class=\"collapsed\"></a></td>"
+          " <td rowspan=\"2\"  class=\"collapsible_alt\">";
 
     os << chr;
     os << "</td><td  >";
@@ -582,16 +586,16 @@ void chipseq_html_reporter::print_peak(called_peak & pk, string chr,
     RegionUint32 rg(pk.first, pk.second);
     vector<TabGene> overlapped;
     _nbgf.getOverlappedGenes(chr, rg, overlapped);
-    foreach(TabGene& g, overlapped) {
-        geneNamess << g.name << ",";
-    }
+            foreach(TabGene &g, overlapped) {
+                    geneNamess << g.name << ",";
+                }
     string geneNames(geneNamess.str());
     boost::replace_last(geneNames, ",", "");
     os << geneNames;
     os << "</td><td>";
     if (pk.summits.size() > 1) {
         std::copy(pk.summits.begin(), pk.summits.end(),
-                ostream_iterator<uint32_t>(os, ","));
+                  ostream_iterator<uint32_t>(os, ","));
     } else if (pk.summits.size() > 0) {
         os << pk.summits.at(0);
     }
@@ -605,34 +609,34 @@ void chipseq_html_reporter::print_peak(called_peak & pk, string chr,
     os << pk.creads;
 
     os << "</td></tr><tr class=\"expand-child odd\"> "
-            << "<td colspan=\"4\" style=\"display: none; \"> "
-            << "<div class=\"bold\">Details of the peak</div><div><img src=\"";
+       << "<td colspan=\"4\" style=\"display: none; \"> "
+       << "<div class=\"bold\">Details of the peak</div><div><img src=\"";
     os << pkname.str() << ".png\" alt=\"" << pkname.str() << "\" /> </div>"
-            "<a href=\"" << pkname.str() << ".png\" target=\"_blank\">"
-            << "<p style=\"font-weight: bold;\">Download the image</p></a></td></tr>\n";
+                                                             "<a href=\"" << pkname.str() << ".png\" target=\"_blank\">"
+       << "<p style=\"font-weight: bold;\">Download the image</p></a></td></tr>\n";
 }
 
-void chipseq_html_reporter::prepare_wigs(Reads& treads, Reads& creads,
-        string& chr, cmd_option_parser& option, wigs& wt, wigs& wc) {
+void chipseq_html_reporter::prepare_wigs(Reads &treads, Reads &creads,
+                                         string &chr, cmd_option_parser &option, wigs &wt, wigs &wc) {
     _wig._binned_wig_compiler(_binlength, treads.getReadlength(),
-            option.getExt_length(), treads.pos_reads.begin_of(chr),
-            treads.pos_reads.end_of(chr), treads.neg_reads.begin_of(chr),
-            treads.neg_reads.end_of(chr), wt);
+                              option.getExt_length(), treads.pos_reads.begin_of(chr),
+                              treads.pos_reads.end_of(chr), treads.neg_reads.begin_of(chr),
+                              treads.neg_reads.end_of(chr), wt);
 
     _wig._binned_wig_compiler(_binlength, creads.getReadlength(),
-            option.getExt_length(), creads.pos_reads.begin_of(chr),
-            creads.pos_reads.end_of(chr), creads.neg_reads.begin_of(chr),
-            creads.neg_reads.end_of(chr), wc);
+                              option.getExt_length(), creads.pos_reads.begin_of(chr),
+                              creads.pos_reads.end_of(chr), creads.neg_reads.begin_of(chr),
+                              creads.neg_reads.end_of(chr), wc);
 }
 
-void chipseq_html_reporter::print_end(ostream& os) {
+void chipseq_html_reporter::print_end(ostream &os) {
     os << "</tbody>";
     os << "</table>";
     os << "</body></html>";
 }
 
-void chipseq_html_reporter::prepare_dir(cmd_option_parser& option,
-        const string& reportname) {
+void chipseq_html_reporter::prepare_dir(cmd_option_parser &option,
+                                        const string &reportname) {
     //todo: win
     string dir = option.getOutput_dir();
     string dir_r = dir + "/" + reportname;
@@ -643,7 +647,7 @@ void chipseq_html_reporter::prepare_dir(cmd_option_parser& option,
     mkdir(imgs.c_str(), 0777);
 }
 
-void chipseq_html_reporter::run_pk_img_script(string& rf) {
+void chipseq_html_reporter::run_pk_img_script(string &rf) {
     //todo: win32
 
     string R = "R CMD BATCH " + rf + " /dev/null";
@@ -652,8 +656,8 @@ void chipseq_html_reporter::run_pk_img_script(string& rf) {
     r1 = system(rm.c_str());
 }
 
-void chipseq_html_reporter::run_img_scripts(cmd_option_parser& option,
-        map<string, vector<called_peak> > & peaks) {
+void chipseq_html_reporter::run_img_scripts(cmd_option_parser &option,
+                                            map<string, vector<called_peak> > &peaks) {
     string dir = option.getOutput_dir();
     string imgs = dir + "/" + _report_name + "/imgs/";
     map<string, vector<called_peak> >::iterator it;
@@ -677,7 +681,7 @@ void chipseq_html_reporter::run_img_scripts(cmd_option_parser& option,
         ImgScriptRunner runner(imgScripts, option.getNo_of_thread());
         runner.run();
         if (option.getVerboseRequested()) {
-            cout << "Finished HTML reports for "<<chr<<"\n";
+            cout << "Finished HTML reports for " << chr << "\n";
         }
     }
     if (option.getVerboseRequested()) {
@@ -686,8 +690,8 @@ void chipseq_html_reporter::run_img_scripts(cmd_option_parser& option,
 }
 
 void chipseq_html_reporter::print_html_table(
-        map<string, vector<called_peak> > & peaks, cmd_option_parser & option,
-        ostream& os) {
+        map<string, vector<called_peak> > &peaks, cmd_option_parser &option,
+        ostream &os) {
     map<string, vector<called_peak> >::iterator it;
     it = peaks.begin();
     for (; it != peaks.end(); it++) {
@@ -696,8 +700,8 @@ void chipseq_html_reporter::print_html_table(
     }
 }
 
-void chipseq_html_reporter::print_chr(string & chr,
-        map<string, vector<called_peak> > & peaks, ostream& os) {
+void chipseq_html_reporter::print_chr(string &chr,
+                                      map<string, vector<called_peak> > &peaks, ostream &os) {
     vector<called_peak>::iterator it;
     it = peaks[chr].begin();
     for (; it != peaks[chr].end(); it++) {
@@ -705,8 +709,8 @@ void chipseq_html_reporter::print_chr(string & chr,
     }
 }
 
-void chipseq_html_reporter::print_pk_img_wig(wigs& wt, wigs& wc,
-        called_peak& pk, ostream& os) {
+void chipseq_html_reporter::print_pk_img_wig(wigs &wt, wigs &wc,
+                                             called_peak &pk, ostream &os) {
     /*  bb=data.frame(V1=c(),V2=c())
      cc=data.frame(V1=c(),V2=c())
      */
@@ -755,15 +759,17 @@ void chipseq_html_reporter::print_pk_img_wig(wigs& wt, wigs& wc,
     boost::replace_all(final, ",))", "))");
     os << final;
 }
-void chipseq_html_reporter::print_pk_img_para(ostream& os, called_peak& pk,
-        string& rf) {
+
+void chipseq_html_reporter::print_pk_img_para(ostream &os, called_peak &pk,
+                                              string &rf) {
     os << "pk =c(" << pk.first << "," << pk.second << ");";
     os << "d = " << _d << ";";
     os << "png(\"" << rf;
     os << "\",";
 }
-void chipseq_html_reporter::print_peak_img_script(called_peak & pk, string rf,
-        wigs& wt, wigs& wc, ostream& os, string chr) {
+
+void chipseq_html_reporter::print_peak_img_script(called_peak &pk, string rf,
+                                                  wigs &wt, wigs &wc, ostream &os, string chr) {
     print_r_head(os);
     print_pk_img_wig(wt, wc, pk, os);
     print_pk_img_para(os, pk, rf);
@@ -772,8 +778,8 @@ void chipseq_html_reporter::print_peak_img_script(called_peak & pk, string rf,
     print_axis_to_end(os);
 }
 
-void chipseq_html_reporter::print_img_script(Reads& treads, Reads& creads,
-        map<string, vector<called_peak> > & peaks, cmd_option_parser& option) {
+void chipseq_html_reporter::print_img_script(Reads &treads, Reads &creads,
+                                             map<string, vector<called_peak> > &peaks, cmd_option_parser &option) {
 
     wigs wt, wc;
     string dir = option.getOutput_dir();
@@ -798,7 +804,7 @@ void chipseq_html_reporter::print_img_script(Reads& treads, Reads& creads,
     }
 }
 
-void chipseq_html_reporter::prepare_report_name(cmd_option_parser & option) {
+void chipseq_html_reporter::prepare_report_name(cmd_option_parser &option) {
     string date;
     getDate(date);
     _report_name = option.getTreatfilename() + "_report_" + date;
@@ -807,8 +813,8 @@ void chipseq_html_reporter::prepare_report_name(cmd_option_parser & option) {
     boost::replace_all(_report_name, " ", "_");
 }
 
-void chipseq_html_reporter::generate_report(Reads & treads, Reads & creads,
-        map<string, vector<called_peak> > & peaks, cmd_option_parser & option) {
+void chipseq_html_reporter::generate_report(Reads &treads, Reads &creads,
+                                            map<string, vector<called_peak> > &peaks, cmd_option_parser &option) {
     prepare_report_name(option);
     prepare_dir(option, _report_name);
     string dir = option.getOutput_dir();

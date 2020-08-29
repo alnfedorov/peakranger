@@ -23,16 +23,18 @@
 #include <string>
 #include <stdio.h>
 #include "utils/exceptions.h"
+
 using namespace std;
 using namespace boost;
 using namespace utils;
 using namespace boost::program_options;
 using namespace options::aux;
 using namespace options;
+
 peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
-        char** argv, const std::string& version) :
+                                                           char **argv, const std::string &version) :
         cmd_option_parser(argc, argv), version(version), all(
-                "\nranger " + version + "\n\nUsage"), popt() {
+        "\nranger " + version + "\n\nUsage"), popt() {
     _binlength = 10000;
     opt other("Other");
     opt input("Input");
@@ -42,61 +44,61 @@ peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
 
     other.add_options()
 
-    ("help,h", "show the usage")
+            ("help,h", "show the usage")
 
-    ("verbose", "show progress")
+            ("verbose", "show progress")
 
-    ("version", "output the version number");
+            ("version", "output the version number");
 
     input.add_options()
 
-    ("data,d", po::value<string>(&_treat_dir), "data file")
+            ("data,d", po::value<string>(&_treat_dir), "data file")
 
-    ("control,c", po::value<string>(&_control_dir), "control file")
+            ("control,c", po::value<string>(&_control_dir), "control file")
 
-    ("format", po::value<string>(&_format),
-            "the format of the data file, can be one of : "
-                    "bowtie, sam, bam and bed");
+            ("format", po::value<string>(&_format),
+             "the format of the data file, can be one of : "
+             "bowtie, sam, bam and bed");
 
 //	("config", po::value<string>(&_config_file), "configuration file");
 
     output.add_options()
 
-    ("output,o", po::value<string>(&_output_dir), "the output location")
+            ("output,o", po::value<string>(&_output_dir), "the output location")
 
-    ("report",
+            ("report",
 
-    "generate html reports")
+             "generate html reports")
 
-    ("plot_region",
-            po::value<uint32_t>(&_html_region_length)->default_value(6000),
-            "the length of the snapshort regions in the report")
+            ("plot_region",
+             po::value<uint32_t>(&_html_region_length)->default_value(6000),
+             "the length of the snapshort regions in the report")
 
-    ("gene_annot_file", po::value<string>(&_gene_anno_file),
-            "the gene annotation file");
+            ("gene_annot_file", po::value<string>(&_gene_anno_file),
+             "the gene annotation file");
 
     qualities.add_options()
 
-    ("pval,p", po::value<double>(&_p_cut_off)->default_value(double(0.0001L)),
-            "p value cut-off")
+            ("pval,p", po::value<double>(&_p_cut_off)->default_value(double(0.0001L)),
+             "p value cut-off")
 
-    ("FDR,q", po::value<double>(&_fdr_cut_off)->default_value(double(0.01L)),
-            "FDR cut-off")
+            ("FDR,q", po::value<double>(&_fdr_cut_off)->default_value(double(0.01L)),
+             "FDR cut-off")
 
-    ("ext_length,l", po::value<uint32_t>(&_ext_length)->default_value(100),
-            "read extension length")
+            ("ext_length,l", po::value<uint32_t>(&_ext_length)->default_value(100),
+             "read extension length")
 
-    ("delta,r", po::value<double>(&_delta)->default_value(double(1)),
-            "sensitivity of the summit detector")
+            ("delta,r", po::value<double>(&_delta)->default_value(double(1)),
+             "sensitivity of the summit detector")
 
-    ("bandwidth,b", po::value<uint32_t>(&_bandwidth)->default_value(99),
-            "smoothing bandwidth")
+            ("bandwidth,b", po::value<uint32_t>(&_bandwidth)->default_value(99),
+             "smoothing bandwidth")
 
-    ("pad", "pad read coverage profile to avoid false positive summmits");
+            ("pad", "pad read coverage profile to avoid false positive summmits");
 
     running_modes.add_options()("thread,t",
-            po::value<uint32_t>(&_no_of_thread)->default_value(maxThreads - 1),
-            "number of worker threads");
+                                po::value<uint32_t>(&_no_of_thread)->default_value(maxThreads - 1),
+                                "number of worker threads");
     _config_file = "";
 
     popt.add("data", 1).add("control", 1).add("output", 1);
@@ -105,6 +107,7 @@ peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
 
 peakranger_cmd_option_parser::~peakranger_cmd_option_parser() {
 }
+
 void peakranger_cmd_option_parser::parse() {
 
     if (_ac < 2) {
@@ -112,7 +115,7 @@ void peakranger_cmd_option_parser::parse() {
 
         throw std::logic_error(
                 "\nNot enough command options.\n\nProvided args:\n"
-                        + options::aux::printRawOpts(_ac, _av));
+                + options::aux::printRawOpts(_ac, _av));
     }
 
     po::store(
@@ -194,7 +197,7 @@ void peakranger_cmd_option_parser::parse() {
 
 }
 
-void peakranger_cmd_option_parser::print_option(ostream & os) {
+void peakranger_cmd_option_parser::print_option(ostream &os) {
     os << ("program version:          ") << version << endl;
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
@@ -220,11 +223,11 @@ void peakranger_cmd_option_parser::print_option(ostream & os) {
     os << ("Output:\n");
 
     os << (" Regions:                 ") << getOutput_file() + "_region.bed"
-            << endl;
+       << endl;
     os << (" Summits:                 ") << getOutput_file() + "_summit.bed"
-            << endl;
+       << endl;
     os << (" Details of regions:      ") << getOutput_file() + "_details"
-            << endl;
+       << endl;
     os << (" HTML reports:            ");
     if (needHtml()) {
         os << "Enabled" << endl;
@@ -244,7 +247,7 @@ void peakranger_cmd_option_parser::setSplit(bool _split) {
     this->_split = _split;
 }
 
-void peakranger_cmd_option_parser::print_option_file(ostream & os) const {
+void peakranger_cmd_option_parser::print_option_file(ostream &os) const {
     os << ("#program version:           ") << version << endl;
     os << ("#Data files:\n");
     os << ("# File format:             ") << getFormat() << endl;
@@ -267,11 +270,11 @@ void peakranger_cmd_option_parser::print_option_file(ostream & os) const {
     os << ("#Output:\n");
 
     os << ("# Regions:                 ") << getOutput_file() + "_region.bed"
-            << endl;
+       << endl;
     os << ("# Summits:                 ") << getOutput_file() + "_summit.bed"
-            << endl;
+       << endl;
     os << ("# Details of regions:      ") << getOutput_file() + "_details"
-            << endl;
+       << endl;
     os << ("# HTML reports:            ");
     if (needHtml()) {
         os << "Enabled" << endl;
@@ -296,35 +299,35 @@ void peakranger_cmd_option_parser::verify() {
     oss << "Specified ";
     if (!is_in_range(_delta, 0.0, 1.000001)) {
         oss << "delta value " << _delta << " is not in the range : (0, 1)"
-                << endl;
+            << endl;
         throw not_in_range(oss.str().c_str());
     }
 
     if (!is_in_range<double>(_p_cut_off, 0.0, 1.0)) {
         oss << "p-value cut off " << _p_cut_off
-                << " is not in the range : (0, 1)" << endl;
+            << " is not in the range : (0, 1)" << endl;
         throw not_in_range(oss.str().c_str());
     }
 
     if (!is_in_range<uint32_t>(_html_region_length, 1, 1000000)) {
         oss << "region plot length " << _html_region_length
-                << " is not in the range : (1, 1000000)" << endl;
+            << " is not in the range : (1, 1000000)" << endl;
         throw not_in_range(oss.str().c_str());
     }
 
     if (_format != "bed" && _format != "bowtie" && _format != "eland"
-            && _format != "sam" && _format != "bam") {
+        && _format != "sam" && _format != "bam") {
         oss << "file format " << _format
-                << " is not a valid entry. Please choose from : bowtie, sam, bam and bed."
-                << endl;
+            << " is not a valid entry. Please choose from : bowtie, sam, bam and bed."
+            << endl;
         throw not_in_range(oss.str().c_str());
     }
 
 
     if (maxThreads < getNo_of_thread()) {
         oss << "number of threads " << getNo_of_thread()
-                << " is not valid. The current system allows up to "
-                << maxThreads << " threads.\n";
+            << " is not valid. The current system allows up to "
+            << maxThreads << " threads.\n";
         throw not_in_range(oss.str().c_str());
     }
 

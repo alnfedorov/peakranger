@@ -14,9 +14,9 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 
-class ranger4c_cmd_parser: public cmd_option_parser {
+class ranger4c_cmd_parser : public cmd_option_parser {
 public:
-    ranger4c_cmd_parser(int argc, char** argv) :
+    ranger4c_cmd_parser(int argc, char **argv) :
             cmd_option_parser(argc, argv) {
     }
 
@@ -24,15 +24,25 @@ public:
     }
 
     void parse();
-    void print_option(std::ostream& os);
-    void print_option_file(std::ostream& os) const;
+
+    void print_option(std::ostream &os);
+
+    void print_option_file(std::ostream &os) const;
+
     void printHelp() const;
+
     bool isSplit() const;
+
     void setSplit(bool _split);
+
     uint32_t getW() const;
+
     void setW(uint32_t _w);
+
     bool isHas4CControl() const;
+
     void setHas4CControl(bool _has4CControl);
+
     std::string version;
 private:
     bool _split;

@@ -22,6 +22,7 @@ public:
 
     arrayThresholder() {
     }
+
     ~arrayThresholder() {
     }
 
@@ -29,10 +30,10 @@ public:
     /*
      * result will be reset
      */
-    static void threshold(std::vector<T>& vec, T cutoff, uint32_t mergeDistance,
-            std::vector<
-                    std::pair<typename std::vector<T>::iterator,
-                            typename std::vector<T>::iterator> >& result) {
+    static void threshold(std::vector<T> &vec, T cutoff, uint32_t mergeDistance,
+                          std::vector<
+                                  std::pair<typename std::vector<T>::iterator,
+                                          typename std::vector<T>::iterator> > &result) {
         /*
          * result.size() must be 0
          */
@@ -52,7 +53,7 @@ public:
                 peakEnd = i;
                 if (result.size() > 0) {
                     if (peakStart - mergeDistance
-                            <= (*(result.end() - 1)).second) {
+                        <= (*(result.end() - 1)).second) {
                         (*(result.end() - 1)).second = peakEnd;
                         continue;
                     }
@@ -74,8 +75,8 @@ public:
     /*
      * result will be reset
      */
-    static void threshold(std::vector<T>& vec, T cutoff, uint32_t mergeDistance,
-            uint32_t offset, std::vector<std::pair<uint32_t, uint32_t> >& result) {
+    static void threshold(std::vector<T> &vec, T cutoff, uint32_t mergeDistance,
+                          uint32_t offset, std::vector<std::pair<uint32_t, uint32_t> > &result) {
         /*
          * result.size() must be 0
          */
@@ -96,7 +97,7 @@ public:
                 peakEnd = i;
                 if (result.size() > 0) {
                     if (peakStart - mergeDistance
-                            <= (*(result.end() - 1)).second) {
+                        <= (*(result.end() - 1)).second) {
                         (*(result.end() - 1)).second = peakEnd;
                         continue;
                     }
@@ -119,11 +120,11 @@ public:
         }
     }
 
-    static void threshold_mr(std::vector<T>& vec, T cutoff,
-            uint32_t mergeDistance,
-            std::vector<
-                    std::pair<typename std::vector<T>::iterator,
-                            typename std::vector<T>::iterator> >& result) {
+    static void threshold_mr(std::vector<T> &vec, T cutoff,
+                             uint32_t mergeDistance,
+                             std::vector<
+                                     std::pair<typename std::vector<T>::iterator,
+                                             typename std::vector<T>::iterator> > &result) {
         bool peakUnfinished = false;
         typename std::vector<T>::iterator peakStart, peakEnd, i;
         std::pair<typename std::vector<T>::iterator,
@@ -137,7 +138,7 @@ public:
                 peakEnd = i;
                 if (result.size() > 0) {
                     if (peakStart - mergeDistance
-                            <= (*(result.end() - 1)).second) {
+                        <= (*(result.end() - 1)).second) {
                         (*(result.end() - 1)).second = peakEnd;
                         continue;
                     }

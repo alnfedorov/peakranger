@@ -21,5 +21,4 @@
 #define foreach BOOST_FOREACH
 
 
-
 #endif /* BOOST_HEADER_H_ */

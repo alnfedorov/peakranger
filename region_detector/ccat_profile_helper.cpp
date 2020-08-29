@@ -9,31 +9,31 @@
 
 namespace ccat_aux {
 
-bool rsRatio(const double ratio) {
-    return rand() > RAND_MAX * ratio;
-}
+    bool rsRatio(const double ratio) {
+        return rand() > RAND_MAX * ratio;
+    }
 
-void buildL1Profile(ccat_profile_t & profile, const chr_t & chr, std::vector<size_t>& result) {
+    void buildL1Profile(ccat_profile_t &profile, const chr_t &chr, std::vector<size_t> &result) {
 
-    profile.GetProfile(chr.l1PosTags, result, result.size());
-    profile.GetProfile(chr.l1NegTags, result, result.size(), true);
-}
+        profile.GetProfile(chr.l1PosTags, result, result.size());
+        profile.GetProfile(chr.l1NegTags, result, result.size(), true);
+    }
 
-void buildL2Profile(ccat_profile_t & profile, const chr_t & chr, std::vector<size_t>& result) {
+    void buildL2Profile(ccat_profile_t &profile, const chr_t &chr, std::vector<size_t> &result) {
 
-    profile.GetProfile(chr.l2PosTags, result, result.size(), false);
-    profile.GetProfile(chr.l2NegTags, result, result.size(), true);
-}
+        profile.GetProfile(chr.l2PosTags, result, result.size(), false);
+        profile.GetProfile(chr.l2NegTags, result, result.size(), true);
+    }
 
-void buildrsL2Profile(ccat_profile_t & profile, const chr_t & chr, const double ratio, std::vector<size_t> & result) {
-    profile.ResampleProfile(chr.l2PosTags, result, result.size(), ratio, false);
-    profile.ResampleProfile(chr.l2NegTags, result, result.size(), ratio, true);
-}
+    void buildrsL2Profile(ccat_profile_t &profile, const chr_t &chr, const double ratio, std::vector<size_t> &result) {
+        profile.ResampleProfile(chr.l2PosTags, result, result.size(), ratio, false);
+        profile.ResampleProfile(chr.l2NegTags, result, result.size(), ratio, true);
+    }
 
-void buildrsL1Profile(ccat_profile_t & profile, const chr_t & chr, const double ratio, std::vector<size_t> & result) {
+    void buildrsL1Profile(ccat_profile_t &profile, const chr_t &chr, const double ratio, std::vector<size_t> &result) {
 
-    profile.ResampleProfile(chr.l1PosTags, result, result.size(), ratio, false);
-    profile.ResampleProfile(chr.l1NegTags, result, result.size(), ratio, true);
-}
+        profile.ResampleProfile(chr.l1PosTags, result, result.size(), ratio, false);
+        profile.ResampleProfile(chr.l1NegTags, result, result.size(), ratio, true);
+    }
 
 }

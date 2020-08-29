@@ -7,6 +7,7 @@
 
 #ifndef APPAUX_H_
 #define APPAUX_H_
+
 #include <string>
 
 #include "common/boost_header.h"
@@ -37,24 +38,26 @@
 #include "ggplay/chipseqhtmlreporter.h"
 #include "region_detector/ccat_main.h"
 #include "app/AppAux.h"
+
 namespace app {
-namespace aux {
+    namespace aux {
 
-void CalculateFDR(cmd_option_parser & option,
-        boost::shared_ptr<region_detector> & detector);
-void OutputResults(cmd_option_parser & option,
-        boost::shared_ptr<region_detector> & detector,
-        const size_t & fdr_passed, const size_t & fdr_failed);
+        void CalculateFDR(cmd_option_parser &option,
+                          boost::shared_ptr<region_detector> &detector);
 
-void getParser(cmd_option_parser & option,
-        boost::shared_ptr<readsParser> & parser);
+        void OutputResults(cmd_option_parser &option,
+                           boost::shared_ptr<region_detector> &detector,
+                           const size_t &fdr_passed, const size_t &fdr_failed);
 
-void parseReads(cmd_option_parser& option, const std::string& readsfile,
-        boost::shared_ptr<readsParser>& parser, Reads& treads);
+        void getParser(cmd_option_parser &option,
+                       boost::shared_ptr<readsParser> &parser);
 
-void filterByFDR(const std::map<std::string, std::vector<called_peak> >& toFilter,
-        std::map<std::string, std::vector<called_peak> >& results, double fdr);
+        void parseReads(cmd_option_parser &option, const std::string &readsfile,
+                        boost::shared_ptr<readsParser> &parser, Reads &treads);
 
-}
+        void filterByFDR(const std::map<std::string, std::vector<called_peak> > &toFilter,
+                         std::map<std::string, std::vector<called_peak> > &results, double fdr);
+
+    }
 } /* namespace app */
 #endif /* APPAUX_H_ */

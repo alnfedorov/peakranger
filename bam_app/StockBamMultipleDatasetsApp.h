@@ -14,6 +14,7 @@
 #include "paired_reads_parser/BamBlockPEReadsParserImp.h"
 #include "paired_reads_parser/BamBlockPEReadsParser.h"
 #include "utils/Tracer.h"
+
 namespace bam_app {
 
 /*
@@ -21,31 +22,37 @@ namespace bam_app {
  * then analyze them as a whole. Cant do this
  * online, must be stock.
  */
-class StockBamMultipleDatasetsApp {
-public:
-    StockBamMultipleDatasetsApp(utils::TimeStampTracer& tracer);
-    virtual ~StockBamMultipleDatasetsApp();
+    class StockBamMultipleDatasetsApp {
+    public:
+        StockBamMultipleDatasetsApp(utils::TimeStampTracer &tracer);
 
-    virtual void run(const std::vector<std::string>& files,std::ostream& os);
+        virtual ~StockBamMultipleDatasetsApp();
 
-    virtual void parseReads(const std::vector<std::string>& files);
-    virtual void report(std::ostream& os);
-    void setImp(aux::StockBamMultipleDatasetsAppImp* imp);
-    void setParserImp(parser::aux::BamBlockPEReadsParserImp* parser);
-    std::string getAppId() const;
-    void setAppId(std::string appId);
+        virtual void run(const std::vector<std::string> &files, std::ostream &os);
 
-protected:
-    utils::TimeStampTracer& tracer;
-    std::string mAppID;
+        virtual void parseReads(const std::vector<std::string> &files);
 
-private:
-    aux::StockBamMultipleDatasetsAppImp* mImp;
-    parser::BamBlockPEReadsParser* mParser;
-    std::vector<reads::PairEndedReads<reads::BlockedRead> > mReads;
+        virtual void report(std::ostream &os);
+
+        void setImp(aux::StockBamMultipleDatasetsAppImp *imp);
+
+        void setParserImp(parser::aux::BamBlockPEReadsParserImp *parser);
+
+        std::string getAppId() const;
+
+        void setAppId(std::string appId);
+
+    protected:
+        utils::TimeStampTracer &tracer;
+        std::string mAppID;
+
+    private:
+        aux::StockBamMultipleDatasetsAppImp *mImp;
+        parser::BamBlockPEReadsParser *mParser;
+        std::vector<reads::PairEndedReads<reads::BlockedRead> > mReads;
 
 
-};
+    };
 
 } /* namespace bam_app */
 #endif /* STOCKBAMMULTIPLEDATASETSAPP_H_ */

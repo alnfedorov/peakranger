@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <stdio.h>
+
 using namespace std;
 using namespace boost;
 using namespace utils;
@@ -70,62 +71,62 @@ void chip4c_wig_cmd_option::parse() {
 
     other.add_options()
 
-    ("help,h",
-     "show the usage")
+            ("help,h",
+             "show the usage")
 
-    ("verbose",
-     "show progress")
+            ("verbose",
+             "show progress")
 
-    ("version",
-     "output the version number");
+            ("version",
+             "output the version number");
 
     input.add_options()
 
-    ("data,d",
-     po::value<string>(&_treat_dir),
-     "chipseq data/treatment file")
+            ("data,d",
+             po::value<string>(&_treat_dir),
+             "chipseq data/treatment file")
 
-    ("format",
-     po::value<string>(&_format),
-     "the format of the data file, can be one of : "
-     "bowtie, eland, sam, bam and bed")
+            ("format",
+             po::value<string>(&_format),
+             "the format of the data file, can be one of : "
+             "bowtie, eland, sam, bam and bed")
 
-    ("chr_table",
-     po::value<string>(&_chr_table_file),
-     "the file that contains the chromosomes to be processed");
+            ("chr_table",
+             po::value<string>(&_chr_table_file),
+             "the file that contains the chromosomes to be processed");
 
     output.add_options()
 
-    ("output,o",
-     po::value<string>(&_output_dir),
-     "the output location")
+            ("output,o",
+             po::value<string>(&_output_dir),
+             "the output location")
 
-    ("split,s",
-     "generate one wig file per chromosome")
+            ("split,s",
+             "generate one wig file per chromosome")
 
-    ("gzip,z",
-     "gzip the result file")
+            ("gzip,z",
+             "gzip the result file")
 
-    ("strand,x",
-     "generate one wig file per strand");
+            ("strand,x",
+             "generate one wig file per strand");
 
     qualities.add_options()
 
-    ("ext_length,l",
-     po::value<uint32_t>(&_ext_length)->default_value(200),
-     "read extension length")
+            ("ext_length,l",
+             po::value<uint32_t>(&_ext_length)->default_value(200),
+             "read extension length")
 
-    ("window_size,w",
-     po::value<uint32_t>(&_window_sz)->default_value(10000),
-     "window size zoom")
+            ("window_size,w",
+             po::value<uint32_t>(&_window_sz)->default_value(10000),
+             "window size zoom")
 
-    ("window_overlap_size,u",
-     po::value<uint32_t>(&_overlap_sz)->default_value((10000 - 1000)),
-     "window size zoom overlap")
+            ("window_overlap_size,u",
+             po::value<uint32_t>(&_overlap_sz)->default_value((10000 - 1000)),
+             "window size zoom overlap")
 
-(     "repeat,r",
-     po::value < uint32_t > (&_repeat)->default_value(5),
-     "repeated zooming");
+            ("repeat,r",
+             po::value<uint32_t>(&_repeat)->default_value(5),
+             "repeated zooming");
 
     p_opt popt;
     popt.add("data",
@@ -149,7 +150,7 @@ void chip4c_wig_cmd_option::parse() {
     }
 
     if (vm.count("version")) {
-        printVersion(cout,version);
+        printVersion(cout, version);
     }
     if (vm.count("split")) {
         this->setSplit(true);
@@ -207,7 +208,7 @@ void chip4c_wig_cmd_option::parse() {
 
 }
 
-void chip4c_wig_cmd_option::print_option_file(ostream & os) const {
+void chip4c_wig_cmd_option::print_option_file(ostream &os) const {
     os << ("#Wig version:           ") << version << endl;
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
@@ -215,9 +216,9 @@ void chip4c_wig_cmd_option::print_option_file(ostream & os) const {
 
     if (getUsing_chr_table()) {
         os << (" Chr table file:          ") << getChr_table_file() << endl;
-      //  string prefix(" Chrs to process:         ");
-      //  os << (" Chrs to process:         ")
-      //  << utils::vector_to_string<string>(_chrs_to_parse, " ") << endl;
+        //  string prefix(" Chrs to process:         ");
+        //  os << (" Chrs to process:         ")
+        //  << utils::vector_to_string<string>(_chrs_to_parse, " ") << endl;
 
     }
     os << ("Qualities:\n");
@@ -239,14 +240,15 @@ void chip4c_wig_cmd_option::print_option_file(ostream & os) const {
         os << (" Splitting results:       Yes") << endl;
         os << (" Result file:             ") << getOutput_file() << endl;
         os
-        << ("                          and other splitted files in this directory")
-        << endl;
+                << ("                          and other splitted files in this directory")
+                << endl;
     } else {
         os << (" Splitting results:       No") << endl;
         os << (" Result file:             ") << getOutput_file() << endl;
     }
 }
-void chip4c_wig_cmd_option::print_option(ostream & os) {
+
+void chip4c_wig_cmd_option::print_option(ostream &os) {
 
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
@@ -256,9 +258,9 @@ void chip4c_wig_cmd_option::print_option(ostream & os) {
         os << (" Chr table file:          ") << getChr_table_file() << endl;
         string prefix(" Chrs to process:         ");
         os << (" Chrs to process:         ")
-        << vector_to_string<string>(_chrs_to_parse,
-                                    (uint32_t) 3,
-                                    prefix) << endl;
+           << vector_to_string<string>(_chrs_to_parse,
+                                       (uint32_t) 3,
+                                       prefix) << endl;
 
     }
     os << ("Qualities:\n");
@@ -266,7 +268,7 @@ void chip4c_wig_cmd_option::print_option(ostream & os) {
     os << (" Read extension length:   ") << getExt_length() << endl;
     os << (" Window size:             ") << getWinwdowSz() << endl;
     os << (" Window overlap size:     ") << getOverlapSz() << endl;
-    os << (" Repeat zooming:          ") << getRepeat()  << endl;
+    os << (" Repeat zooming:          ") << getRepeat() << endl;
 
     os << ("Output:\n");
     if (isGz()) {
@@ -283,8 +285,8 @@ void chip4c_wig_cmd_option::print_option(ostream & os) {
         os << (" Splitting results:       Yes") << endl;
         os << (" Result file:             ") << getOutput_file() << endl;
         os
-        << ("                          and other splitted files in this directory")
-        << endl;
+                << ("                          and other splitted files in this directory")
+                << endl;
     } else {
         os << (" Splitting results:       No") << endl;
         os << (" Result file:             ") << getOutput_file() << endl;
@@ -297,20 +299,20 @@ void chip4c_wig_cmd_option::verify() {
     std::ostringstream oss;
     oss << "Specified ";
     if (_format != "bed" && _format != "bowtie" && _format != "eland"
-    && _format != "sam" && _format != "bam") {
+        && _format != "sam" && _format != "bam") {
         oss
-        << "file format "
-        << _format
-        << " is not a valid entry. Please choose from : bowtie, eland, sam, bam and bed."
-        << endl;
+                << "file format "
+                << _format
+                << " is not a valid entry. Please choose from : bowtie, eland, sam, bam and bed."
+                << endl;
         throw not_in_range(oss.str().c_str());
     }
     oss.clear();
     oss.str("Specified ");
     if (_window_sz <= _overlap_sz) {
         oss <<
-        " window size " << _window_sz << " is smaller than the window"
-        << " overlap size " << _overlap_sz << "\n";
+            " window size " << _window_sz << " is smaller than the window"
+            << " overlap size " << _overlap_sz << "\n";
         throw not_in_range(oss.str().c_str());
     }
 
@@ -356,18 +358,16 @@ void chip4c_wig_cmd_option::setWinwdowSz(uint32_t winwdowSz) {
     _window_sz = winwdowSz;
 }
 
-uint32_t chip4c_wig_cmd_option::getRepeat() const
-{
+uint32_t chip4c_wig_cmd_option::getRepeat() const {
     return _repeat;
 }
 
-void chip4c_wig_cmd_option::setRepeat(uint32_t _repeat)
-                                      {
+void chip4c_wig_cmd_option::setRepeat(uint32_t _repeat) {
     this->_repeat = _repeat;
 }
 
-inline void chip4c_wig_cmd_option::require(const char* opt,
-                                           po::variables_map& vm) {
+inline void chip4c_wig_cmd_option::require(const char *opt,
+                                           po::variables_map &vm) {
     if (!vm.count(opt)) {
         string _opt(opt);
         string oopt;

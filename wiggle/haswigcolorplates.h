@@ -7,14 +7,16 @@
 
 #ifndef HASWIGCOLORPLATES_H_
 #define HASWIGCOLORPLATES_H_
+
 #include <ostream>
 #include <vector>
 #include <string>
 #include <stdint.h>
 
-class has_wig_color_plates{
+class has_wig_color_plates {
 public:
     has_wig_color_plates();
+
     virtual ~has_wig_color_plates();
 
 protected:

@@ -9,6 +9,7 @@
 #include "utils/assert_helpers.h"
 #include "utils/exceptions.h"
 #include <iostream>
+
 using namespace std;
 
 /*
@@ -19,8 +20,8 @@ void region_profile::get_region_profile(uint32_t start,
                                         uint32_t extension,
                                         vector<uint32_t>::iterator readsStart,
                                         vector<uint32_t>::iterator readsEnd,
-                                        vector<uint16_t> & result) {
-    assert_gt(end,start)
+                                        vector<uint16_t> &result) {
+    assert_gt(end, start)
     uint32_t a;
     uint32_t b;
     uint32_t arrayStart;
@@ -96,7 +97,7 @@ void region_profile::get_region_profile(uint32_t start,
                                         uint32_t extension,
                                         vector<uint32_t>::iterator readsStart,
                                         vector<uint32_t>::iterator readsEnd,
-                                        vector<uint64_t> & result) {
+                                        vector<uint64_t> &result) {
 
     uint32_t a;
     uint32_t b;
@@ -168,9 +169,9 @@ void region_profile::get_region_profile(uint32_t start,
  *
  * reads must be sorted
  */
-void region_profile::get_profile_of_reads(vector<uint32_t> & reads,
+void region_profile::get_profile_of_reads(vector<uint32_t> &reads,
                                           uint32_t extension,
-                                          vector<uint16_t> & result) {
+                                          vector<uint16_t> &result) {
 
     if (reads.begin() == reads.end()) return;
     if (reads.size() < 1) return;
@@ -188,8 +189,8 @@ void region_profile::get_profile_of_reads(vector<uint32_t> & reads,
         a = read;
         b = read + extension;
         while (a < b) {
-           if( a - *(reads.begin()) > 0)
-            ++result[a - *(reads.begin())];
+            if (a - *(reads.begin()) > 0)
+                ++result[a - *(reads.begin())];
             a++;
         }
     }

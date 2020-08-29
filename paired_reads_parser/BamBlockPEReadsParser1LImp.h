@@ -11,24 +11,26 @@
 #include "BamBlockPEReadsParserImp.h"
 
 namespace parser {
-namespace aux {
+    namespace aux {
 
-class BamBlockPEReadsParser1LImp: public parser::aux::BamBlockPEReadsParserImp {
-public:
-    BamBlockPEReadsParser1LImp();
-    virtual ~BamBlockPEReadsParser1LImp();
-    void parse(const BamTools::BamAlignment & read,
-            reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector & ref);
+        class BamBlockPEReadsParser1LImp : public parser::aux::BamBlockPEReadsParserImp {
+        public:
+            BamBlockPEReadsParser1LImp();
 
-    void flush(reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector& ref);
+            virtual ~BamBlockPEReadsParser1LImp();
+
+            void parse(const BamTools::BamAlignment &read,
+                       reads::PairEndedReads<reads::BlockedRead> &reads,
+                       const BamTools::RefVector &ref);
+
+            void flush(reads::PairEndedReads<reads::BlockedRead> &reads,
+                       const BamTools::RefVector &ref);
 
 
-private:
-    BamTools::BamAlignment mPRead;
-};
+        private:
+            BamTools::BamAlignment mPRead;
+        };
 
-} /* namespace aux */
+    } /* namespace aux */
 } /* namespace parser */
 #endif /* BAMBLOCKPEREADSPARSER1LIMP_H_ */

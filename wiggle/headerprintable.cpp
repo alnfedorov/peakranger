@@ -7,14 +7,12 @@
 
 #include "headerprintable.h"
 
-header_printable::header_printable()
-{
+header_printable::header_printable() {
 
-    
+
 }
 
-header_printable::~header_printable()
-{
+header_printable::~header_printable() {
 
 }
 

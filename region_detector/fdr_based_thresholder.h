@@ -72,6 +72,7 @@ struct actThresh {
 
     // An array of the peaks at this threshold.
     std::vector<called_peak> peaks;
+
     actThresh() {
         peaks.clear();
         peakUnfinished = false;
@@ -98,38 +99,48 @@ typedef struct _SGR SGR;
  *
  * for histone marks.
  */
-class fdr_based_thresholder: public region_detector {
+class fdr_based_thresholder : public region_detector {
 public:
     fdr_based_thresholder() :
             region_detector() {
 
     }
-    ~fdr_based_thresholder(){}
-    void detectSummits(Reads& treatment_reads, Reads& control_reads,
-            cmd_option_parser& option);
 
-    void detectSummits(Reads& treatment_reads, Reads& control_reads,
-            cmd_option_parser& option, std::ostream& os);
+    ~fdr_based_thresholder() {}
 
-    void detectSummits(Reads& treads, Reads& creads, uint32_t no_of_thread,
-            double p_val_cutoff, double delta, uint32_t threshold,
-            uint32_t mergedistance, uint32_t binlength, uint32_t bandwidth,
-            uint32_t readextension, std::ostream& os, bool verbose);
-     void export_results(result_reporter& reporter, std::ostream& om){std::cerr<<"Not implemented yet\n";}
+    void detectSummits(Reads &treatment_reads, Reads &control_reads,
+                       cmd_option_parser &option);
+
+    void detectSummits(Reads &treatment_reads, Reads &control_reads,
+                       cmd_option_parser &option, std::ostream &os);
+
+    void detectSummits(Reads &treads, Reads &creads, uint32_t no_of_thread,
+                       double p_val_cutoff, double delta, uint32_t threshold,
+                       uint32_t mergedistance, uint32_t binlength, uint32_t bandwidth,
+                       uint32_t readextension, std::ostream &os, bool verbose);
+
+    void export_results(result_reporter &reporter, std::ostream &om) { std::cerr << "Not implemented yet\n"; }
+
 protected:
 
-     uint32_t _calulate_number_of_bins(uint32_t p_chr_length, uint32_t n_chr_length, uint32_t binlength) const;
-     uint32_t _calculate_pos_read_loci_ret_start(uint32_t start, uint32_t readlength, uint32_t extension ) const;
-     uint32_t _calculate_pos_read_loci_ret_end(uint32_t start, uint32_t readlength, uint32_t extension ) const;
-     uint32_t _calculate_neg_read_loci_ret_start(uint32_t start, uint32_t readlength, uint32_t extension ) const;
-     uint32_t _calculate_last_pos(int32_t pos_read, uint32_t neg_read,
-    			uint32_t readlength, uint32_t extension, uint32_t pchrlength, uint32_t nchrlength) const;
-         uint32_t _calculate_neg_read_loci_ret_end(uint32_t start, uint32_t readlength, uint32_t extension ) const;
+    uint32_t _calulate_number_of_bins(uint32_t p_chr_length, uint32_t n_chr_length, uint32_t binlength) const;
+
+    uint32_t _calculate_pos_read_loci_ret_start(uint32_t start, uint32_t readlength, uint32_t extension) const;
+
+    uint32_t _calculate_pos_read_loci_ret_end(uint32_t start, uint32_t readlength, uint32_t extension) const;
+
+    uint32_t _calculate_neg_read_loci_ret_start(uint32_t start, uint32_t readlength, uint32_t extension) const;
+
+    uint32_t _calculate_last_pos(int32_t pos_read, uint32_t neg_read,
+                                 uint32_t readlength, uint32_t extension, uint32_t pchrlength,
+                                 uint32_t nchrlength) const;
+
+    uint32_t _calculate_neg_read_loci_ret_end(uint32_t start, uint32_t readlength, uint32_t extension) const;
 
 
     void _setup(uint32_t no_of_threads, uint32_t binlength, uint16_t threshold,
-            uint32_t mergedistance, uint32_t readlength, uint32_t readextension,
-            uint32_t bandwidth, double pval, double delta) {
+                uint32_t mergedistance, uint32_t readlength, uint32_t readextension,
+                uint32_t bandwidth, double pval, double delta) {
 
         _nThreads = no_of_threads;
         _binlength = binlength;
@@ -143,38 +154,40 @@ protected:
 
     }
 
-    void _normalize_reads(Reads& treads, Reads& creads);
-    inline double _normalize_reads_onchr(Reads& treads, Reads& creads,
-            std::string& chr, uint32_t binlength);
+    void _normalize_reads(Reads &treads, Reads &creads);
 
-    void _processChr(std::ostream& os, bool print_stream);
+    inline double _normalize_reads_onchr(Reads &treads, Reads &creads,
+                                         std::string &chr, uint32_t binlength);
+
+    void _processChr(std::ostream &os, bool print_stream);
 
     void _get_random_reads(uint32_t start, uint32_t end, uint32_t no_of_reads,
-            std::vector<uint32_t>& result) const;
+                           std::vector<uint32_t> &result) const;
 
     void getRndPeaksAtEachThreshold(uint32_t start, uint32_t end,
-            uint32_t no_of_reads, uint32_t extension,
-            std::vector<Thresh>& rndPeaks) const;
+                                    uint32_t no_of_reads, uint32_t extension,
+                                    std::vector<Thresh> &rndPeaks) const;
 
-    void walk(reads_count_t& reads_count, std::vector<Thresh>& rndPeaks) const;
+    void walk(reads_count_t &reads_count, std::vector<Thresh> &rndPeaks) const;
 
-    uint32_t findThresh(std::vector<Thresh>& rndPeaks,
-            std::vector<ActThresh>& realPeaks, double& fdr) const;
-    void process(std::vector<ActThresh>& rndPeaks, const uint32_t height,
-            const uint32_t pos) const;
+    uint32_t findThresh(std::vector<Thresh> &rndPeaks,
+                        std::vector<ActThresh> &realPeaks, double &fdr) const;
 
-    void findPeaksAtEachThreshold(SGR& sgr, std::vector<ActThresh>& realPeaks,
-            uint32_t binend) const;
+    void process(std::vector<ActThresh> &rndPeaks, const uint32_t height,
+                 const uint32_t pos) const;
+
+    void findPeaksAtEachThreshold(SGR &sgr, std::vector<ActThresh> &realPeaks,
+                                  uint32_t binend) const;
 
     virtual void get_profile_of_reads(uint32_t extension, uint32_t readlength,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint32_t>::iterator nreadsStart,
-            std::vector<uint32_t>::iterator nreadsEnd, SGR & result) const;
+                                      std::vector<uint32_t>::iterator readsStart,
+                                      std::vector<uint32_t>::iterator readsEnd,
+                                      std::vector<uint32_t>::iterator nreadsStart,
+                                      std::vector<uint32_t>::iterator nreadsEnd, SGR &result) const;
 
 protected:
     struct workerPara {
-        workerPara():_verbose(false) {
+        workerPara() : _verbose(false) {
         }
 
         std::vector<std::string> _chrsleft;
@@ -183,21 +196,33 @@ protected:
         std::map<std::string, readsregion> _all_pos_creads;
         std::map<std::string, readsregion> _all_neg_creads;
         bool _verbose;
+
         std::map<std::string, readsregion> getAllNegCreads() const;
+
         std::map<std::string, readsregion> getAllNegTreads() const;
+
         std::map<std::string, readsregion> getAllPosCreads() const;
+
         std::map<std::string, readsregion> getAllPosTreads() const;
+
         std::vector<std::string> getChrsleft() const;
+
         bool isVerbose() const;
+
         void setAllNegCreads(
                 std::map<std::string, readsregion> _all_neg_creads);
+
         void setAllNegTreads(
                 std::map<std::string, readsregion> _all_neg_treads);
+
         void setAllPosCreads(
                 std::map<std::string, readsregion> _all_pos_creads);
+
         void setAllPosTreads(
                 std::map<std::string, readsregion> _all_pos_treads);
+
         void setChrsleft(std::vector<std::string> _chrsleft);
+
         void setVerbose(bool _verbose);
     };
 
@@ -214,7 +239,6 @@ protected:
     double _delta;
     std::map<std::string, double> _norm_factors;
 
-}
-;
+};
 
 #endif /* FDR_BASED_THRESHOLDER_H_ */

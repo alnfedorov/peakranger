@@ -7,10 +7,12 @@
 
 #ifndef ONLINESORTEDBYNAMEBAMAPP_H_
 #define ONLINESORTEDBYNAMEBAMAPP_H_
+
 #include <string>
 #include <ostream>
 #include <stdint.h>
 #include "bam_app/OnlineBamAppImp.h"
+
 namespace bam_app {
 
 /*
@@ -22,15 +24,18 @@ namespace bam_app {
  * samtools sort -n sorts the file.
  */
 
-class OnlineSortedByNameBamApp {
-public:
-    OnlineSortedByNameBamApp();
-    virtual ~OnlineSortedByNameBamApp();
-    OnlineSortedByNameBamApp(aux::OnlineBamAppImp* parser);
+    class OnlineSortedByNameBamApp {
+    public:
+        OnlineSortedByNameBamApp();
 
-    virtual void processReads(const std::string& file, std::ostream& os);
-    virtual void report(std::ostream& os);
-};
+        virtual ~OnlineSortedByNameBamApp();
+
+        OnlineSortedByNameBamApp(aux::OnlineBamAppImp *parser);
+
+        virtual void processReads(const std::string &file, std::ostream &os);
+
+        virtual void report(std::ostream &os);
+    };
 
 } /* namespace bam_app */
 #endif /* ONLINESORTEDBYNAMEBAMAPP_H_ */

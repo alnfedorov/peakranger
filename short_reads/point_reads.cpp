@@ -6,12 +6,14 @@
  */
 
 #include "point_reads.h"
+
 using namespace std;
 namespace {
-bool sort_comparator(pair<uint32_t, int8_t> p1, pair<uint32_t, int8_t> p2) {
-    return p1.first < p2.first;
+    bool sort_comparator(pair<uint32_t, int8_t> p1, pair<uint32_t, int8_t> p2) {
+        return p1.first < p2.first;
+    }
 }
-}
+
 point_reads::point_reads() {
 
 }
@@ -19,8 +21,9 @@ point_reads::point_reads() {
 point_reads::~point_reads() {
 
 }
-void point_reads::set_reads(vector<uint32_t>& reads, uint32_t extension,
-        vector<pos_t>& result) {
+
+void point_reads::set_reads(vector<uint32_t> &reads, uint32_t extension,
+                            vector<pos_t> &result) {
     uint32_t a;
     uint32_t b;
     uint32_t read;
@@ -46,10 +49,10 @@ void point_reads::set_reads(vector<uint32_t>& reads, uint32_t extension,
 }
 
 void point_reads::set_reads(uint32_t start, uint32_t end, uint32_t readlength,
-        uint32_t readextlength, vector<uint32_t>::iterator readsStart,
-        vector<uint32_t>::iterator readsEnd,
-        vector<uint32_t>::iterator nreadsStart,
-        vector<uint32_t>::iterator nreadsEnd, vector<pos_t>& result) {
+                            uint32_t readextlength, vector<uint32_t>::iterator readsStart,
+                            vector<uint32_t>::iterator readsEnd,
+                            vector<uint32_t>::iterator nreadsStart,
+                            vector<uint32_t>::iterator nreadsEnd, vector<pos_t> &result) {
 
     uint32_t a;
     uint32_t b;
@@ -173,8 +176,8 @@ void point_reads::set_reads(uint32_t start, uint32_t end, uint32_t readlength,
 }
 
 void point_reads::set_reads(uint32_t readlength, uint32_t readextlength,
-        vector<uint32_t>::iterator readsStart,
-        vector<uint32_t>::iterator readsEnd, vector<pos_t>& result) {
+                            vector<uint32_t>::iterator readsStart,
+                            vector<uint32_t>::iterator readsEnd, vector<pos_t> &result) {
 
     uint32_t a;
     uint32_t b;

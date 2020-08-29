@@ -16,36 +16,40 @@
 
 namespace tab_file {
 
-class TabGene{
-    friend std::ostream& operator<<(std::ostream& os,
-                                    const TabGene& tg);
+    class TabGene {
+        friend std::ostream &operator<<(std::ostream &os,
+                                        const TabGene &tg);
+
     public:
-    TabGene();
-    TabGene(const Region& utr5,
-            const Region& utr3,
-            const std::vector<Region>& exons,
-            const std::string& name,
-            bool dir);
-    virtual ~TabGene();
-    bool operator<(const TabGene& rhs) const;
+        TabGene();
 
-    Region utr5;
-    Region utr3;
-    std::vector<Region> exons;
-    bool dir;
-    std::string name;
+        TabGene(const Region &utr5,
+                const Region &utr3,
+                const std::vector<Region> &exons,
+                const std::string &name,
+                bool dir);
+
+        virtual ~TabGene();
+
+        bool operator<(const TabGene &rhs) const;
+
+        Region utr5;
+        Region utr3;
+        std::vector<Region> exons;
+        bool dir;
+        std::string name;
 
 
-};
+    };
 
-bool sameID(const TabGene& lhs,
-            const TabGene& rhs);
+    bool sameID(const TabGene &lhs,
+                const TabGene &rhs);
 
-bool name_lex_lt(const TabGene& lhs,
-                 const TabGene& rhs);
+    bool name_lex_lt(const TabGene &lhs,
+                     const TabGene &rhs);
 
-bool overlaps(const TabGene& lhs,
-              const TabGene& rhs);
+    bool overlaps(const TabGene &lhs,
+                  const TabGene &rhs);
 }
 
 /* namespace tab_file */

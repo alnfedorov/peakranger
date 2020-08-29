@@ -8,6 +8,7 @@
 #include "region_detector.h"
 #include "utils/exceptions.h"
 #include "utils/assert_helpers.h"
+
 using namespace std;
 
 //
@@ -15,9 +16,9 @@ using namespace std;
 //typedef vector<called_peak>::iterator ritrr;
 //typedef enriched_regions::iterator pritrr;
 
-void region_detector::export_results(result_reporter & reporter,
-                                     ostream & om) {
-    cout <<"gagag*****************export"<<endl;
+void region_detector::export_results(result_reporter &reporter,
+                                     ostream &om) {
+    cout << "gagag*****************export" << endl;
     reporter.report_fdr_region(_resultRegions,
-                    om);
+                               om);
 }

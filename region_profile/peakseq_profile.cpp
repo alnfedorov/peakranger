@@ -7,17 +7,18 @@
 
 #include "peakseq_profile.h"
 #include "utils/logger.h"
+
 using namespace std;
 namespace {
-bool sort_comparator(pair<uint32_t, uint32_t> p1,
-                     pair<uint32_t, uint32_t> p2) {
-    return p1.first < p2.first;
-}
+    bool sort_comparator(pair<uint32_t, uint32_t> p1,
+                         pair<uint32_t, uint32_t> p2) {
+        return p1.first < p2.first;
+    }
 
-bool sort_comparator_int8(pair<uint32_t, int8_t> p1,
-                          pair<uint32_t, int8_t> p2) {
-    return p1.first < p2.first;
-}
+    bool sort_comparator_int8(pair<uint32_t, int8_t> p1,
+                              pair<uint32_t, int8_t> p2) {
+        return p1.first < p2.first;
+    }
 } /*Namespace*/
 
 peakseq_profile::peakseq_profile() {
@@ -29,8 +30,8 @@ peakseq_profile::~peakseq_profile() {
     // TODO Auto-generated destructor stub
 }
 
-void peakseq_profile::dump(vector<profile_pos_t>& profile,
-                           const char* filename) {
+void peakseq_profile::dump(vector<profile_pos_t> &profile,
+                           const char *filename) {
     ofstream ofs(filename);
     for (size_t i = 0; i < profile.size(); i++) {
         ofs << profile[i].first << "\t" << profile[i].second << "\n";
@@ -38,9 +39,9 @@ void peakseq_profile::dump(vector<profile_pos_t>& profile,
     ofs.close();
 }
 
-void peakseq_profile::get_profile_of_reads(vector<uint32_t> & reads,
+void peakseq_profile::get_profile_of_reads(vector<uint32_t> &reads,
                                            uint32_t extension,
-                                           vector<profile_pos_t> & result) {
+                                           vector<profile_pos_t> &result) {
     uint32_t a;
     uint32_t b;
     uint32_t read;
@@ -56,10 +57,10 @@ void peakseq_profile::get_profile_of_reads(vector<uint32_t> & reads,
         read = *readsStart++;
         a = read;
         b = read + extension;
-        reads_count.push_back(pair<uint32_t, int8_t> (a,
-                                                      1));
-        reads_count.push_back(pair<uint32_t, int8_t> (b,
-                                                      -1));
+        reads_count.push_back(pair<uint32_t, int8_t>(a,
+                                                     1));
+        reads_count.push_back(pair<uint32_t, int8_t>(b,
+                                                     -1));
     }
 
     if (reads_count.size() == 0) {
@@ -78,7 +79,7 @@ void peakseq_profile::get_profile_of_reads(vector<uint32_t> & reads,
     for (; rit != reads_count.end(); rit++) {
         pos = rit->first;
         LOG_DEBUG4("ps score:" << (uint16_t) (rit->second) << "\tps pos:"
-        << pos);
+                               << pos);
         if (pos == ppos) {
             count += (int32_t) (rit->second);
             continue;
@@ -100,7 +101,7 @@ void peakseq_profile::get_profile_of_reads(vector<uint32_t> & reads,
          result.end(),
          sort_comparator);
 
-    LOG_DEBUG1("FINISHED building sgr, total profile points: "<<result.size());
+    LOG_DEBUG1("FINISHED building sgr, total profile points: " << result.size());
 
 }
 
@@ -112,7 +113,7 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
                                            vector<uint32_t>::iterator readsEnd,
                                            vector<uint32_t>::iterator nreadsStart,
                                            vector<uint32_t>::iterator nreadsEnd,
-                                           vector<profile_pos_t> & result) {
+                                           vector<profile_pos_t> &result) {
     uint32_t a;
     uint32_t b;
     uint32_t read;
@@ -136,10 +137,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a <= start && b <= end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (start,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (b,
-                                                              -1));
+                reads_count.push_back(pair<uint32_t, int8_t>(start,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(b,
+                                                             -1));
             }
             /*
              *     |-------|
@@ -147,10 +148,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a >= start && b <= end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (a,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (b,
-                                                              -1));
+                reads_count.push_back(pair<uint32_t, int8_t>(a,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(b,
+                                                             -1));
             }
             /*
              *     |-------|
@@ -158,10 +159,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a < end && b > end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (a,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (end,
-                                                              1));
+                reads_count.push_back(pair<uint32_t, int8_t>(a,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(end,
+                                                             1));
             }
             /*
              *     |-------|
@@ -194,10 +195,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a <= start && b <= end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (start,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (b,
-                                                              -1));
+                reads_count.push_back(pair<uint32_t, int8_t>(start,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(b,
+                                                             -1));
             }
             /*
              *     |-------|
@@ -205,10 +206,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a >= start && b <= end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (a,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (b,
-                                                              -1));
+                reads_count.push_back(pair<uint32_t, int8_t>(a,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(b,
+                                                             -1));
             }
             /*
              *     |-------|
@@ -216,10 +217,10 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
              */
             if (a < end && b > end) {
 
-                reads_count.push_back(pair<uint32_t, int8_t> (a,
-                                                              1));
-                reads_count.push_back(pair<uint32_t, int8_t> (end,
-                                                              1));
+                reads_count.push_back(pair<uint32_t, int8_t>(a,
+                                                             1));
+                reads_count.push_back(pair<uint32_t, int8_t>(end,
+                                                             1));
             }
             /*
              *     |-------|
@@ -249,7 +250,7 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
     for (; rit != reads_count.end(); rit++) {
         pos = rit->first;
         LOG_DEBUG4("ps score:" << (uint16_t) (rit->second) << "\tps pos:"
-        << pos);
+                               << pos);
         if (pos == ppos) {
             count += (int32_t) (rit->second);
             continue;
@@ -271,7 +272,7 @@ void peakseq_profile::get_profile_of_reads(uint32_t start,
          result.end(),
          sort_comparator);
 
-    LOG_DEBUG1("FINISHED building sgr, total profile points: "<<result.size());
+    LOG_DEBUG1("FINISHED building sgr, total profile points: " << result.size());
 
 }
 

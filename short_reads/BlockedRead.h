@@ -16,44 +16,49 @@ namespace reads {
 /*
  * Assume all blocks are on the same chromosome
  */
-class BlockedRead {
-    friend std::ostream& operator<<(std::ostream& os, const BlockedRead& rhs) {
-        foreach(Read r, rhs.mBlocks) {
-            os << r;
+    class BlockedRead {
+        friend std::ostream &operator<<(std::ostream &os, const BlockedRead &rhs) {
+                    foreach(Read r, rhs.mBlocks) {
+                            os << r;
+                        }
+            return os;
         }
-        return os;
-    }
 
-public:
-    BlockedRead();
-    virtual ~BlockedRead();
+    public:
+        BlockedRead();
 
-    BlockedRead(const std::vector<Read>& blocks);
+        virtual ~BlockedRead();
 
-    void getBlocks(std::vector<Read>& res) const;
-    std::vector<Read> getBlocks() const;
-    std::string getChr() const;
+        BlockedRead(const std::vector<Read> &blocks);
 
-    void setBlocks(const std::vector<Read>& blocks) {
-        mBlocks = blocks;
-    }
-    Strand getDir() const;
+        void getBlocks(std::vector<Read> &res) const;
 
-    int32_t getStart() const;
+        std::vector<Read> getBlocks() const;
 
-    bool operator==(const BlockedRead& rhs) const {
-        if (this->mBlocks.size() != rhs.mBlocks.size()) {
-            return false;
-        } else {
-            return std::equal(mBlocks.begin(), mBlocks.end(),
-                    rhs.mBlocks.begin());
+        std::string getChr() const;
+
+        void setBlocks(const std::vector<Read> &blocks) {
+            mBlocks = blocks;
         }
-    }
-protected:
-    std::vector<Read> mBlocks;
 
-};
+        Strand getDir() const;
 
-void offset(BlockedRead& read, int32_t length);
+        int32_t getStart() const;
+
+        bool operator==(const BlockedRead &rhs) const {
+            if (this->mBlocks.size() != rhs.mBlocks.size()) {
+                return false;
+            } else {
+                return std::equal(mBlocks.begin(), mBlocks.end(),
+                                  rhs.mBlocks.begin());
+            }
+        }
+
+    protected:
+        std::vector<Read> mBlocks;
+
+    };
+
+    void offset(BlockedRead &read, int32_t length);
 }
 #endif /* BLOCKEDREAD_H_ */

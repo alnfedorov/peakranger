@@ -6,6 +6,7 @@
  */
 
 #include "cmd_option_parser.h"
+
 using namespace std;
 const string cmd_option_parser::format_bowtie = "bowtie";
 const string cmd_option_parser::format_bed = "bed";

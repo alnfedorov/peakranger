@@ -15,6 +15,7 @@
 #include "utils/assert_helpers.h"
 #include "utils/exceptions.h"
 #include <boost/foreach.hpp>
+
 #define foreach BOOST_FOREACH
 
 class region_profile {
@@ -38,10 +39,10 @@ public:
      */
     template<class neg_read_transformer>
     static void get_region_profile(uint32_t start, uint32_t end,
-            uint32_t extension, uint32_t read_length,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint16_t>& result, neg_read_transformer trans) {
+                                   uint32_t extension, uint32_t read_length,
+                                   std::vector<uint32_t>::iterator readsStart,
+                                   std::vector<uint32_t>::iterator readsEnd,
+                                   std::vector<uint16_t> &result, neg_read_transformer trans) {
         assert_gt(end, start)
         uint32_t a;
         uint32_t b;
@@ -118,9 +119,9 @@ public:
      */
     static void
     get_region_profile(uint32_t start, uint32_t end, uint32_t extension,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint16_t>& result);
+                       std::vector<uint32_t>::iterator readsStart,
+                       std::vector<uint32_t>::iterator readsEnd,
+                       std::vector<uint16_t> &result);
 
     /*
      * Is more like one designed exclusively for PeakSeq
@@ -128,17 +129,17 @@ public:
      */
     static void
     get_region_profile(uint32_t start, uint32_t end, uint32_t extension,
-            std::vector<uint32_t>::iterator readsStart,
-            std::vector<uint32_t>::iterator readsEnd,
-            std::vector<uint64_t>& result);
+                       std::vector<uint32_t>::iterator readsStart,
+                       std::vector<uint32_t>::iterator readsEnd,
+                       std::vector<uint64_t> &result);
 
     /*
      * Process both pos and neg strands.
      */
     template<class neg_read_transformer>
-    static void get_region_profile(Reads& reads, std::string& chr,
-            uint32_t start, uint32_t end, uint32_t extension,
-            std::vector<uint16_t>& result, neg_read_transformer trans) {
+    static void get_region_profile(Reads &reads, std::string &chr,
+                                   uint32_t start, uint32_t end, uint32_t extension,
+                                   std::vector<uint16_t> &result, neg_read_transformer trans) {
 
         typedef std::vector<uint32_t>::iterator readitr_t;
         readitr_t readsStart, readsEnd;
@@ -158,7 +159,7 @@ public:
          * neg strand
          */
         get_region_profile(start, end, extension, readlength, readsStart,
-                readsEnd, result, trans);
+                           readsEnd, result, trans);
     }
 
     /*
@@ -168,22 +169,23 @@ public:
      * by:
      * t_read = neg_read + readlength - extension
      */
-    static void get_region_profile_peakseq(Reads& reads, std::string& chr,
-            uint32_t start, uint32_t end, uint32_t extension,
-            std::vector<uint16_t>& result) {
+    static void get_region_profile_peakseq(Reads &reads, std::string &chr,
+                                           uint32_t start, uint32_t end, uint32_t extension,
+                                           std::vector<uint16_t> &result) {
         get_region_profile(reads, chr, start, end, extension, result,
-                neg_read_trans);
+                           neg_read_trans);
     }
 
-    static void get_profile_of_reads(std::vector<uint32_t>& reads,
-            uint32_t extension, std::vector<uint16_t>& result);
+    static void get_profile_of_reads(std::vector<uint32_t> &reads,
+                                     uint32_t extension, std::vector<uint16_t> &result);
+
 private:
     /*
      * the basic neg read transfomer using
      * the algorithm from PeakSeq
      */
     static uint32_t neg_read_trans(uint32_t read, uint32_t readlength,
-            uint32_t extension) {
+                                   uint32_t extension) {
         uint32_t sum = read + readlength;
         if (sum > extension) {
             return sum - extension;

@@ -7,6 +7,7 @@
 
 #ifndef DISTRIBUTIONS_H_
 #define DISTRIBUTIONS_H_
+
 #include <stdint.h>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
@@ -16,7 +17,7 @@
 #include <vector>
 
 namespace {
-boost::mt19937 gen(std::time(0));
+    boost::mt19937 gen(std::time(0));
 }
 
 class distributions {
@@ -24,6 +25,7 @@ public:
     distributions();
 
     static double binomCDF(uint32_t n, uint32_t k, double prob);
+
     static double binomPDF(uint32_t n, uint32_t k, double prob);
 
     /*
@@ -31,12 +33,12 @@ public:
      * than the std version
      */
     static void random_int_boost(uint32_t l, uint32_t h, uint32_t size,
-            std::vector<uint32_t>& result) {
+                                 std::vector<uint32_t> &result) {
         //boost::mt19937 gen(std::time(0));
         boost::mt19937 gen(12345);
         for (uint32_t i = 0; i < size; ++i) {
             boost::uniform_int<> dist(l, h);
-            boost::variate_generator<boost::mt19937&, boost::uniform_int<> > rnd(
+            boost::variate_generator<boost::mt19937 &, boost::uniform_int<> > rnd(
                     gen, dist);
             uint32_t r = (uint32_t) (rnd());
             result.push_back(r);
@@ -48,12 +50,12 @@ public:
      * The divide & conquer version of boost,slower than boost
      */
     static void random_int_boost_dc(uint32_t l, uint32_t h, uint32_t size,
-            std::vector<uint32_t>& result) {
+                                    std::vector<uint32_t> &result) {
 
         if (size == 1) {
 
             boost::uniform_int<> dist(l, h);
-            boost::variate_generator<boost::mt19937&, boost::uniform_int<> > rnd(
+            boost::variate_generator<boost::mt19937 &, boost::uniform_int<> > rnd(
                     gen, dist);
             uint32_t r = (uint32_t) (rnd());
             result.push_back(r);
@@ -70,9 +72,9 @@ public:
     }
 
     static void random_int_std(uint32_t l, uint32_t h, uint32_t size,
-            std::vector<uint32_t>& result) {
+                               std::vector<uint32_t> &result) {
 //        srand((int) time(NULL));
-    	srand(12345);
+        srand(12345);
         for (uint32_t i = 0; i < size; ++i) {
             uint32_t k;
             double d;

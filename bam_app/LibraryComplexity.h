@@ -10,19 +10,22 @@
 
 #include "StockBamMultipleDatasetsAppImp.h"
 #include "utils/Tracer.h"
+
 namespace bam_app {
-namespace aux {
+    namespace aux {
 
-class LibraryComplexity: public StockBamMultipleDatasetsAppImp {
-public:
-    LibraryComplexity(utils::TimeStampTracer& tra);
-    virtual ~LibraryComplexity();
+        class LibraryComplexity : public StockBamMultipleDatasetsAppImp {
+        public:
+            LibraryComplexity(utils::TimeStampTracer &tra);
 
-    void report(std::vector<reads::PairEndedReads<reads::BlockedRead> >& rdsVec,
-            std::ostream& os);
-    bool mIsPE;
-};
+            virtual ~LibraryComplexity();
 
-} /* namespace aux */
+            void report(std::vector<reads::PairEndedReads<reads::BlockedRead> > &rdsVec,
+                        std::ostream &os);
+
+            bool mIsPE;
+        };
+
+    } /* namespace aux */
 } /* namespace bam_app */
 #endif /* LIBRARYCOMPLEXITY_H_ */

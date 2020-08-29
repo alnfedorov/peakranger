@@ -8,18 +8,18 @@
 #include "profilezoom.h"
 
 namespace {
-void get_sum(std::vector<double>& v,
-             double& s) {
-    for (uint32_t i = 0; i < v.size(); i++) {
-        s += v[i];
+    void get_sum(std::vector<double> &v,
+                 double &s) {
+        for (uint32_t i = 0; i < v.size(); i++) {
+            s += v[i];
+        }
     }
-}
 }
 
 const
 void profile_zoom::zoom_out(const uint32_t ws,
                             const data_type v,
-                            data_type& r) {
+                            data_type &r) {
 
 //    rt_assert(ws)
 //
@@ -71,7 +71,7 @@ void profile_zoom::zoom_out(const uint32_t ws,
 const void profile_zoom::zoom_out(const uint32_t ws,
                                   const uint32_t os,
                                   const data_type v,
-                                  data_type & r) {
+                                  data_type &r) {
 
 //    LOG_DEBUG1("Entering profile_zoom::zoom_out");
 //
@@ -215,7 +215,7 @@ const void profile_zoom::zoom_out(const uint32_t ws,
 const void profile_zoom::smooth(const uint32_t ws,
                                 const uint32_t os,
                                 const data_type v,
-                                data_type & r) {
+                                data_type &r) {
 
     LOG_DEBUG1("Entering profile_zoom::zoom_out");
 
@@ -223,11 +223,11 @@ const void profile_zoom::smooth(const uint32_t ws,
         LOG_DEBUG1("INPUT INVALID profile_zoom::zoom_out");
         return;
     }
-    LOG_DEBUG2("window size "<<ws<<"\n");
-    LOG_DEBUG2("overlap size "<<os<<"\n");
-    LOG_DEBUG2("total wig points : "<<v.size()<<"\n");
-    LOG_DEBUG2("the fisrt wig point : "<<v.front().getP()<<"\n");
-    LOG_DEBUG2("the last wig point : "<<v.back().getP()<<"\n");
+    LOG_DEBUG2("window size " << ws << "\n");
+    LOG_DEBUG2("overlap size " << os << "\n");
+    LOG_DEBUG2("total wig points : " << v.size() << "\n");
+    LOG_DEBUG2("the fisrt wig point : " << v.front().getP() << "\n");
+    LOG_DEBUG2("the last wig point : " << v.back().getP() << "\n");
     uint32_t _w_b = 0;
     uint32_t _hw = ws / 2;
     uint32_t _w_e = _w_b + ws - 1;
@@ -249,15 +249,15 @@ const void profile_zoom::smooth(const uint32_t ws,
 
     //find the first points of all new clusters.
     _c.push_back(v[0].getP());
-    LOG_DEBUG2("cluster : "<<v[0].getP()<<"\n");
+    LOG_DEBUG2("cluster : " << v[0].getP() << "\n");
     i = 1;
     for (; i < v.size(); i++) {
         _p = v[i].getP();
         if (_p > ws) {
             if (_p - ((ws / 2) + 1) > _c.back()
-            && _p - ((ws / 2) + 1) > v[i - 1].getP()) {
+                && _p - ((ws / 2) + 1) > v[i - 1].getP()) {
                 _c.push_back(_p);
-                LOG_DEBUG2( "cluster : "<<_p<<"\n");
+                LOG_DEBUG2("cluster : " << _p << "\n");
             }
         }
     }
@@ -276,7 +276,7 @@ const void profile_zoom::smooth(const uint32_t ws,
     j = 0;
     for (; i < _c.size(); i++) {
         //establish the first window of this cluster
-        LOG_DEBUG2("got a new cluster:"<<_c[i]<<"\n");
+        LOG_DEBUG2("got a new cluster:" << _c[i] << "\n");
         _p = _c[i];
         _w_e = _p + _hw;
         if (_w_e + 1 < ws) {
@@ -290,7 +290,7 @@ const void profile_zoom::smooth(const uint32_t ws,
             _w_e = 1;
         }
 
-        LOG_DEBUG2("established first window "<<_w_b<<":"<<_w_e<<"\n");
+        LOG_DEBUG2("established first window " << _w_b << ":" << _w_e << "\n");
 
         while (true) {
 
@@ -299,12 +299,12 @@ const void profile_zoom::smooth(const uint32_t ws,
 
                 _p = v[j].getP();
                 _s = v[j].getS();
-                LOG_DEBUG2("  got the "<<j+1<<"th point "<<_p<<":"<<_s<<"->");
+                LOG_DEBUG2("  got the " << j + 1 << "th point " << _p << ":" << _s << "->");
                 if (_p >= _w_b && _p <= _w_e) {
                     _vs.push(_s);
                     _vp.push(_p);
                     _vbm.push_back(_s);
-                    LOG_DEBUG2("collected new points in this window : "<<_p <<":"<<_s<<"\n");
+                    LOG_DEBUG2("collected new points in this window : " << _p << ":" << _s << "\n");
                 } else {
                     LOG_DEBUG2("this point passed the current window\n ");
 #ifdef USE_LOGGING
@@ -324,10 +324,11 @@ const void profile_zoom::smooth(const uint32_t ws,
                 get_sum(_van,
                         _san);
                 _snm = _sab - _san + _sbm;
-                LOG_DEBUG2(" _sab:"<<_sab<<", _san:"<<_san<<", _sbm:"<<_sbm<<" _snm = _sab -_san+_sbm _ "<<_snm<<"\n");
+                LOG_DEBUG2(" _sab:" << _sab << ", _san:" << _san << ", _sbm:" << _sbm << " _snm = _sab -_san+_sbm _ "
+                                    << _snm << "\n");
                 _e.setP((_w_e + _w_b) / 2);
                 _e.setS(_snm / ws);
-                LOG_DEBUG2(" this window is not empty. Got _e:"<<_e.getP() <<":"<<_e.getS()<<"\n");
+                LOG_DEBUG2(" this window is not empty. Got _e:" << _e.getP() << ":" << _e.getS() << "\n");
                 //print out this window
 
                 r.push_back(_e);
@@ -343,11 +344,11 @@ const void profile_zoom::smooth(const uint32_t ws,
                     _sbm = 0;
                     _w_b = _w_b + (ws - os);
                     _w_e = _w_b + ws - 1;
-                    LOG_DEBUG2("moved to a new window "<<_w_b<<":"<<_w_e<<"\n");
+                    LOG_DEBUG2("moved to a new window " << _w_b << ":" << _w_e << "\n");
                     if (_w_b > v.back().getP()) {
 
                         LOG_DEBUG2("********this window's boundary reaches"
-                        " or passes the last data point. \n ");
+                                   " or passes the last data point. \n ");
 
                         _last = true;
                     }
@@ -357,9 +358,9 @@ const void profile_zoom::smooth(const uint32_t ws,
                     while (_vp.size()) {
                         LOG_DEBUG2("Checking old point in the previous window");
                         if (_vp.front() < _w_b) {
-                            LOG_DEBUG2("The front point "<<_vp.front()
-                            <<" is not in the window. "
-                            "popped it out.\n");
+                            LOG_DEBUG2("The front point " << _vp.front()
+                                                          << " is not in the window. "
+                                                             "popped it out.\n");
                             _van.push_back(_vs.front());
                             _vs.pop();
                             _vp.pop();

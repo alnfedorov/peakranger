@@ -20,14 +20,14 @@ class profile_summit_detector {
 public:
     template<typename T>
     static void detect_sub_peaks(std::vector<T> smoothed_profile, double delta,
-            std::vector<uint32_t>& max_pos, std::vector<uint32_t>& min_pos) {
+                                 std::vector<uint32_t> &max_pos, std::vector<uint32_t> &min_pos) {
         {
             rt_assert_gt(delta, 0)
             rt_assert_lt(delta, 1.0000000001)
             double mx = -INFINITY;
             double mn = INFINITY;
             double threshold = (double) (*max_element(smoothed_profile.begin(),
-                    smoothed_profile.end()));
+                                                      smoothed_profile.end()));
             threshold *= delta;
             int look_for_max = 1;
             uint32_t mxpos = 0;
@@ -78,4 +78,5 @@ public:
         }
     }
 };
+
 #endif /* DETECTOR_H_ */

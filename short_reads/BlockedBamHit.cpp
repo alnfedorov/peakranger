@@ -14,20 +14,21 @@
 #include "concepts/Region.h"
 #include "CigarStringFactory.h"
 #include "common/ranger_debug.h"
+
 using namespace std;
 using namespace BamTools;
 
 namespace reads {
 
-BlockedBamHit::BlockedBamHit() {
-}
+    BlockedBamHit::BlockedBamHit() {
+    }
 
-BlockedBamHit::~BlockedBamHit() {
+    BlockedBamHit::~BlockedBamHit() {
 
-}
+    }
 
-BlockedBamHit::BlockedBamHit(const BamAlignment & bam, const RefVector & ref) {
-    parseBamBlocks(mBlocks, bam,ref);
-}
+    BlockedBamHit::BlockedBamHit(const BamAlignment &bam, const RefVector &ref) {
+        parseBamBlocks(mBlocks, bam, ref);
+    }
 
 } /* namespace reads */

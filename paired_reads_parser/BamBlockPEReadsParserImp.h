@@ -7,39 +7,39 @@
 
 #ifndef BAMBLOCKPEREADSPARSERIMP_H_
 #define BAMBLOCKPEREADSPARSERIMP_H_
+
 #include "bamtools/BamAux.h"
 #include "short_reads/BlockedRead.h"
 #include "short_reads/PairEndedReads.h"
 
 namespace parser {
-namespace aux {
+    namespace aux {
 
-class BamBlockPEReadsParserImp {
-public:
-    BamBlockPEReadsParserImp();
-    virtual ~BamBlockPEReadsParserImp();
+        class BamBlockPEReadsParserImp {
+        public:
+            BamBlockPEReadsParserImp();
 
-    virtual void parse(const BamTools::BamAlignment & read,
-            reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector & ref) ;
+            virtual ~BamBlockPEReadsParserImp();
 
-    virtual void flush(reads::PairEndedReads<reads::BlockedRead> & reads,
-            const BamTools::RefVector& ref);
+            virtual void parse(const BamTools::BamAlignment &read,
+                               reads::PairEndedReads<reads::BlockedRead> &reads,
+                               const BamTools::RefVector &ref);
 
-    std::string getParserId() const
-    {
-        return parserID;
-    }
+            virtual void flush(reads::PairEndedReads<reads::BlockedRead> &reads,
+                               const BamTools::RefVector &ref);
 
-    void setParserId(std::string parserId)
-    {
-        parserID = parserId;
-    }
+            std::string getParserId() const {
+                return parserID;
+            }
 
-protected:
-    std::string parserID;
-};
+            void setParserId(std::string parserId) {
+                parserID = parserId;
+            }
 
-} /* namespace aux */
+        protected:
+            std::string parserID;
+        };
+
+    } /* namespace aux */
 } /* namespace parser */
 #endif /* BAMBLOCKPEREADSPARSERIMP_H_ */
