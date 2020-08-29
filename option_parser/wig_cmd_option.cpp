@@ -8,8 +8,8 @@
 #include "wig_cmd_option.h"
 #include "utils/stringutil.h"
 #include "option_parser/OptionAux.h"
-#include <stdlib.h>
-#include <stdint.h>
+#include <cstdlib>
+#include <cstdint>
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
@@ -19,7 +19,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 #include "option_parser/OptionAux.h"
 #include "utils/exceptions.h"
 
@@ -54,7 +54,7 @@ wig_cmd_option::wig_cmd_option(int argc, char **argv,
 
     input.add_options()
 
-            ("data,d", po::value<string>(&_treat_dir), "data file")
+            ("data,d", po::value<vector<string>>(&_treat_files)->multitoken()->required(), "data file[s]")
 
             ("format", po::value<string>(&_format),
              "the format of the data file, can be one of : "
@@ -87,9 +87,7 @@ void wig_cmd_option::parse() {
 
         exit(0);
     }
-    po::store(
-            po::command_line_parser(_ac, _av).options(all).positional(popt).run(),
-            vm);
+    po::store(po::command_line_parser(_ac, _av).options(all).positional(popt).run(), vm);
     po::notify(vm);
     setFormat(to_lower_copy(trim_copy(getFormat())));
 
@@ -124,15 +122,10 @@ void wig_cmd_option::parse() {
     require("output", vm);
     require("format", vm);
 
-    file_r_good(_treat_dir.c_str());
+    for (const auto& f: _treat_files)
+        file_r_good(f.c_str());
+
     string dir, file, file_ext;
-
-    stringutil::get_dir_file(_treat_dir, dir, file, file_ext);
-
-    setTreat_file(_treat_dir);
-    setTreat_dir(dir);
-    setTreatfilename(file);
-
     file_w_good(_output_dir.c_str());
     stringutil::get_dir_file(_output_dir, dir, file, file_ext);
     //todo: linux only
@@ -146,11 +139,13 @@ void wig_cmd_option::parse() {
 
 }
 
-void wig_cmd_option::print_option_file(ostream &os) const {
+void wig_cmd_option::report(ostream &os) const {
     os << "\n" << "program version:          " << version << "\n";
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
-    os << (" Sample file:             ") << getTreat_file() << endl;
+    os << (" Treatment file[s]:") << endl;
+    for (const auto& f: getTreatFiles())
+        os << "                          " << f << endl;
 
     os << ("Qualities:\n");
 
@@ -177,40 +172,6 @@ void wig_cmd_option::print_option_file(ostream &os) const {
         os << (" Splitting results:       No") << endl;
         os << (" Result file:             ") << getOutput_file() << endl;
     }
-}
-
-void wig_cmd_option::print_option(ostream &os) {
-    os << "\n" << "program version:          " << version << "\n";
-    os << ("Data files:\n");
-    os << (" File format:             ") << getFormat() << endl;
-    os << (" Sample file:             ") << getTreat_file() << endl;
-
-    os << ("Qualities:\n");
-
-    os << (" Read extension length:   ") << getExt_length() << endl;
-
-    os << ("Output:\n");
-    if (isGz()) {
-        os << (" Gzip results:            Yes") << endl;
-    } else {
-        os << (" Gzip results:            No") << endl;
-    }
-    if (isStranded()) {
-        os << (" One wig per strand:      Yes") << endl;
-    } else {
-        os << (" One wig per strand:      No") << endl;
-    }
-    if (isSplit()) {
-        os << (" Splitting results:       Yes") << endl;
-        os << (" Result file:             ") << getOutput_file() << endl;
-        os
-                << ("                          and other splitted files in this directory")
-                << endl;
-    } else {
-        os << (" Splitting results:       No") << endl;
-        os << (" Result file:             ") << getOutput_file() << endl;
-    }
-
 }
 
 void wig_cmd_option::verify() {
@@ -248,20 +209,4 @@ void wig_cmd_option::setGz(bool _gz) {
 
 void wig_cmd_option::setStranded(bool _stranded) {
     this->_stranded = _stranded;
-}
-
-uint32_t wig_cmd_option::getOverlapSz() const {
-    return _overlap_sz;
-}
-
-uint32_t wig_cmd_option::getWinwdowSz() const {
-    return _window_sz;
-}
-
-void wig_cmd_option::setOverlapSz(uint32_t overlapSz) {
-    _overlap_sz = overlapSz;
-}
-
-void wig_cmd_option::setWinwdowSz(uint32_t winwdowSz) {
-    _window_sz = winwdowSz;
 }

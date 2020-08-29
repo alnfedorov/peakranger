@@ -980,7 +980,7 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
                                           cmd_option_parser &option) {
 
     ofstream os;
-    detectSummits(treads, creads, option.getNo_of_thread(), option.getCut_off(),
+    detectSummits(treads, creads, option.getNo_of_thread(), option.getCutOff(),
                   option.getDelta(), option.getPeakHeightCutoff(), MERGE_DISTANCE,
                   option.getBinlength(), option.getBandwidth(),
                   option.getExt_length(), os, option.getVerboseRequested());
@@ -1000,7 +1000,7 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
             << "#chr\tstart\tend\tsummits\tvalleys\tp-value\tsample_reads\tcontrol_reads\n";
     LOG_DEBUG("\nParameters for simple thresholder detector:"
                       << "\nthreads:" << option.getNo_of_thread()
-                      << "\np value cut off:" << option.getCut_off()
+                      << "\np value cut off:" << option.getCutOff()
                       << "\ndelta:" << option.getDelta()
                       << "\npeak height cutoff:" << option.getPeakHeightCutoff()
                       << "\nmerge distance:" << MERGE_DISTANCE
@@ -1008,7 +1008,7 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
                       << "\nbandwidth:" << option.getBandwidth()
                       << "\nextension length:" << option.getExt_length());
 
-    detectSummits(treads, creads, option.getNo_of_thread(), option.getCut_off(),
+    detectSummits(treads, creads, option.getNo_of_thread(), option.getCutOff(),
                   option.getDelta(), option.getPeakHeightCutoff(), MERGE_DISTANCE,
                   option.getBinlength(), option.getBandwidth(),
                   option.getExt_length(), os, option.getVerboseRequested());

@@ -76,7 +76,7 @@ void bcp_algo::insertPeak(const string &chr, called_peak &pk) {
 void bcp_algo::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
     utils::TimeStampTracer tracer(std::cout, option.getVerboseRequested());
 
-    p_value = option.getCut_off();
+    p_value = option.getCutOff();
     win_size = option.slidingWinSize;
     frag_size = option.getExt_length();
 

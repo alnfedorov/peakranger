@@ -804,7 +804,7 @@ void chipseq_html_reporter::print_img_script(Reads &treads, Reads &creads,
 void chipseq_html_reporter::prepare_report_name(cmd_option_parser &option) {
     string date;
     getDate(date);
-    _report_name = option.getTreatfilename() + "_report_" + date;
+    _report_name = boost::algorithm::join(option.getTreatFiles(), ",") + "_report_" + date;
     boost::to_upper(_report_name);
     boost::replace_all(_report_name, ".", "_");
     boost::replace_all(_report_name, " ", "_");

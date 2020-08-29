@@ -120,9 +120,9 @@ namespace app {
         utils::Stamp::citationAndDate(of_raw);
         utils::Stamp::citationAndDate(of_smt);
         utils::Stamp::citationAndDate(of);
-        option.print_option_file(of_raw);
-        option.print_option_file(of_smt);
-        option.print_option_file(of);
+        option.print_option(of_raw);
+        option.print_option(of_smt);
+        option.print_option(of);
         of_smt
                 << "\n#summit_chr\tsummit_start\tsummit_end\tsummit_ID\tsummit_FDR\tsummit_strand\n";
         of
@@ -254,7 +254,7 @@ namespace app {
             wig->use_default_setting();
 
             Reads treads, creads;
-            parseReads(option, option.getTreat_file(), parser, treads);
+            parseReads(option, option.getTreatFiles(), parser, treads);
 
             tracer << "Reads statistics:\n";
             tracer << " Treatment reads +:       " << treads.pos_reads.size()

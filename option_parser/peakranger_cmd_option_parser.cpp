@@ -52,11 +52,9 @@ peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
 
     input.add_options()
 
-//            ("data,d", po::value<vector<std::string>>(&_treat_dir)->multitoken()->required(), "data file[s]")
-            ("data,d", po::value<string>(&_treat_dir), "data file")
+            ("data,d", po::value<vector<string>>(&_treat_files)->multitoken()->required(), "data file[s]")
 
-//            ("control,c", po::value<vector<std::string>>(&_control_dir)->multitoken()->required(), "control file[s]")
-            ("control,c", po::value<string>(&_control_dir), "control file")
+            ("control,c", po::value<vector<string>>(&_control_files)->multitoken()->required(), "control file[s]")
 
             ("format", po::value<string>(&_format),
              "the format of the data file[s], can be one of : "
@@ -140,9 +138,9 @@ void peakranger_cmd_option_parser::parse() {
     }
 
     if (vm.count("report")) {
-        this->setNeedHtml(true);
+        _html = true;
     } else {
-        this->setNeedHtml(false);
+        _html = false;
     }
     if (vm.count("split")) {
         this->setSplit(true);
@@ -151,7 +149,7 @@ void peakranger_cmd_option_parser::parse() {
     }
 
     if (vm.count("gene_annot_file")) {
-        this->setNeedHtml(true);
+        _html = true;
         file_r_good(_gene_anno_file.c_str());
     }
     require("data", vm);
@@ -161,31 +159,20 @@ void peakranger_cmd_option_parser::parse() {
     if (vm.count("report")) {
         require("gene_annot_file", vm);
     }
-    file_r_good(_treat_dir.c_str());
-    file_r_good(_control_dir.c_str());
-    string dir, file, file_ext;
 
-    stringutil::get_dir_file(_treat_dir, dir, file, file_ext);
+    for (const auto& f: _treat_files)
+        file_r_good(f.c_str());
 
-    setTreat_file(_treat_dir);
-    setTreat_dir(dir);
-    setTreatfilename(file);
-
-    stringutil::get_dir_file(_control_dir, dir, file, file_ext);
-
-    setControl_file(_control_dir);
-    setControl_dir(dir);
-    setControlfilename(file);
+    for (const auto& f: _control_files)
+        file_r_good(f.c_str());
 
     file_w_good(_output_dir.c_str());
+
+    string dir, file, file_ext;
     stringutil::get_dir_file(_output_dir, dir, file, file_ext);
     //todo: linux only
-    setTreat_wig_file(dir + "/" + _treatfilename + ".wig");
-    setControl_wig_file(dir + "/" + _controlfilename + ".wig");
     setOutput_file(_output_dir);
     setOutput_dir(dir);
-
-    setReportName(dir + "/reports");
 
     if (vm.count("pad")) {
         setPad(true);
@@ -197,16 +184,18 @@ void peakranger_cmd_option_parser::parse() {
 
 }
 
-void peakranger_cmd_option_parser::print_option(ostream &os) {
+void peakranger_cmd_option_parser::report(ostream &os) const {
     os << ("program version:          ") << version << endl;
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
-    os << (" Sample file:             ") << getTreat_file() << endl;
-
-    os << (" Control file:            ") << getControl_file() << endl;
-
+    os << (" Treatment file[s]:") << endl;
+    for (const auto& f: getTreatFiles())
+        os << "                          " << f << endl;
+    os << (" Control file[s]:") << endl;
+    for (const auto& f: getControlFiles())
+        os << "                          " << f << endl;
     os << ("Qualities:\n");
-    os << (" P value cut off:         ") << getCut_off() << endl;
+    os << (" P value cut off:         ") << getCutOff() << endl;
     os << (" FDR cut off:             ") << getFdrCutOff() << endl;
     os << (" Read extension length:   ") << getExt_length() << endl;
     os << (" Smoothing bandwidth:     ") << getBandwidth() << endl;
@@ -247,51 +236,8 @@ void peakranger_cmd_option_parser::setSplit(bool _split) {
     this->_split = _split;
 }
 
-void peakranger_cmd_option_parser::print_option_file(ostream &os) const {
-    os << ("#program version:           ") << version << endl;
-    os << ("#Data files:\n");
-    os << ("# File format:             ") << getFormat() << endl;
-    os << ("# Sample file:             ") << getTreat_file() << endl;
-    os << ("# Control file:            ") << getControl_file() << endl;
-    os << ("#Qualities:\n");
-    os << ("# P value cut off:         ") << getCut_off() << endl;
-    os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
-    os << ("# Read extension length:   ") << getExt_length() << endl;
-    os << ("# Smoothing bandwidth:     ") << getBandwidth() << endl;
-    os << ("# Delta:                   ") << getDelta() << endl;
-    os << ("# Pad region profile:      ");
-    if (getPad()) {
-        os << "Enabled" << endl;
-    } else {
-        os << "Disabled\n";
-    }
-    os << ("#Running modes:\n");
-    os << ("# Number of threads:       ") << getNo_of_thread() << endl;
-    os << ("#Output:\n");
-
-    os << ("# Regions:                 ") << getOutput_file() + "_region.bed"
-       << endl;
-    os << ("# Summits:                 ") << getOutput_file() + "_summit.bed"
-       << endl;
-    os << ("# Details of regions:      ") << getOutput_file() + "_details"
-       << endl;
-    os << ("# HTML reports:            ");
-    if (needHtml()) {
-        os << "Enabled" << endl;
-        os << ("# Plot region length:      ") << getHtmlRegionLength() << endl;
-        os << ("# Annotation file:         ") << getGeneAnnoFile() << endl;
-    } else {
-        os << "Disabled(--report not specified)\n";
-    }
-
-}
-
 bool peakranger_cmd_option_parser::needHtml() const {
     return _html;
-}
-
-void peakranger_cmd_option_parser::setNeedHtml(bool _html) {
-    this->_html = _html;
 }
 
 void peakranger_cmd_option_parser::verify() {

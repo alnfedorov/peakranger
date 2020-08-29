@@ -36,15 +36,7 @@ public:
 
     void setStranded(bool _stranded);
 
-    void print_option_file(std::ostream &os) const;
-
-    uint32_t getOverlapSz() const;
-
-    uint32_t getWinwdowSz() const;
-
-    void setOverlapSz(uint32_t overlapSz);
-
-    void setWinwdowSz(uint32_t winwdowSz);
+    void report(std::ostream &os) const;
 
     std::string version;
 private:
@@ -59,8 +51,6 @@ private:
     bool _split;
     bool _gz;
     bool _stranded;
-    uint32_t _window_sz;
-    uint32_t _overlap_sz;
 };
 
 #endif /* WIGTCMDOPTION_H_ */

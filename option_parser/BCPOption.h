@@ -24,19 +24,13 @@ namespace options {
 
         BCPOption(int argc, char **argv, const std::string &version);
 
-        std::string printParsedOpts() const;
-
         static int min_args;
         std::string version;
         po::variables_map mVM;
 
         bool needHtml() const;
 
-        void setNeedHtml(bool _html);
-
-        void print_option(std::ostream &os);
-
-        void print_option_file(std::ostream &os) const;
+        void report(std::ostream &os) const override;
 
     private:
         void hasEnoughArgs(int argc);

@@ -80,7 +80,7 @@ namespace app {
             _nbgf.setSearchSpan(option.getHtmlRegionLength());
             utils::Tracer tracer(cout, option.getVerboseRequested());
             if (option.getVerboseRequested()) {
-                option.print_option(cout);
+                option.report(cout);
             }
             boost::shared_ptr<readsParser> parser;
 
@@ -104,7 +104,7 @@ namespace app {
             boost::shared_ptr<result_reporter> reporter = boost::make_shared<
                     bed6_result_reporter>();
             Reads treads, creads;
-            string ga = option.getTreat_file();
+            string ga = option.getTreatFiles();
             parser->parse(treads, ga);
             tracer << "\nReads statistics:\n";
             tracer << "\n Treatment reads +:       " << treads.pos_reads.size();
@@ -170,9 +170,9 @@ namespace app {
                 utils::Stamp::citationRangerCCATAndDate(of_raw);
                 utils::Stamp::citationRangerCCATAndDate(of_smt);
                 utils::Stamp::citationRangerCCATAndDate(of);
-                option.print_option_file(of_raw);
-                option.print_option_file(of_smt);
-                option.print_option_file(of);
+                option.report(of_raw);
+                option.report(of_smt);
+                option.report(of);
 
                 of_smt << "\n\n#summit_chr\tsummit_start\tsummit_end"
                           "\tsummit_ID\tsummit_FDR\tsummit_strand\n";

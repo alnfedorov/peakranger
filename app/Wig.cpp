@@ -68,7 +68,7 @@ namespace app {
             }
 
             Reads reads;
-            string ga = option.getTreat_file();
+            string ga = option.getTreatFiles();
             if (option.getChrtableSpecified()) {
                 vector<string> chrs_to_parse = option.getChrs_to_parse();
                 parser->parse(reads, ga, chrs_to_parse);

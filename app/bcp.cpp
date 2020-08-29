@@ -84,7 +84,7 @@ namespace app {
             _nbgf.setSearchSpan(option.getHtmlRegionLength());
             utils::Tracer tracer(cout, option.getVerboseRequested());
             if (option.getVerboseRequested()) {
-                option.print_option(cout);
+                option.report(cout);
             }
             boost::shared_ptr<readsParser> parser;
 
@@ -108,7 +108,7 @@ namespace app {
             boost::shared_ptr<result_reporter> reporter = boost::make_shared<
                     bed6_result_reporter>();
             Reads treads, creads;
-            string ga = option.getTreat_file();
+            string ga = option.getTreatFiles();
             parser->parse(treads, ga);
             tracer << "\nReads statistics:\n";
             tracer << "\n Treatment reads +:       " << treads.pos_reads.size();
@@ -170,8 +170,8 @@ namespace app {
 
                 utils::Stamp::citationRangerBCPAndDate(of_raw);
                 utils::Stamp::citationRangerBCPAndDate(of);
-                option.print_option_file(of_raw);
-                option.print_option_file(of);
+                option.report(of_raw);
+                option.report(of);
 
                 of << "\n\n#region_chr\tregion_start\tregion_end"
                       "\tregion_ID\tregion_pval\tregion_strand\n";
@@ -226,7 +226,7 @@ namespace app {
                 rptr.setRegionLength(option.getHtmlRegionLength());
                 map<string, vector<called_peak> > passFDR;
                 app::aux::filterByFDR(detector->_resultRegions, passFDR,
-                                      option.getCut_off());
+                                      option.getCutOff());
 
                 rptr.generate_report(treads, creads, passFDR, option);
 

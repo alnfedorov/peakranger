@@ -26,26 +26,16 @@ namespace boost {
 //@to_be_depreciated
 class cmd_option_parser {
 public:
-    cmd_option_parser() {
-
-    }
+    cmd_option_parser() = default;
 
     cmd_option_parser(int argc, char **argv) :
-            _pad(false), _nowig(true), _verboseRequested(false), _helpRequested(
-            false), _versionRequested(false), _chrtableSpecified(false), _outputSpecified(
-            false), _estimateExt(false), _ac(argc), _av(argv) {
+            _pad(false), _verboseRequested(false), _chrtableSpecified(false), _ac(argc), _av(argv) {
         maxThreads = boost::thread::hardware_concurrency();
     }
 
-    virtual ~cmd_option_parser() {
-    }
+    virtual ~cmd_option_parser() = default;
 
-    virtual void print_option_file(std::ostream &) const {
-    }
-
-    virtual void printHelp() const {
-
-    }
+    virtual void report(std::ostream &) const = 0;
 
     virtual void parse() = 0;
 
@@ -63,11 +53,7 @@ public:
 public:
     std::string getChr_table() const;
 
-    std::string getControl_dir() const;
-
-    std::string getControl_file() const;
-
-    double getCut_off() const;
+    double getCutOff() const;
 
     double getDelta() const;
 
@@ -79,55 +65,25 @@ public:
 
     uint32_t getNo_of_thread() const;
 
-    bool getNowig() const;
-
     std::string getOutput_dir() const;
 
     std::string getOutput_file() const;
 
     bool getPad() const;
 
-    std::string getTreat_dir() const;
+    const std::vector<std::string>& getTreatFiles() const;
 
-    std::string getTreat_file() const;
+    const std::vector<std::string>& getControlFiles() const;
 
     uint32_t getBandwidth() const;
 
-    bool getHelp() const;
-
-    bool getSpecified_output() const;
-
-    bool getUsing_chr_table() const;
-
-    bool getVersion() const;
-
     void setAc(int _ac);
 
-    void setAv(char **_av);
-
-    void setBandwidth(uint32_t _bandwidth);
-
     void setChr_table(std::string _chr_table);
-
-    void setControl_dir(std::string _control_dir);
-
-    void setControl_file(std::string _control_file);
-
-    void setCut_off(double _p_cut_off);
-
-    void setDelta(double _delta);
 
     void setExt_length(uint32_t _ext_length);
 
     void setFormat(std::string _format);
-
-    void setHelp(bool _help);
-
-    void setMode(std::string _mode);
-
-    void setNo_of_thread(uint32_t _no_of_thread);
-
-    void setNowig(bool _nowig);
 
     void setOutput_dir(std::string _output_dir);
 
@@ -141,17 +97,7 @@ public:
 
     void setTreat_file(std::string _treat_file);
 
-    void setUsing_chr_table(bool _using_chr_table);
-
-    void setVersion(bool _version);
-
     bool getChrtableSpecified() const;
-
-    bool getHelpRequested() const;
-
-    bool getOutputSpecified() const;
-
-    bool getVersionRequested() const;
 
     void setChrtableSpecified(bool _chrtableSpecified);
 
@@ -161,53 +107,19 @@ public:
 
     void setVersionRequested(bool _versionRequested);
 
-    std::string getChr_table_file() const;
-
-    void setChr_table_file(std::string _chr_table_file);
-
     bool getVerboseRequested() const;
 
     void setVerboseRequested(bool _verboseRequested);
 
-    std::string getTreatfilename() const;
-
-    void setTreatfilename(std::string _treatfilename);
-
-    std::string getControlfilename() const;
-
-    void setControlfilename(std::string _controlfilename);
-
-    std::string getControl_wig_file() const;
-
-    std::string getTreat_wig_file() const;
-
-    void setControl_wig_file(std::string _control_wig_file);
-
-    void setTreat_wig_file(std::string _treat_wig_file);
-
     std::vector<std::string> getChrs_to_parse() const;
 
-    void setChrs_to_parse(std::vector<std::string> _chrs_to_parse);
-
     uint32_t getBinlength() const;
-
-    void setBinlength(uint32_t _binlength);
-
-    std::string getConfigFile() const;
 
     void setConfigFile(std::string _config_file);
 
     double getFdrCutOff() const;
 
-    void setFdrCutOff(double _fdr_cut_off);
-
-    std::string getReportName() const;
-
-    void setReportName(std::string _report_name);
-
     uint32_t getHtmlRegionLength() const;
-
-    void setHtmlRegionLength(uint32_t _html_region_length);
 
     std::string getGeneAnnoFile() const {
         return _gene_anno_file;
@@ -215,14 +127,6 @@ public:
 
     void setGeneAnnoFile(std::string geneAnnoFile) {
         _gene_anno_file = geneAnnoFile;
-    }
-
-    bool getEstimateExt() const {
-        return _estimateExt;
-    }
-
-    void setEstimateExt(bool _estimateExt) {
-        this->_estimateExt = _estimateExt;
     }
 
     uint32_t getPeakHeightCutoff() const {
@@ -241,51 +145,32 @@ public:
     static const std::string format_eland;
 
 protected:
-
-    std::string _treat_file;
-    std::string _treat_dir;
-//    std::vector<std::string> _treat_dir;
-    std::string _treatfilename;
-    std::string _control_file;
-    std::string _control_dir;
-//    std::vector<std::string> _control_dir;
-    std::string _controlfilename;
+    std::vector<std::string> _treat_files;
+    std::vector<std::string> _control_files;
     std::string _output_file;
     std::string _output_dir;
-    std::string _control_wig_file;
     std::string _config_file;
-    std::string _treat_wig_file;
     std::string _chr_table_file;
     std::string _format;
     std::string _mode;
-    std::string _split_str;
-    std::string _verbose_str;
-    std::string _pad_str;
-    std::string _nowig_str;
-    std::string _report_name;
     std::string _gene_anno_file;
 
-    double _p_cut_off;
-    double _delta;
-    double _fdr_cut_off;
-    uint32_t _no_of_thread;
-    uint32_t _ext_length;
-    uint32_t _bandwidth;
-    uint32_t _threshold;
-    uint32_t _binlength;
-    uint32_t _html_region_length;
-    bool _pad;
-    bool _nowig;
-    bool _verboseRequested;
-    bool _helpRequested;
-    bool _versionRequested;
-    bool _chrtableSpecified;
-    bool _outputSpecified;
-    bool _estimateExt;
-    int _ac;
-    char **_av;
+    double _p_cut_off{};
+    double _delta{};
+    double _fdr_cut_off{};
+    uint32_t _no_of_thread{};
+    uint32_t _ext_length{};
+    uint32_t _bandwidth{};
+    uint32_t _threshold{};
+    uint32_t _binlength{};
+    uint32_t _html_region_length{};
+    bool _pad{};
+    bool _verboseRequested{};
+    bool _chrtableSpecified{};
+    int _ac{};
+    char **_av{};
     std::vector<std::string> _chrs_to_parse;
-    uint32_t maxThreads;
+    uint32_t maxThreads{};
 };
 
 #endif /* CMD_OPTION_PARSER_H_ */

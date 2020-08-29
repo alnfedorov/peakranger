@@ -18,21 +18,17 @@ namespace options {
     public:
         ccat_cmd_option_parser(int argc, char **argv, const std::string &version);
 
-        ~ccat_cmd_option_parser();
+        ~ccat_cmd_option_parser() override;
 
-        void parse();
+        void parse() override;
 
-        void print_option(std::ostream &os);
-
-        void print_option_file(std::ostream &os) const;
+        void report(std::ostream &os) const override;
 
         bool isSplit() const;
 
         void setSplit(bool _split);
 
         bool needHtml() const;
-
-        void setNeedHtml(bool _html);
 
         std::string version;
 

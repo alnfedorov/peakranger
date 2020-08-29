@@ -22,15 +22,13 @@ public:
 
     void print_option(std::ostream &os);
 
-    void print_option_file(std::ostream &os) const;
+    void report(std::ostream &os) const;
 
     bool isSplit() const;
 
     void setSplit(bool _split);
 
     bool needHtml() const;
-
-    void setNeedHtml(bool _html);
 
     std::string version;
 private:

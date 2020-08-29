@@ -19,13 +19,9 @@ namespace options {
 
     int BCPOption::min_args = 2;
 
-    BCPOption::BCPOption() {
+    BCPOption::BCPOption() = default;
 
-    }
-
-    BCPOption::~BCPOption() {
-
-    }
+    BCPOption::~BCPOption() = default;
 
     void BCPOption::parse() {
         hasEnoughArgs(_ac);
@@ -54,87 +50,28 @@ namespace options {
         if (mVM.count("verbose")) {
             setVerboseRequested(true);
         }
-
         if (mVM.count("version")) {
             oa::printVersion(cout, version);
         }
-
         if (mVM.count("report")) {
-
-            this->setNeedHtml(true);
+            _html = true;
         } else {
-            this->setNeedHtml(false);
+            _html = false;
         }
-
         if (mVM.count("gene_annot_file")) {
-            this->setNeedHtml(true);
+            _html = true;
             oa::file_r_good(_gene_anno_file.c_str());
         }
-        oa::require("data", mVM);
-        oa::require("control", mVM);
-        oa::require("output", mVM);
-        oa::require("format", mVM);
 
-        if (mVM.count("report")) {
-            oa::require("gene_annot_file", mVM);
-        }
+        verifyOptions();
 
-        oa::file_r_good(_treat_dir.c_str());
-        oa::file_r_good(_control_dir.c_str());
         string dir, file, file_ext;
-
-        utils::stringutil::get_dir_file(_treat_dir, dir, file, file_ext);
-
-        setTreat_file(_treat_dir);
-        setTreat_dir(dir);
-        setTreatfilename(file);
-
-        utils::stringutil::get_dir_file(_control_dir, dir, file, file_ext);
-
-        setControl_file(_control_dir);
-        setControl_dir(dir);
-        setControlfilename(file);
-
-        oa::file_w_good(_output_dir.c_str());
         utils::stringutil::get_dir_file(_output_dir, dir, file, file_ext);
         //todo: linux only
-        setTreat_wig_file(dir + "/" + _treatfilename + ".wig");
-        setControl_wig_file(dir + "/" + _controlfilename + ".wig");
         setOutput_file(_output_dir);
         setOutput_dir(dir);
 
-        setReportName(dir + "/reports");
-
-
         verifyOptions();
-    }
-
-#define VALUEOF(id) mVM[id].as<string>()
-
-    std::string BCPOption::printParsedOpts() const {
-        stringstream ss;
-        ss << "\nprogram version:            " << version;
-        ss << "\nData files:\n";
-        ss << "\n File format:            " << mVM["format"].as<string>();
-        ss << "\n Sample file:            " << mVM["data"].as<string>();
-        ss << "\n Control file:           " << mVM["control"].as<string>();
-        ss << "\nQualities:\n";
-        ss << "\n P value cut off:        " << mVM["pval"].as<string>();
-        ss << "\n Window size:            " << mVM["win_size"].as<string>();
-        ss << "\n Read extension length:  " << mVM["ext_length"].as<string>();
-        ss << "\nOutput:\n";
-        ss << " Regions:                "
-           << mVM["out"].as<string>() + "_region.bed";
-        ss << "\n HTML reports:           ";
-        if (mVM.count("report")) {
-            ss << "Enabled";
-            ss << " Plot region length:     " << mVM["plot_region"].as<string>();
-            ss << " Annotation file:        "
-               << mVM["gene_annot_file"].as<string>();
-        } else {
-            ss << "Disabled(--report not specified)\n";
-        }
-        return ss.str();
     }
 
     void BCPOption::hasEnoughArgs(int argc) {
@@ -148,28 +85,38 @@ namespace options {
         return this->_html;
     }
 
-    void BCPOption::setNeedHtml(bool _html) {
-        this->_html = _html;
-    }
-
-
     void BCPOption::verifyOptions() {
         oa::require("data", mVM);
+        oa::require("control", mVM);
         oa::require("output", mVM);
         oa::require("format", mVM);
 
-        oa::file_r_good(mVM["data"].as<string>().c_str());
-        oa::file_w_good(mVM["output"].as<string>().c_str());
+        if (mVM.count("report")) {
+            oa::require("gene_annot_file", mVM);
+        }
+
+        for (const auto& f: _treat_files)
+            oa::file_r_good(f.c_str());
+
+        for (const auto& f: _control_files)
+            oa::file_r_good(f.c_str());
+
+        oa::file_w_good(_output_dir.c_str());
     }
 
-    void BCPOption::print_option(ostream &os) {
+    void BCPOption::report(std::ostream &os) const {
         os << ("program version:          ") << version << endl;
         os << ("Data files:\n");
         os << (" File format:             ") << getFormat() << endl;
-        os << (" Sample file:             ") << getTreat_file() << endl;
-        os << (" Control file:            ") << getControl_file() << endl;
+        os << (" Treatment file[s]:") << endl;
+        for (const auto& f: getTreatFiles())
+            os << "                          " << f << endl;
+        os << (" Control file[s]:") << endl;
+        for (const auto& f: getControlFiles())
+            os << "                          " << f << endl;
         os << ("Qualities:\n");
-        os << (" P value cut off:         ") << getCut_off() << endl;
+        os << (" P value cut off:         ") << getCutOff() << endl;
+        os << (" FDR cut off:             ") << getFdrCutOff() << endl;
         os << (" sliding window size:     ") << slidingWinSize << endl;
         os << (" Read extension length:   ") << _ext_length << endl;
         os << ("Output:\n");
@@ -184,34 +131,7 @@ namespace options {
             os << "Disabled(--report not specified)\n";
         }
     }
-
-
-    void BCPOption::print_option_file(ostream &os) const {
-        os << ("#program version:           ") << version << endl;
-        os << ("#Data files:\n");
-        os << ("# File format:             ") << getFormat() << endl;
-        os << ("# Sample file:             ") << getTreat_file() << endl;
-        os << ("# Control file:            ") << getControl_file() << endl;
-        os << ("#Qualities:\n");
-        os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
-        os << ("# sliding window size:     ") << slidingWinSize << endl;
-        os << ("# Read extension length:   ") << _ext_length << endl;
-        os << ("#Output:\n");
-        os << ("# Regions:                 ") << getOutput_file() + "_region.bed"
-           << endl;
-
-        os << ("# HTML reports:            ");
-        if (needHtml()) {
-            os << "Enabled" << endl;
-            os << ("# Plot region length:      ") << getHtmlRegionLength() << endl;
-            os << ("# Annotation file:         ") << getGeneAnnoFile() << endl;
-        } else {
-            os << "Disabled(--report not specified)\n";
-        }
-
-    }
-
-} /* namespace options */
+} /* namespace report */
 
 
 options::BCPOption::BCPOption(int argc, char **argv,
@@ -235,9 +155,9 @@ options::BCPOption::BCPOption(int argc, char **argv,
 
     input.add_options()
 
-            ("data,d", po::value<string>(&_treat_dir), "data file")
+            ("data,d", po::value<vector<string>>(&_treat_files)->multitoken()->required(), "data file[s]")
 
-            ("control,c", po::value<string>(&_control_dir), "control file")
+            ("control,c", po::value<vector<string>>(&_control_files)->multitoken()->required(), "control file[s]")
 
             ("format", po::value<string>(&_format),
              "the format of the data file, can be one of : "
