@@ -8,7 +8,6 @@
 #ifndef TRACER_H_
 #define TRACER_H_
 
-#include "utils/timer.h"
 #include <iostream>
 
 namespace utils {

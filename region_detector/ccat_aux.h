@@ -69,36 +69,6 @@ namespace ccat_aux {
         return tags.size();
     }
 
-    class mm {
-    public:
-
-        static std::ostream &map(std::ostream &os, const peak_t &pk) {
-            os << pk.foldChange;
-            return os;
-        }
-
-        static std::string map(const peak_t &pk) {
-            std::stringstream ss;
-            ss << pk.foldChange;
-            return ss.str();
-        }
-    };
-
-    class bin_t_l1 {
-    public:
-        static int &map(bin_t &pk) {
-
-            return pk.l1Counts;
-        }
-    };
-
-    class bin_t_l2 {
-    public:
-        static int &map(bin_t &pk) {
-            return pk.l2Counts;
-        }
-    };
-
 }
 
 #endif /* CCAT_AUX_H_ */

@@ -16,43 +16,6 @@ using namespace std;
 using namespace boost;
 using namespace ranger::concepts;
 
-string reads::getBlockedR1Chr(const BamAlignment &read,
-                              const RefVector &refvec) {
-}
-
-string reads::getBlockedR2Chr(const BamAlignment &read,
-                              const RefVector &refvec) {
-}
-
-string reads::getBlockedRChr(const int32_t &ref_id, const RefVector &refvec) {
-}
-
-int32_t reads::getBlockedR1Start(const BamAlignment &read) {
-}
-
-int32_t reads::getBlockedR1End(const BamAlignment &read) {
-}
-
-void reads::getBlockedR1StartEnd(const BamAlignment &read, int32_t &start,
-                                 int32_t &end) {
-}
-
-int32_t reads::getBlockedR2Start(const BamAlignment &read) {
-}
-
-int32_t reads::getBlockedR2End(const BamAlignment &read) {
-}
-
-void reads::getBlockedR2StartEnd(const BamAlignment &read, int32_t &start,
-                                 int32_t &end) {
-}
-
-Strand reads::getBlockedR1Strand(const BamAlignment &read) {
-}
-
-Strand reads::getBlockedR2Strand(const BamAlignment &read) {
-}
-
 BlockedBamHit reads::getBlockedRead1FromPEBamRead(const BamAlignment &read,
                                                   const RefVector &ref) {
     return BlockedBamHit(read, ref);
@@ -73,11 +36,6 @@ void reads::getBlockedBamHitsFromPEBamRead(const BamAlignment &read,
 
 RegionInt32 reads::regionFromCigar(const CigarString &cigar) {
     return cigar.toRegion();
-}
-
-Read reads::readFromCigar(const CigarString &cigar) {
-
-    return readFromCigar(cigar, "", Strand(true));
 }
 
 void reads::getCigarString(const BamAlignment &bam,

@@ -65,30 +65,6 @@ void wig_builder::_process(uint32_t start,
     LOG_DEBUG1("QUIT: wig_builder::_process");
 }
 
-void wig_builder::_process_wig(uint32_t start,
-                               uint32_t end,
-                               uint32_t readlength,
-                               uint32_t readextlength,
-                               std::vector<uint32_t>::iterator readsStart,
-                               std::vector<uint32_t>::iterator readsEnd,
-                               std::vector<uint32_t>::iterator nreadsStart,
-                               std::vector<uint32_t>::iterator nreadsEnd,
-                               wigs &r) {
-    LOG_DEBUG1("Entering wig_builder::_process_wig");
-    wigs _r;
-    _process(start,
-             end,
-             readlength,
-             readextlength,
-             readsStart,
-             readsEnd,
-             nreadsStart,
-             nreadsEnd,
-             _r);
-    _compile_wig(_r,
-                 r);
-    LOG_DEBUG1("QUIT: wig_builder::_process_wig");
-}
 
 void wig_builder::_compile_wig(wigs &_r,
                                wigs &r) {
@@ -167,52 +143,6 @@ void wig_builder::_process(uint32_t readlength,
     sort(r.begin(),
          r.end(),
          wig::compa);
-}
-
-void wig_builder::_process_wig(uint32_t readlength,
-                               uint32_t readextlength,
-                               std::vector<uint32_t>::iterator readsStart,
-                               std::vector<uint32_t>::iterator readsEnd,
-                               std::vector<uint32_t>::iterator nreadsStart,
-                               std::vector<uint32_t>::iterator nreadsEnd,
-                               wigs &r) {
-    LOG_DEBUG1("Entering wig_builder::_process_wig");
-    wigs _r;
-    _process(readlength,
-             readextlength,
-             readsStart,
-             readsEnd,
-             nreadsStart,
-             nreadsEnd,
-             _r);
-    _compile_wig(_r,
-                 r);
-    LOG_DEBUG1("QUIT: wig_builder::_process_wig");
-}
-
-void wig_builder::_process_wig(uint32_t start,
-                               uint32_t end,
-                               uint32_t readlength,
-                               uint32_t readextlength,
-                               std::vector<uint32_t>::iterator readsStart,
-                               std::vector<uint32_t>::iterator readsEnd,
-                               std::vector<uint32_t>::iterator nreadsStart,
-                               std::vector<uint32_t>::iterator nreadsEnd,
-                               ostream &r) {
-    LOG_DEBUG1("Entering wig_builder::_process_wig");
-    wigs _r;
-    _process(start,
-             end,
-             readlength,
-             readextlength,
-             readsStart,
-             readsEnd,
-             nreadsStart,
-             nreadsEnd,
-             _r);
-    _compile_wig(_r,
-                 r);
-    LOG_DEBUG1("QUIT: wig_builder::_process_wig");
 }
 
 void wig_builder::_binned_wig_compiler(uint32_t _binlength,

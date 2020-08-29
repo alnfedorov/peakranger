@@ -8,22 +8,12 @@
 #include "fdr_based_thresholder.h"
 #include "region_profile/RegionProfile.h"
 #include "math/distributions.h"
-#include "region_profile/arrayThresholder.h"
-#include "region_profile/points_profile.h"
 #include "utils/exceptions.h"
 #include "region_profile/profile_smoother.h"
-#include "region_profile/peakseq_profile_thresholder.h"
-#include "region_profile/peakseq_profile.h"
 #include "option_parser/cmd_option_parser.h"
-#include "utils/timer.h"
 #include "utils/assert_helpers.h"
-#include "short_reads/point_reads.h"
-#include "wiggle/wigbuilder.h"
-#include "wiggle/wig.h"
 #include "short_reads/reads_aux.h"
 
-#include <boost/make_shared.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
@@ -31,10 +21,9 @@
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include <math.h>
-#include <stdint.h>
+#include <cmath>
+#include <cstdint>
 #include <algorithm>
-#include <fstream>
 #include <memory>
 #include <vector>
 #include <sstream>
@@ -50,6 +39,7 @@
 #define foreach BOOST_FOREACH
 using namespace std;
 typedef vector<pair<uint32_t, int8_t> > reads_count_t;
+typedef std::pair<uint32_t, uint32_t> profile_pos_t;
 
 namespace {
     boost::mutex _chr_mt;
@@ -536,7 +526,6 @@ uint32_t fdr_based_thresholder::findThresh(vector<Thresh> &rndPeaks,
 }
 
 void fdr_based_thresholder::_processChr(ostream &os, bool print_stream) {
-    typedef pair<vector<uint16_t>::iterator, vector<uint16_t>::iterator> profile_region;
     vector<profile_pos_t> profile;
     vector<uint16_t> null_profile(0, 0);
 

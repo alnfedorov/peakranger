@@ -9,8 +9,8 @@
 #include "utils/stringutil.h"
 #include "utils/util_print.h"
 #include "option_parser/OptionAux.h"
-#include <stdlib.h>
-#include <stdint.h>
+#include <cstdlib>
+#include <cstdint>
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
@@ -21,7 +21,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
-#include <stdio.h>
+#include <cstdio>
 #include "utils/exceptions.h"
 
 using namespace std;
@@ -52,15 +52,15 @@ peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
 
     input.add_options()
 
+//            ("data,d", po::value<vector<std::string>>(&_treat_dir)->multitoken()->required(), "data file[s]")
             ("data,d", po::value<string>(&_treat_dir), "data file")
 
+//            ("control,c", po::value<vector<std::string>>(&_control_dir)->multitoken()->required(), "control file[s]")
             ("control,c", po::value<string>(&_control_dir), "control file")
 
             ("format", po::value<string>(&_format),
-             "the format of the data file, can be one of : "
+             "the format of the data file[s], can be one of : "
              "bowtie, sam, bam and bed");
-
-//	("config", po::value<string>(&_config_file), "configuration file");
 
     output.add_options()
 

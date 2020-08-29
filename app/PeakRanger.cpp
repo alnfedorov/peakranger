@@ -35,7 +35,6 @@
 #include "short_reads/readstools.h"
 #include "concepts/RegionInt32.h"
 #include "ggplay/chipseqhtmlreporter.h"
-#include "region_detector/ccat_main.h"
 
 using namespace std;
 using namespace boost;
@@ -46,7 +45,6 @@ using namespace ranger::concepts;
 #define foreach BOOST_FOREACH
 
 typedef map<string, vector<called_peak> > enriched_regions;
-typedef vector<called_peak>::iterator ritrr;
 typedef enriched_regions::iterator pritrr;
 
 namespace {

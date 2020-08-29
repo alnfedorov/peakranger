@@ -215,9 +215,9 @@ namespace options {
 
 
 options::BCPOption::BCPOption(int argc, char **argv,
-                              const std::string &version) : cmd_option_parser(argc, argv), _html(false),
-                                                            version(version), all("\nbcp " + version + "\n\nUsage"),
-                                                            popt() {
+                              const std::string &version) : cmd_option_parser(argc, argv), version(version),
+                                                            _html(false),
+                                                            all("\nbcp " + version + "\n\nUsage"), popt() {
 
     opt other("Other");
     opt input("Input");

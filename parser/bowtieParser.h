@@ -17,18 +17,15 @@ public:
 
     }
 
-    void parse(Reads &reads, std::string &filename);
+    void parse(Reads &reads, std::string &filename) override;
 
-    void parse(Reads &reads, std::istream &is);
+    void parse(Reads &reads, std::istream &is) override;
 
     void parse(Reads &reads, std::istream &is,
-               std::vector<std::string> &chrs_to_parse);
+               std::vector<std::string> &chrs_to_parse) override;
 
     void parse(Reads &reads, std::string &filename,
-               std::vector<std::string> &chrs_to_parse);
-
-protected:
-    void inline _parse_line(Reads &reads, std::string &line);
+               std::vector<std::string> &chrs_to_parse) override;
 };
 
 #endif /* BOWTIEPARSER_H_ */

@@ -24,32 +24,11 @@ namespace BamTools {
 
 namespace reads {
 
-    std::string getBlockedR1Chr(const BamTools::BamAlignment &read,
-                                const BamTools::RefVector &refvec);
-
-    std::string getBlockedR2Chr(const BamTools::BamAlignment &read,
-                                const BamTools::RefVector &refvec);
-
-    std::string getBlockedRChr(const int32_t &ref_id,
-                               const BamTools::RefVector &refvec);
-
-    int32_t getBlockedR1Start(const BamTools::BamAlignment &read);
-
-    int32_t getBlockedR1End(const BamTools::BamAlignment &read);
-
     void getBlockedR1StartEnd(const BamTools::BamAlignment &read, int32_t &start,
                               int32_t &end);
 
-    int32_t getBlockedR2Start(const BamTools::BamAlignment &read);
-
-    int32_t getBlockedR2End(const BamTools::BamAlignment &read);
-
     void getBlockedR2StartEnd(const BamTools::BamAlignment &read, int32_t &start,
                               int32_t &end);
-
-    Strand getBlockedR1Strand(const BamTools::BamAlignment &read);
-
-    Strand getBlockedR2Strand(const BamTools::BamAlignment &read);
 
     BlockedBamHit getBlockedRead1FromPEBamRead(const BamTools::BamAlignment &read,
                                                const BamTools::RefVector &ref);
@@ -63,8 +42,6 @@ namespace reads {
     ranger::concepts::RegionInt32 regionFromCigar(const CigarString &cigar);
 
     bool isAdditiveCigar(const CigarString &c);
-
-    Read readFromCigar(const CigarString &cigar);
 
     Read readFromCigar(const CigarString &cigar, const std::string &chr,
                        const Strand &strand);

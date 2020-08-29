@@ -38,7 +38,7 @@ namespace ccat_aux {
 
         //CountFragmentsInOneChrom: sample portion of the tags by ratio, and add fragment counts to the bins
         void CountFragmentsInOneChrom(const chr_t &chrom,
-                                      std::vector<bin_t> &bins, int binNum, double l1Ratio,
+                                      std::vector<bin_t> &bins, size_t binNum, double l1Ratio,
                                       double l2Ratio, size_t fragmentSize) const;
 
         void AllocBinMem(const std::vector<chr_t> &chroms, int chromNum,

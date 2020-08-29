@@ -15,12 +15,6 @@
 
 namespace reads {
 
-    class ReadPairPrinter {
-    public:
-        void operator()(const ReadPair<Read> &rp);
-
-    };
-
     bool R1IsInInChr(const ReadPair<Read> &rp, const std::string &chr);
 
     bool R2IsInInChr(const ReadPair<Read> &rp, const std::string &chr);

@@ -99,7 +99,6 @@ namespace ccat_aux {
 
         size_t maxPossiblePeaks = (chrom.chromSize) / config.movingStep + 1;
         vector<peak_t> tmpPeaks(maxPossiblePeaks);
-        size_t minDist;
 
         profile.setFragmentSize(config.fragmentSize);
         profile.setMovingStep(config.movingStep);
@@ -120,8 +119,6 @@ namespace ccat_aux {
                               config.slidingWinSize / config.movingStep / 2);
 
         LOG_DEBUG2("maxL1Count : " << maxL1Count);LOG_DEBUG2("maxL2Count : " << maxL2Count);
-
-        minDist = config.slidingWinSize / config.movingStep + 1;
 
         getMaxProfilePnt(maxL1Count, profile1);
         getMaxProfilePnt(maxL2Count, profile2);
@@ -176,7 +173,6 @@ namespace ccat_aux {
         int tmpStart, tmpEnd;
         size_t i;
         size_t peakNum;
-        bool hasBigdog;
         peakNum = 0;
 
         assert_geq(peaks.size(), profile.size());
@@ -221,8 +217,6 @@ namespace ccat_aux {
 
                     if (hasLargerNeighbors(minDist, tmpStart, tmpEnd, profile,
                                            peaks[peakNum])) {
-
-                        hasBigdog = true;
                         tmpStart = -1;
                         tmpEnd = -1;
 

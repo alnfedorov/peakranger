@@ -36,17 +36,17 @@ namespace parser {
 
     class BamFileCoordinateSortedOrder : public BamFileSortOrder {
     public:
-        bool match(const std::string &file, uint32_t linesToTest);
+        bool match(const std::string &file, uint32_t linesToTest) override;
     };
 
     class BamFileCoordinateUnSortedOrder : public BamFileSortOrder {
     public:
-        bool match(const std::string &file, uint32_t linesToTest);
+        bool match(const std::string &file, uint32_t linesToTest) override;
     };
 
     class BamFileReadNameSortedOrder : public BamFileSortOrder {
     public:
-        bool match(const std::string &file, uint32_t linesToTest);
+        bool match(const std::string &file, uint32_t linesToTest) override;
     };
 
     class BamFileReadNameUnSortedOrder : public BamFileSortOrder {

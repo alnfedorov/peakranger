@@ -18,7 +18,7 @@ namespace parser {
 
     class BamBlockPEReadsParser {
     public:
-        BamBlockPEReadsParser(utils::TimeStampTracer &tracer);
+        explicit BamBlockPEReadsParser(utils::TimeStampTracer &tracer);
 
         ~BamBlockPEReadsParser();
 

@@ -574,7 +574,7 @@ int bcp_algo::frag_count2(int rec) {
 }
 
 bcp_algo::bcp_algo() :
-        Weight(3000000, 0), frag_size(200), win_size(200), p_value(0.001), L1(3000000), L2(1500000), N(56) {
+        frag_size(200), win_size(200), p_value(0.001), L1(3000000), L2(1500000), N(56), Weight(3000000, 0) {
 }
 
 bcp_algo::~bcp_algo() {

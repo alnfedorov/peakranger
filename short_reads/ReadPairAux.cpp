@@ -10,11 +10,6 @@
 
 using namespace std;
 
-void reads::ReadPairPrinter::operator()(const ReadPair<Read> &rp) {
-    cout << rp.r1();
-    cout << rp.r2();
-}
-
 namespace reads {
 
     bool R1IsInInChr(const ReadPair<Read> &rp, const std::string &chr) {

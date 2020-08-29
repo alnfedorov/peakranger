@@ -15,7 +15,7 @@ namespace bam_app {
 
     class OnlineBamMultiReportApp {
     public:
-        OnlineBamMultiReportApp(utils::TimeStampTracer &tracer);
+        explicit OnlineBamMultiReportApp(utils::TimeStampTracer &tracer);
 
         virtual ~OnlineBamMultiReportApp();
 

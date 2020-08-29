@@ -46,7 +46,6 @@ namespace options {
         bool _html;
         po::opt all;
         po::p_opt popt;
-        po::opt running_modes;
     };
 
 } /* namespace options */

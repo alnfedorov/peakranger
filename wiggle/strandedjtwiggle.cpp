@@ -10,12 +10,8 @@
 #include "utils/logger.h"
 #include "short_reads/readstools.h"
 #include "utils/assert_helpers.h"
-#include "utils/exceptions.h"
-#include "utils/stringutil.h"
 #include "utils/Stamp.h"
-#include "region_profile/profilezoom.h"
 
-#include <fstream>
 #include <iostream>
 #include <stdint.h>
 #include <algorithm>
@@ -655,8 +651,6 @@ void stranded_jtwiggle::_process_neg(uint32_t start, uint32_t end,
             "readlength:" << readlength);LOG_DEBUG1("readextlength:" << readextlength);
     uint32_t a;
     uint32_t b;
-    uint32_t arrayStart;
-    uint32_t arrayEnd;
     uint32_t read;
     typedef vector<pair<uint32_t, double> > reads_count_t;
     reads_count_t reads_count;
@@ -677,8 +671,6 @@ void stranded_jtwiggle::_process_neg(uint32_t start, uint32_t end,
         a = read + readlength - readextlength;
         b = read + readlength;
         //        cout <<"wig negread:"<<read<< " a:"<<a<<" b:"<<b<<endl;
-        arrayStart = 0;
-        arrayEnd = 0;
 
         if (a < end && b > start) {
             inRange = true;

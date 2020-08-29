@@ -1,8 +1,6 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "log.h"
-
 #include "common/stl_header.h"
 //todo: scoped lock for multi-threading debug
 #ifdef USE_LOGGING
@@ -51,31 +49,5 @@
 #define LOG_ERROR(msg)
 #define LOG_DONE()
 #endif
-
-class FunLogger {
-public:
-    FunLogger();
-
-    FunLogger(const char *msg)
-            : m(msg) {
-        LOG_DEBUG1("Entering " << m);
-    }
-
-    FunLogger(std::string msg)
-            : m(msg) {
-        LOG_DEBUG1("Entering " << m);
-    }
-
-    void setMsg(const char *msg) {
-        m = std::string(msg);
-    }
-
-    ~FunLogger() {
-        LOG_DEBUG1("Leaving " << m);
-    }
-
-private:
-    std::string m;
-};
 
 #endif /*LOGGER_H*/

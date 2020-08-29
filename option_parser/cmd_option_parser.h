@@ -244,9 +244,11 @@ protected:
 
     std::string _treat_file;
     std::string _treat_dir;
+//    std::vector<std::string> _treat_dir;
     std::string _treatfilename;
     std::string _control_file;
     std::string _control_dir;
+//    std::vector<std::string> _control_dir;
     std::string _controlfilename;
     std::string _output_file;
     std::string _output_dir;

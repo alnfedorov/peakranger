@@ -20,15 +20,15 @@ class bed6_result_reporter : public result_reporter {
 public:
     bed6_result_reporter();
 
-    ~bed6_result_reporter();
+    ~bed6_result_reporter() override;
 
-    void report_fdr_summit(enriched_regions &result, std::ostream &om);
+    void report_fdr_summit(enriched_regions &result, std::ostream &om) override;
 
-    void report_pval_region(enriched_regions &result, std::ostream &om);
+    void report_pval_region(enriched_regions &result, std::ostream &om) override;
 
-    void report_pval_summit(enriched_regions &result, std::ostream &om);
+    void report_pval_summit(enriched_regions &result, std::ostream &om) override;
 
-    void report_fdr_region(enriched_regions &regions, std::ostream &om);
+    void report_fdr_region(enriched_regions &regions, std::ostream &om) override;
 };
 
 #endif /* BED6_RESULT_REPORTER_H_ */

@@ -7,19 +7,16 @@
 
 #include "chipseqhtmlreporter.h"
 #include "wiggle/wig.h"
-#include "region_profile/profilezoom.h"
 #include "tab_file/TabFileParser.h"
 #include "tab_file/TabGene.h"
 #include "tab_file/Region.h"
 #include "utils/timer.h"
-#include "utils/stl_helper.h"
 #include "ggplay/HtmlAux.h"
 #include "ggplay/ImgScriptRunner.h"
 #include "concepts/RegionInt32.h"
 #include <sys/stat.h> //todo: win
 #include <sys/types.h>//todo: win
 #include <sstream>
-#include <fstream>
 #include <stdlib.h>
 #include <algorithm>
 #include <vector>
@@ -651,9 +648,9 @@ void chipseq_html_reporter::run_pk_img_script(string &rf) {
     //todo: win32
 
     string R = "R CMD BATCH " + rf + " /dev/null";
-    int r1 = system(R.c_str());
+    system(R.c_str());
     string rm = "rm -f " + rf;
-    r1 = system(rm.c_str());
+    system(rm.c_str());
 }
 
 void chipseq_html_reporter::run_img_scripts(cmd_option_parser &option,

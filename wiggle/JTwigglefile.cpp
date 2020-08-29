@@ -52,8 +52,6 @@ void JT_wiggle_file::_process(uint32_t start, uint32_t end, uint32_t readlength,
             "readlength:" << readlength);LOG_DEBUG1("readextlength:" << readextlength);
     uint32_t a;
     uint32_t b;
-    uint32_t arrayStart;
-    uint32_t arrayEnd;
     uint32_t read;
     typedef vector<pair<uint32_t, double> > reads_count_t;
     reads_count_t reads_count;
@@ -67,8 +65,6 @@ void JT_wiggle_file::_process(uint32_t start, uint32_t end, uint32_t readlength,
         a = read;
         b = read + readextlength;
 //        cout <<"read:"<<read<< " a:"<<a<<" b:"<<b<<endl;
-        arrayStart = 0;
-        arrayEnd = 0;
 
         if (a < end && b > start) {
             inRange = true;
@@ -126,8 +122,6 @@ void JT_wiggle_file::_process(uint32_t start, uint32_t end, uint32_t readlength,
         a = read + readlength - readextlength;
         b = read + readlength;
 //        cout <<"wig negread:"<<read<< " a:"<<a<<" b:"<<b<<endl;
-        arrayStart = 0;
-        arrayEnd = 0;
 
         if (a < end && b > start) {
             inRange = true;

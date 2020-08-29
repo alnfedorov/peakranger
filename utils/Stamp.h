@@ -8,8 +8,8 @@
 #ifndef STAMP_H_
 #define STAMP_H_
 
-#include "utils/timer.h"
 #include "utils/util_print.h"
+#include "utils/timer.h"
 #include <iostream>
 
 namespace utils {

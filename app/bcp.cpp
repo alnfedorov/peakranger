@@ -22,7 +22,6 @@
 #include "utils/logger.h"
 #include "utils/stringutil.h"
 #include "utils/Stamp.h"
-#include "utils/timer.h"
 #include "short_reads/readstools.h"
 #include "ggplay/chipseqhtmlreporter.h"
 #include "app/bcp.h"

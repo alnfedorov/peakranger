@@ -6,7 +6,6 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/program_options.hpp>
 #include "utils/exceptions.h"

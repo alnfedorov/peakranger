@@ -178,7 +178,7 @@ namespace ccat_aux {
     }
 
     void CCATNoiseRate::CountFragmentsInOneChrom(const ccat_aux::chr_t &chrom,
-                                                 std::vector<ccat_aux::bin_t> &bins, int binNum, double l1Ratio,
+                                                 std::vector<ccat_aux::bin_t> &bins, size_t binNum, double l1Ratio,
                                                  double l2Ratio, size_t fragmentSize) const {
         MARK_FUN("CCATNoiseRate::CountFragmentsInOneChrom");
 
@@ -186,8 +186,7 @@ namespace ccat_aux {
 
         LOG_DEBUG2("l2Ratio: " << l2Ratio);LOG_DEBUG2("BINSIZE: " << BINSIZE);
 
-        size_t j;
-        int tmpIndex;
+        size_t j, tmpIndex;
 
         //count fragments for L1
         for (j = 0; j < binNum; j++) {

@@ -4,7 +4,6 @@
  *  Created on: Jun 27, 2012
  *      Author: xfeng
  */
-#include <stdexcept>
 #include <fstream>
 #include "parser/readsParser.h"
 #include "utils/exceptions.h"
@@ -19,21 +18,17 @@
 #include "result_reporter/result_reporter.h"
 #include "result_reporter/bed6_result_reporter.h"
 #include "wiggle/wiggle_reporter.h"
-#include "wiggle/JTwigglefile.h"
 #include "utils/logger.h"
 #include "utils/stringutil.h"
 #include "utils/Stamp.h"
-#include "utils/timer.h"
 #include "short_reads/readstools.h"
 #include "ggplay/chipseqhtmlreporter.h"
 #include "app/CCAT.h"
-#include "option_parser/CCATOption.h"
 #include "option_parser/OptionAux.h"
 #include "option_parser/ccatcmdoptionparser.h"
 #include "app/AppAux.h"
 #include "tab_file/NearbyGeneFinder.h"
 #include "concepts/RegionInt32.h"
-#include "common/boost_header.h"
 
 using namespace tab_file;
 using namespace std;

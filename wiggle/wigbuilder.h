@@ -20,24 +20,6 @@
 
 class wig_builder {
 public:
-    void _process_wig(uint32_t start, uint32_t end, uint32_t readlength,
-                      uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-                      std::vector<uint32_t>::iterator readsEnd,
-                      std::vector<uint32_t>::iterator nreadsStart,
-                      std::vector<uint32_t>::iterator nreadsEnd, std::ostream &r);
-
-    void _process_wig(uint32_t start, uint32_t end, uint32_t readlength,
-                      uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-                      std::vector<uint32_t>::iterator readsEnd,
-                      std::vector<uint32_t>::iterator nreadsStart,
-                      std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
-
-    void _process_wig(uint32_t readlength, uint32_t readextlength,
-                      std::vector<uint32_t>::iterator readsStart,
-                      std::vector<uint32_t>::iterator readsEnd,
-                      std::vector<uint32_t>::iterator nreadsStart,
-                      std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
-
     void _process(uint32_t start, uint32_t end, uint32_t readlength,
                   uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
                   std::vector<uint32_t>::iterator readsEnd,
@@ -99,8 +81,6 @@ public:
 
         uint32_t a;
         uint32_t b;
-        uint32_t arrayStart;
-        uint32_t arrayEnd;
         uint32_t read;
 
         bool inRange = false;
@@ -112,8 +92,6 @@ public:
             read = *readsStart;
             readsStart++;
             trans(read, readlength, readextlength, a, b);
-            arrayStart = 0;
-            arrayEnd = 0;
             LOG_DEBUG2("Get read : " << read << " a:" << a << " b:" << b);
             if (a < end && b > start) {
                 inRange = true;

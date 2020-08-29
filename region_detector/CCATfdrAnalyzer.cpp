@@ -97,8 +97,7 @@ namespace ccat_aux {
 
         size_t posCount, negCount;
         size_t tmpIndex;
-        int i; //cant be size_t
-        size_t j;
+        size_t i, j;
         double score;
 
         vector<double> p1(l1PeakNum, 0);
@@ -126,9 +125,9 @@ namespace ccat_aux {
             q[j] = (double) (j + 1) / QVALUESTEP;
 
             score = 0;
-            tmpIndex = -1;
+            tmpIndex = l1Peaks.size() + 1;
 
-            for (i = static_cast<int>(l1PeakNum - 1); i >= 0; i--) {
+            for (i = l1PeakNum - 1; i >= 0; i--) {
                 if (i < l1PeakNum - 1) {
                     if (p1[i] - p1[i + 1] < 0.00000001) {
                         continue;
@@ -142,7 +141,7 @@ namespace ccat_aux {
                 }
             }
 
-            if (tmpIndex == -1) {
+            if (tmpIndex == l1Peaks.size() + 1) {
                 value[j] = DBL_MAX;
             } else {
                 value[j] = p1[tmpIndex];

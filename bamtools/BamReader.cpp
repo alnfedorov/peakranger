@@ -843,7 +843,7 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
 
     // see if index is valid BAM index
     char magic[4];
-    size_t elementsRead = fread(magic, 1, 4, indexStream);
+    fread(magic, 1, 4, indexStream);
     if (strncmp(magic, "BAI\1", 4)) {
         printf("Problem with index file - invalid format.\n");
         fclose(indexStream);
@@ -852,7 +852,7 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
 
     // get number of reference sequences
     uint32_t numRefSeqs;
-    elementsRead = fread(&numRefSeqs, 4, 1, indexStream);
+    fread(&numRefSeqs, 4, 1, indexStream);
     if (IsBigEndian) { SwapEndian_32(numRefSeqs); }
 
     // intialize space for BamIndex data structure
@@ -863,7 +863,7 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
 
         // get number of bins for this reference sequence
         int32_t numBins;
-        elementsRead = fread(&numBins, 4, 1, indexStream);
+        fread(&numBins, 4, 1, indexStream);
         if (IsBigEndian) { SwapEndian_32(numBins); }
 
         if (numBins > 0) {
@@ -879,11 +879,11 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
 
             // get binID
             uint32_t binID;
-            elementsRead = fread(&binID, 4, 1, indexStream);
+            fread(&binID, 4, 1, indexStream);
 
             // get number of regionChunks in this bin
             uint32_t numChunks;
-            elementsRead = fread(&numChunks, 4, 1, indexStream);
+            fread(&numChunks, 4, 1, indexStream);
 
             if (IsBigEndian) {
                 SwapEndian_32(binID);
@@ -900,8 +900,8 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
                 // get chunk boundaries (left, right)
                 uint64_t left;
                 uint64_t right;
-                elementsRead = fread(&left, 8, 1, indexStream);
-                elementsRead = fread(&right, 8, 1, indexStream);
+                fread(&left, 8, 1, indexStream);
+                fread(&right, 8, 1, indexStream);
 
                 if (IsBigEndian) {
                     SwapEndian_64(left);
@@ -923,7 +923,7 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
 
         // get number of linear offsets
         int32_t numLinearOffsets;
-        elementsRead = fread(&numLinearOffsets, 4, 1, indexStream);
+        fread(&numLinearOffsets, 4, 1, indexStream);
         if (IsBigEndian) { SwapEndian_32(numLinearOffsets); }
 
         // intialize LinearOffsetVector
@@ -934,7 +934,7 @@ bool BamReader::BamReaderPrivate::LoadIndex(void) {
         uint64_t linearOffset;
         for (int j = 0; j < numLinearOffsets; ++j) {
             // read a linear offset & store
-            elementsRead = fread(&linearOffset, 8, 1, indexStream);
+            fread(&linearOffset, 8, 1, indexStream);
             if (IsBigEndian) { SwapEndian_64(linearOffset); }
             offsets.push_back(linearOffset);
         }

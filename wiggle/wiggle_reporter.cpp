@@ -182,8 +182,6 @@ void wiggle_reporter::_process(uint32_t start,
     LOG_DEBUG1("readextlength:" << readextlength);
     uint32_t a;
     uint32_t b;
-    uint32_t arrayStart;
-    uint32_t arrayEnd;
     uint32_t read;
     typedef vector<pair<uint32_t, double> > reads_count_t;
     reads_count_t reads_count;
@@ -198,8 +196,6 @@ void wiggle_reporter::_process(uint32_t start,
         readsStart++;
         a = read;
         b = read + readextlength;
-        arrayStart = 0;
-        arrayEnd = 0;
 
         if (a < end && b > start) {
             inRange = true;
@@ -257,8 +253,6 @@ void wiggle_reporter::_process(uint32_t start,
         if (read + readlength < readextlength) continue;
         a = read + readlength - readextlength;
         b = read;
-        arrayStart = 0;
-        arrayEnd = 0;
 
         if (a < end && b > start) {
             inRange = true;

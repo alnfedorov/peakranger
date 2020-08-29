@@ -31,12 +31,12 @@ namespace bam_app {
 
     void StockBamMultipleDatasetsApp::parseReads(
             const std::vector<std::string> &files) {
-                foreach(std::string file, files) {
-                        tracer << "[" << mAppID << "]" << "Parsing " << file << "\n";
-                        mReads.push_back(PairEndedReads<BlockedRead>());
-                        mParser->parse(mReads.back(), file);
-                        tracer << "[" << mAppID << "]" << "Parsing Complete\n";
-                    }
+        for (const auto &file: files) {
+            tracer << "[" << mAppID << "]" << "Parsing " << file << "\n";
+            mReads.push_back(PairEndedReads<BlockedRead>());
+            mParser->parse(mReads.back(), file);
+            tracer << "[" << mAppID << "]" << "Parsing Complete\n";
+        }
     }
 
     void StockBamMultipleDatasetsApp::report(std::ostream &os) {
