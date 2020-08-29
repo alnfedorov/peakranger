@@ -1202,26 +1202,6 @@ inline double fdr_based_thresholder::_normalize_reads_onchr(Reads &treads,
 
 }
 
-map<string, readsregion> fdr_based_thresholder::workerPara::getAllNegCreads() const {
-    return _all_neg_creads;
-}
-
-map<string, readsregion> fdr_based_thresholder::workerPara::getAllNegTreads() const {
-    return _all_neg_treads;
-}
-
-map<string, readsregion> fdr_based_thresholder::workerPara::getAllPosCreads() const {
-    return _all_pos_creads;
-}
-
-map<string, readsregion> fdr_based_thresholder::workerPara::getAllPosTreads() const {
-    return _all_pos_treads;
-}
-
-vector<string> fdr_based_thresholder::workerPara::getChrsleft() const {
-    return _chrsleft;
-}
-
 bool fdr_based_thresholder::workerPara::isVerbose() const {
     return _verbose;
 }

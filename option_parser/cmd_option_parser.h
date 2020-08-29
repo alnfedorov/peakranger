@@ -91,21 +91,9 @@ public:
 
     void setPad(bool _pad);
 
-    void setSpecified_output(bool _specified_output);
-
-    void setTreat_dir(std::string _treat_dir);
-
-    void setTreat_file(std::string _treat_file);
-
     bool getChrtableSpecified() const;
 
     void setChrtableSpecified(bool _chrtableSpecified);
-
-    void setHelpRequested(bool _helpRequested);
-
-    void setOutputSpecified(bool _outputSpecified);
-
-    void setVersionRequested(bool _versionRequested);
 
     bool getVerboseRequested() const;
 

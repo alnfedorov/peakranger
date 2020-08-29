@@ -8,34 +8,29 @@
 #include "bedParser.h"
 #include "utils/logger.h"
 
-#include <string.h>
-#include <sstream>
+#include <cstring>
 #include <iostream>
-#include <fstream>
-#include <stdio.h>
-#include <stdint.h>
+#include <cstdint>
 #include "utils/exceptions.h"
 #include "short_reads/reads.h"
 
 using namespace std;
 
 void bedParser::parse(Reads &outputreads,
-                      string &filename) {
+                      const string &filename) {
     ifstream ifs(filename.c_str());
 
     if (!(ifs.good())) {
         throw FileNotGood(filename);
     }
 
-    parse(outputreads,
-          ifs);
+    parse(outputreads, ifs);
 
     ifs.close();
 }
 
 void bedParser::parse(Reads &outputreads,
                       istream &ifs) {
-    LOG_DEBUG1("Entering bedParser::parse");
     char dir;
     size_t ploc;
     string chr, seq, line;
@@ -63,12 +58,10 @@ void bedParser::parse(Reads &outputreads,
         if (loc > locend) continue;
         if (dir == '-') {
             LOG_DEBUG5("INS: - " << locend);
-            outputreads.neg_reads.insertRead(chr,
-                                             loc);//todo: CCAT requires locend
+            outputreads.neg_reads.insertRead(chr, loc); //todo: CCAT requires locend
         } else {
             LOG_DEBUG5("INS: + " << loc);
-            outputreads.pos_reads.insertRead(chr,
-                                             loc);
+            outputreads.pos_reads.insertRead(chr, loc);
         }
 
     }
@@ -78,7 +71,7 @@ void bedParser::parse(Reads &outputreads,
 }
 
 void bedParser::parse(Reads &outputreads,
-                      string &filename,
+                      const string &filename,
                       vector<string> &chrs_to_parse) {
     ifstream ifs(filename.c_str());
 
@@ -86,9 +79,7 @@ void bedParser::parse(Reads &outputreads,
         throw FileNotGood(filename);
     }
 
-    parse(outputreads,
-          ifs,
-          chrs_to_parse);
+    parse(outputreads, ifs, chrs_to_parse);
 
     ifs.close();
 }
@@ -96,7 +87,6 @@ void bedParser::parse(Reads &outputreads,
 void bedParser::parse(Reads &outputreads,
                       istream &ifs,
                       vector<string> &chrs_to_parse) {
-    cout << "lala";
     char dir;
     size_t ploc;
     string chr, seq, line;
@@ -106,8 +96,7 @@ void bedParser::parse(Reads &outputreads,
         throw FileNotGood("The specified bowtie input file");
     }
 
-    while (getline(ifs,
-                   line)) {
+    while (getline(ifs, line)) {
 
         ploc = line.find('+');
         if (ploc == string::npos) {
@@ -124,7 +113,6 @@ void bedParser::parse(Reads &outputreads,
         if (std::find(chrs_to_parse.begin(),
                       chrs_to_parse.end(),
                       chr) != chrs_to_parse.end()) {
-            LOG_DEBUG4("In bowtie parser, Inserted read: " << loc);
             if (dir == '-') {
                 outputreads.neg_reads.insertRead(chr,
                                                  loc);
@@ -132,8 +120,6 @@ void bedParser::parse(Reads &outputreads,
                 outputreads.pos_reads.insertRead(chr,
                                                  loc);
             }
-        } else {
-
         }
     }
     outputreads.setReadlength(seq.size());

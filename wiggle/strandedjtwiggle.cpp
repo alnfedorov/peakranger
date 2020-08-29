@@ -44,13 +44,12 @@ stranded_jtwiggle::~stranded_jtwiggle() {
 
 }
 
-void stranded_jtwiggle::export_wiggle(Reads &reads, ostream &os) {
+void stranded_jtwiggle::export_wiggle(Reads &, ostream &) {
     cout << "stranded_jtwiggle::export_wiggle is not conceptually right\n";
     exit(0);
 }
 
-void stranded_jtwiggle::export_wiggle(vector<uint32_t> &preads,
-                                      vector<uint32_t> &nreads, string chr, ostream &os) {
+void stranded_jtwiggle::export_wiggle(vector<uint32_t>&, vector<uint32_t>&, string, ostream&) {
     cout << "stranded_jtwiggle::export_wiggle is not conceptually right\n";
     exit(0);
 }
@@ -177,7 +176,7 @@ void stranded_jtwiggle::export_wiggle(Reads &reads, const char *file) {
     nof.close();
 }
 
-void stranded_jtwiggle::split_export_wiggle(Reads &reads, ostream &os) {
+void stranded_jtwiggle::split_export_wiggle(Reads &, ostream &) {
     cout << "stranded_jtwiggle::split_export_wiggle not implemented yet.\n ";
     exit(0);
 }

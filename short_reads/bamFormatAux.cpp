@@ -65,29 +65,8 @@ namespace reads {
         return getRChr(read.MateRefID, refvec);
     }
 
-    void getBamHitsFromPEBamRead(const BamAlignment &read, const RefVector &ref,
-                                 BamHit &bam1, BamHit &bam2) {
-        bam1 = getRead1FromPEBamRead(read, ref);
-        bam2 = getRead2FromPEBamRead(read, ref);
-    }
-
-    void getR1StartEnd(const BamTools::BamAlignment &read, int32_t &start,
-                       int32_t &end) {
-        start = getR1Start(read);
-        end = getR1End(read);
-    }
-
-    int32_t getR1Start(const BamTools::BamAlignment &read) {
-        return read.Position;
-    }
-
     int32_t getR1End(const BamTools::BamAlignment &read) {
         return read.GetEndPosition();
-    }
-
-    BamHit getRead1FromPEBamRead(const BamTools::BamAlignment &read,
-                                 const BamTools::RefVector &ref) {
-        return BamHit(read, ref);
     }
 
     int32_t getR2Start(const BamTools::BamAlignment &read) {
@@ -106,20 +85,6 @@ namespace reads {
 
     int32_t guessMateEnd(const BamTools::BamAlignment &read) {
         return read.MatePosition + getReadLength(read);
-    }
-
-    BamHit getRead2FromPEBamRead(const BamTools::BamAlignment &read,
-                                 const BamTools::RefVector &ref) {
-        BamHit hit;
-        hit.setChr(getR2Chr(read, ref));
-        hit.setStart(getR2Start(read));
-        hit.setEnd(getR2End(read));
-        hit.setStrand(getR2Strand(read));
-        return hit;
-    }
-
-    bool isSecondPEGoodRead(const BamTools::BamAlignment &read) {
-        return isGoodPERead(read) && !read.IsFirstMate();
     }
 
     bool isGoodPERead(const BamTools::BamAlignment &read) {

@@ -14,9 +14,6 @@ reads::Read::Read() :
         mStart(0), mEnd(0), mStrand(true), mChr("") {
 }
 
-reads::Read::~Read() {
-}
-
 Strand reads::Read::getStrand() const {
     return mStrand;
 }

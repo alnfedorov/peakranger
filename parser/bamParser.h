@@ -14,23 +14,24 @@
 class bamParser : public readsParser {
 
 public:
-    void parse(Reads &reads, std::string &filename) override;
+    void parse(Reads &reads, const std::string &filename) override;
 
     void parse(Reads &reads, std::istream &is) override;
 
     void parse(Reads &reads, std::istream &is,
                std::vector<std::string> &chrs_to_parse) override;
 
-    void parse(Reads &reads, std::string &filename,
+    void parse(Reads &reads, const std::string &filename,
                std::vector<std::string> &chrs_to_parse) override;
 
 private:
 
-    void insertRead(const BamTools::BamAlignment &read, Reads &reads,
-                    std::string &chr);
+    void insertRead(const BamTools::BamAlignment &read, Reads &reads, std::string &chr);
 
-    void updateAvgReadLength(uint64_t &readCnt, uint32_t &meanReadLen,
-                             BamTools::BamAlignment &read);
+    void updateAvgReadLength(const BamTools::BamAlignment &read);
+
+    uint32_t meanReadLen = 0;
+    uint64_t readCnt = 0;
 
 };
 

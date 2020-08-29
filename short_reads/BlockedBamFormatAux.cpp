@@ -58,7 +58,6 @@ bool reads::isAdditiveCigar(const CigarString &c) {
 Read reads::readFromCigar(const CigarString &cigar, const string &chr,
                           const Strand &strand) {
     RegionInt32 r = regionFromCigar(cigar);
-//	cout <<"[readFromCigar]after regionFromCigar\n";
     Read rd(r.getL(), r.getR(), chr.c_str(), strand);
     return rd;
 }
@@ -73,9 +72,7 @@ void reads::parseBamBlocks(vector<Read> &resBlocks, const BamAlignment &bam,
 
         if (isAdditiveCigar(*lica[i])) {
 //			cout <<"[parseBamBlocks]after getCigarString\n";
-            resBlocks.push_back(
-                    readFromCigar(*lica[i], getR1Chr(bam, ref),
-                                  !bam.IsReverseStrand()));
+            resBlocks.push_back(readFromCigar(*lica[i], getR1Chr(bam, ref), !bam.IsReverseStrand()));
         }
     }
 }

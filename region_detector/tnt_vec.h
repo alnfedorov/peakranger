@@ -145,9 +145,9 @@ namespace TNT {
 
         iterator end() { return v_ + n_; }
 
-        const iterator begin() const { return v_; }
+        iterator begin() const { return v_; }
 
-        const iterator end() const { return v_ + n_; }
+        iterator end() const { return v_ + n_; }
 
         // destructor
 

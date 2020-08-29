@@ -101,25 +101,18 @@ typedef struct _SGR SGR;
  */
 class fdr_based_thresholder : public region_detector {
 public:
-    fdr_based_thresholder() :
-            region_detector() {
-
-    }
-
-    ~fdr_based_thresholder() {}
+    ~fdr_based_thresholder() override = default;
 
     void detectSummits(Reads &treatment_reads, Reads &control_reads,
-                       cmd_option_parser &option);
+                       cmd_option_parser &option) override;
 
     void detectSummits(Reads &treatment_reads, Reads &control_reads,
-                       cmd_option_parser &option, std::ostream &os);
+                       cmd_option_parser &option, std::ostream &os) override;
 
     void detectSummits(Reads &treads, Reads &creads, uint32_t no_of_thread,
                        double p_val_cutoff, double delta, uint32_t threshold,
                        uint32_t mergedistance, uint32_t binlength, uint32_t bandwidth,
                        uint32_t readextension, std::ostream &os, bool verbose);
-
-    void export_results(result_reporter &reporter, std::ostream &om) { std::cerr << "Not implemented yet\n"; }
 
 protected:
 
@@ -197,16 +190,6 @@ protected:
         std::map<std::string, readsregion> _all_neg_creads;
         bool _verbose;
 
-        std::map<std::string, readsregion> getAllNegCreads() const;
-
-        std::map<std::string, readsregion> getAllNegTreads() const;
-
-        std::map<std::string, readsregion> getAllPosCreads() const;
-
-        std::map<std::string, readsregion> getAllPosTreads() const;
-
-        std::vector<std::string> getChrsleft() const;
-
         bool isVerbose() const;
 
         void setAllNegCreads(
@@ -228,15 +211,15 @@ protected:
 
     workerPara _workerPara;
 protected:
-    uint32_t _nThreads;
-    uint32_t _binlength;
-    uint16_t _threshold;
-    uint32_t _mergedistance;
-    uint32_t _readlength;
-    uint32_t _readextension;
-    uint32_t _bandwidth;
-    double _pvalThreshold;
-    double _delta;
+    uint32_t _nThreads{};
+    uint32_t _binlength{};
+    uint16_t _threshold{};
+    uint32_t _mergedistance{};
+    uint32_t _readlength{};
+    uint32_t _readextension{};
+    uint32_t _bandwidth{};
+    double _pvalThreshold{};
+    double _delta{};
     std::map<std::string, double> _norm_factors;
 
 };

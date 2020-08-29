@@ -22,8 +22,6 @@ public:
 
     void parse();
 
-    void print_option(std::ostream &os);
-
     bool isSplit() const;
 
     void setSplit(bool _split);

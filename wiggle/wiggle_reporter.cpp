@@ -29,12 +29,6 @@ namespace {
 }
 
 void wiggle_reporter::split_export_wiggle(Reads &reads,
-                                          ostream &os) {
-    throw RangerException("Sorry, wiggle_reporter::split_export_wiggle(Reads "
-                          "& reads,ostream & os) not implemented yet.");
-}
-
-void wiggle_reporter::split_export_wiggle(Reads &reads,
                                           const char *file) {
     string sfile(file);
     size_t ind = sfile.find_last_of(".wig");
@@ -466,12 +460,16 @@ void wiggle_reporter::setViewLimitUp(uint32_t _viewLimitUp) {
     this->_viewLimitUp = _viewLimitUp;
 }
 
-void wiggle_reporter::export_wiggle_gzip(Reads &reads,
-                                         const char *file) {
+void wiggle_reporter::export_wiggle_gzip(Reads &,
+                                         const char *) {
+    std::cerr << "Wiggle gzip export is not implemented";
+    exit(1);
 }
 
-void wiggle_reporter::split_export_wiggle_gzip(Reads &reads,
-                                               const char *file) {
+void wiggle_reporter::split_export_wiggle_gzip(Reads &,
+                                               const char *) {
+    std::cerr << "Wiggle split gzip export is not implemented";
+    exit(1);
 }
 
 void wiggle_reporter::setWiggleName(string _wiggleName) {

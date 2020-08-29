@@ -10,7 +10,6 @@
 #include "bamtools/BamReader.h"
 #include "short_reads/BlockedBamFormatAux.h"
 #include "short_reads/bamFormatAux.h"
-#include "short_reads/BamHit.h"
 #include "short_reads/ReadPair.h"
 #include "short_reads/BlockedBamHit.h"
 #include "BamParserAux.h"

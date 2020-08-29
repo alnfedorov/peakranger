@@ -48,7 +48,7 @@ namespace app {
             option.parse();
             utils::Tracer tracer(cout, option.getVerboseRequested());
             if (option.getVerboseRequested()) {
-                option.print_option(cout);
+                option.report(cout);
             }
             boost::shared_ptr<readsParser> parser;
 
@@ -68,12 +68,13 @@ namespace app {
             }
 
             Reads reads;
-            string ga = option.getTreatFiles();
             if (option.getChrtableSpecified()) {
                 vector<string> chrs_to_parse = option.getChrs_to_parse();
-                parser->parse(reads, ga, chrs_to_parse);
+                for (const auto& f: option.getTreatFiles())
+                    parser->parse(reads, f, chrs_to_parse);
             } else {
-                parser->parse(reads, ga);
+                for (const auto& f: option.getTreatFiles())
+                    parser->parse(reads, f);
             }
             tracer << "\nReads statistics:\n";
             tracer << "\n Processed reads +:       " << reads.pos_reads.size();
@@ -97,7 +98,7 @@ namespace app {
                 wig->setReadextlength(reads.getReadlength());
             }
             wig->setReadlength(reads.getReadlength());
-            ga = option.getOutput_file();
+            string ga = option.getOutput_file();
             if (option.isSplit()) {
                 if (option.isGz()) {
                     wig->split_export_wiggle_gzip(reads, ga.c_str());

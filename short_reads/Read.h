@@ -31,8 +31,6 @@ namespace reads {
         Read(const int32_t &start, const int32_t &end, const char *chr,
              const Strand &strand);
 
-        virtual ~Read();
-
         void set(const int32_t &start, const int32_t &end, const char *chr,
                  const Strand &strand);
 

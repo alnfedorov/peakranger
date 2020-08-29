@@ -9,7 +9,6 @@
 #define BAMFORMATAUX_H_
 
 #include "bamtools/BamAux.h"
-#include "BamHit.h"
 #include "common/stl_header.h"
 #include "Strand.h"
 #include "reads.h"
@@ -18,17 +17,11 @@ namespace reads {
 
     std::string getR1Chr(const BamTools::BamAlignment &read, const BamTools::RefVector &refvec);
 
-    std::string getR2Chr(const BamTools::BamAlignment &read, const BamTools::RefVector &refvec);
-
     std::string getRChr(const int32_t &ref_id, const BamTools::RefVector &refvec);
 
     uint32_t getReadLength(const BamTools::BamAlignment &read);
 
-    int32_t getR1Start(const BamTools::BamAlignment &read);
-
     int32_t getR1End(const BamTools::BamAlignment &read);
-
-    void getR1StartEnd(const BamTools::BamAlignment &read, int32_t &start, int32_t &end);
 
     int32_t getR2Start(const BamTools::BamAlignment &read);
 
@@ -36,24 +29,7 @@ namespace reads {
 
     int32_t guessMateEnd(const BamTools::BamAlignment &read);
 
-    void getR2StartEnd(const BamTools::BamAlignment &read, int32_t &start, int32_t &end);
-
-    Strand getR1Strand(const BamTools::BamAlignment &read);
-
-    Strand getR2Strand(const BamTools::BamAlignment &read);
-
-    BamHit getRead1FromPEBamRead(const BamTools::BamAlignment &read, const BamTools::RefVector &ref);
-
-    BamHit getRead2FromPEBamRead(const BamTools::BamAlignment &read, const BamTools::RefVector &ref);
-
-    void getBamHitsFromPEBamRead(const BamTools::BamAlignment &read, const BamTools::RefVector &ref, BamHit &r1,
-                                 BamHit &r2);
-
-    bool isProperPERead(const BamTools::BamAlignment &read);
-
     bool isFirstPEGoodRead(const BamTools::BamAlignment &read);
-
-    bool isSecondPEGoodRead(const BamTools::BamAlignment &read);
 
     bool isGoodPERead(const BamTools::BamAlignment &read);
 
@@ -62,10 +38,6 @@ namespace reads {
     bool isSERead(const BamTools::BamAlignment &read);
 
     bool isGoodRead(const BamTools::BamAlignment &read);
-
-    bool bothArePosReads(const bool &dir, const bool &dir2);
-
-    bool bothAreNegReads(bool &dir, bool &dir2);
 
     bool isGoodSERead(const BamTools::BamAlignment &read);
 

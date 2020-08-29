@@ -35,14 +35,8 @@ public:
                                std::vector<uint32_t> &nreads, std::string chr, std::ostream &os);
 
     typedef std::vector<std::pair<uint32_t, double> > data_type;
-    typedef std::pair<uint32_t, double> element_type;
-
-    virtual void export_wiggle(Reads &reads, data_type &result) {
-    };
 
     virtual void export_wiggle(Reads &reads, const char *file);
-
-    virtual void split_export_wiggle(Reads &reads, std::ostream &os);
 
     virtual void split_export_wiggle(Reads &reads, const char *file);
 

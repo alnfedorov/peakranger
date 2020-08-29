@@ -119,7 +119,6 @@ namespace options {
         setFormat(to_lower_copy(trim_copy(getFormat())));
 
         if (vm.count("help")) {
-            setHelpRequested(true);
             options::aux::printHelp(all, cout);
             exit(0);
         }

@@ -24,15 +24,13 @@ public:
     }
 
 public:
-    virtual void parse(Reads &reads, std::string &filename) = 0;
+    virtual void parse(Reads &reads, const std::string &filename) = 0;
 
     virtual void parse(Reads &reads, std::istream &is) = 0;
 
-    virtual void parse(Reads &reads, std::istream &is,
-                       std::vector<std::string> &chrs_to_parse) = 0;
+    virtual void parse(Reads &reads, std::istream &is, std::vector<std::string> &chrs_to_parse) = 0;
 
-    virtual void parse(Reads &reads, std::string &filename,
-                       std::vector<std::string> &chrs_to_parse) = 0;
+    virtual void parse(Reads &reads, const std::string &filename, std::vector<std::string> &chrs_to_parse) = 0;
 };
 
 #endif /* READSPARSER_H_ */

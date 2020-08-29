@@ -77,7 +77,7 @@ private:
     double p_value;
     int num_win, num_data_frag, num_input_frag, num_seg, num_allseg;
     double len_bf, len_aft, sum_bf, sum_aft, average_bf, average_aft, cutline;
-    const int L1;
+    const size_t L1;
     const int L2;
     const int N;
     std::vector<int> Weight;

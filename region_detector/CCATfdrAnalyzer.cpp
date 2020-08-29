@@ -127,7 +127,8 @@ namespace ccat_aux {
             score = 0;
             tmpIndex = l1Peaks.size() + 1;
 
-            for (i = l1PeakNum - 1; i >= 0; i--) {
+            i = l1PeakNum - 1;
+            while (true) {
                 if (i < l1PeakNum - 1) {
                     if (p1[i] - p1[i + 1] < 0.00000001) {
                         continue;
@@ -139,6 +140,10 @@ namespace ccat_aux {
                     score = posCount * q[j] - negCount;
                     tmpIndex = i;
                 }
+                if (i == 0)
+                    break;
+
+                i -= 1;
             }
 
             if (tmpIndex == l1Peaks.size() + 1) {

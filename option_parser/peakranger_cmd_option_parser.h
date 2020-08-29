@@ -20,8 +20,6 @@ public:
 
     void parse();
 
-    void print_option(std::ostream &os);
-
     void report(std::ostream &os) const;
 
     bool isSplit() const;

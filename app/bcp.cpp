@@ -108,14 +108,14 @@ namespace app {
             boost::shared_ptr<result_reporter> reporter = boost::make_shared<
                     bed6_result_reporter>();
             Reads treads, creads;
-            string ga = option.getTreatFiles();
-            parser->parse(treads, ga);
+            for (auto& f: option.getTreatFiles())
+                parser->parse(treads, f);
             tracer << "\nReads statistics:\n";
             tracer << "\n Treatment reads +:       " << treads.pos_reads.size();
             tracer << "\n Treatment reads -:       " << treads.neg_reads.size();
             tracer << "\n Average read length:     " << treads.getReadlength();
-            ga = option.getControl_file();
-            parser->parse(creads, ga);
+            for (auto& f: option.getControlFiles())
+                parser->parse(creads, f);
             tracer << "\n Control reads +:         " << creads.pos_reads.size();
             tracer << "\n Control reads -:         " << creads.neg_reads.size();
             tracer << "\n Average read length:     " << creads.getReadlength();
@@ -147,6 +147,8 @@ namespace app {
                        << " as the read extension length\n ";
                 option.setExt_length(longerlen);
             }
+
+            string ga;
             {
                 tracer << "\n\n Calling peaks...\n\n";
                 ga = option.getOutput_file() + "_raw";

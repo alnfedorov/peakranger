@@ -44,11 +44,6 @@ namespace ccat_aux {
                                            maxL2Count, config);
             }
 
-            //TODO: Check if this is necessary
-            if (tmpI < 0) {
-                return -1;
-            }
-
             cout << "Discovered " << tmpI << " candidate peaks in "
                  << chroms[i].chromName << "\n";
 
@@ -85,7 +80,7 @@ namespace ccat_aux {
     }
 
 //GetPeaksInOneChrom1: strand-insensitive mode: get peak location from tags for one chromosome
-    int CCATPeakFinder::GetPeaksInOneChrom1(chr_t &chrom, double l1Ratio,
+    size_t CCATPeakFinder::GetPeaksInOneChrom1(chr_t &chrom, double l1Ratio,
                                             double l2Ratio, size_t &maxL1Count, size_t &maxL2Count,
                                             const ccat_config_t &config) {
 
@@ -138,19 +133,21 @@ namespace ccat_aux {
         return chrom.l1Peaks.size();
     }
 
-    bool CCATPeakFinder::hasLargerNeighbors(size_t minDist, int &tmpStart,
-                                            int &tmpEnd, const vector<size_t> &profile, const peak_t &pk) {
+    bool CCATPeakFinder::hasLargerNeighbors(size_t minDist, const size_t &tmpStart,
+                                            const size_t &tmpEnd, const vector<size_t> &profile, const peak_t &pk) {
         int tmpStart1, tmpEnd1;
-        size_t profileSize = profile.size();
         assert_gt(tmpStart, 0);
         assert_gt(tmpEnd, 0);
+
+        size_t profileSize = profile.size();
+        if (profileSize == 0)
+            return false;
+
         tmpStart1 = tmpStart < minDist ? 0 : tmpStart - minDist;
         tmpEnd1 =
                 tmpEnd + minDist + 1 > profileSize ?
                 profileSize - 1 : tmpEnd + minDist;
         LOG_DEBUG5("i, profile[i]: tmpStart1 = " << tmpStart1);LOG_DEBUG5("i, profile[i]: tmpEnd1 = " << tmpEnd1);
-        //+1 is to match the reverse order in the original code
-        assert(tmpEnd + 1 > -1);
         size_t me = *max_element(profile.begin() + tmpEnd + 1,
                                  profile.begin() + tmpEnd1 + 1);
         size_t ms = *max_element(profile.begin() + tmpStart1,
@@ -170,7 +167,8 @@ namespace ccat_aux {
 
         LOG_DEBUG2("minDist " << minDist);LOG_DEBUG2("minCount " << minCount);
 
-        int tmpStart, tmpEnd;
+        size_t tmpStart, tmpEnd;
+        bool flagskip = true;
         size_t i;
         size_t peakNum;
         peakNum = 0;
@@ -179,8 +177,6 @@ namespace ccat_aux {
 #ifdef DEBUG
         ranger_debug::dumpArray(profile, "profile_n");
 #endif
-        tmpStart = -1;
-        tmpEnd = -1;
         size_t profileSize = profile.size();
 
         for (i = 1; i < profileSize; i++) {
@@ -192,6 +188,7 @@ namespace ccat_aux {
                                                                              << ")");
                     tmpStart = i;
                     tmpEnd = i;
+                    flagskip = false;
                     LOG_DEBUG5("i, profile[i]: so that tempStart=tmpEnd=i(" << i << ")");
                 }
 
@@ -201,12 +198,13 @@ namespace ccat_aux {
 
                     LOG_DEBUG5("i, profile[i]: so that only tmpEnd=i(" << i << ")");
                     tmpEnd = i;
+                    flagskip = false;
                 }
 
                 if (profile[i] < profile[i - 1]) {
                     LOG_DEBUG5("i, profile[i]: profile[i] < profile[i - 1](" << profile[i] << "<" << profile[i - 1]
                                                                              << ")");
-                    if ((tmpStart == -1) || (tmpEnd == -1)) {
+                    if (flagskip) {
                         LOG_DEBUG5("i, profile[i]: since (tmpStart == -1) || (tmpEnd == -1), continued.");
                         continue;
                     }
@@ -217,21 +215,18 @@ namespace ccat_aux {
 
                     if (hasLargerNeighbors(minDist, tmpStart, tmpEnd, profile,
                                            peaks[peakNum])) {
-                        tmpStart = -1;
-                        tmpEnd = -1;
-
+                        flagskip = true;
                         continue;
                     }
 
                     LOG_DEBUG5("Added peak at " << i);
                     peakNum++;
                     LOG_DEBUG5("i, profile[i]: peakNum++");
-                    tmpStart = -1;
-                    tmpEnd = -1;
+                    flagskip = true;
                 }
             } else {
                 LOG_DEBUG5("i, profile[i]: profile[i] < minCount(" << minCount << ")");
-                if ((tmpStart == -1) || (tmpEnd == -1)) {
+                if (flagskip) {
                     continue;
                 }
 
@@ -239,15 +234,13 @@ namespace ccat_aux {
 
                 if (hasLargerNeighbors(minDist, tmpStart, tmpEnd, profile,
                                        peaks[peakNum])) {
-                    tmpStart = -1;
-                    tmpEnd = -1;
+                    flagskip = true;
                     continue;
                 }
 
                 LOG_DEBUG5("Added peak at " << i);
                 peakNum++;
-                tmpStart = -1;
-                tmpEnd = -1;
+                flagskip = true;
             }
         }
 

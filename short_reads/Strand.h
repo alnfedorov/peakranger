@@ -27,9 +27,7 @@ namespace reads {
 
         Strand(bool pos);
 
-        Strand(const Strand &str);
-
-        virtual ~Strand();
+        Strand(const Strand &str) = default;
 
         void operator=(bool dir);
 

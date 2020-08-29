@@ -202,7 +202,7 @@ namespace ccat_aux {
             tmpIndex = (chrom.l1PosTags[j] + fragmentSize / 2) / BINSIZE;
 
             tmpIndex = tmpIndex >= binNum ? binNum - 1 : tmpIndex;
-            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
+//            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
 
             LOG_DEBUG5("Got pos tag: " << chrom.l1PosTags[j] << " and ind: " << tmpIndex);
             bins[tmpIndex].l1Counts++;
@@ -216,7 +216,7 @@ namespace ccat_aux {
             tmpIndex = (chrom.l1NegTags[j] - fragmentSize / 2) / BINSIZE;
 
             tmpIndex = tmpIndex >= binNum ? binNum - 1 : tmpIndex;
-            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
+//            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
             LOG_DEBUG5("Got neg tag: " << chrom.l1NegTags[j] << " and ind: " << tmpIndex);
             bins[tmpIndex].l1Counts++;
         }
@@ -229,7 +229,7 @@ namespace ccat_aux {
             tmpIndex = (chrom.l2PosTags[j] + fragmentSize / 2) / BINSIZE;
 
             tmpIndex = tmpIndex >= binNum ? binNum - 1 : tmpIndex;
-            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
+//            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
 
             bins[tmpIndex].l2Counts++;
         }
@@ -242,7 +242,7 @@ namespace ccat_aux {
             tmpIndex = (chrom.l2NegTags[j] - fragmentSize / 2) / BINSIZE;
 
             tmpIndex = tmpIndex >= binNum ? binNum - 1 : tmpIndex;
-            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
+//            tmpIndex = tmpIndex < 0 ? 0 : tmpIndex;
 
             bins[tmpIndex].l2Counts++;
         }

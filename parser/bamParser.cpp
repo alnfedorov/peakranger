@@ -9,15 +9,7 @@
 #include "short_reads/bamFormatAux.h"
 #include "bamtools/BamReader.h"
 #include "utils/exceptions.h"
-#include "common/ranger_debug.h"
-#include <string.h>
-#include <istream>
-#include <sstream>
-#include <iostream>
-#include <fstream>
-#include <stdio.h>
 #include <stdint.h>
-#include <algorithm>
 
 using namespace std;
 using namespace reads;
@@ -27,9 +19,9 @@ void bamParser::insertRead(const BamTools::BamAlignment &read, Reads &reads,
     int32_t loc = read.Position;
     bool dir;
 
-    dir = (read.IsReverseStrand() ? false : true);
+    dir = !read.IsReverseStrand();
     if (loc > 0) {
-        uint32_t tmp = (uint32_t) loc;
+        auto tmp = (uint32_t) loc;
         if (dir) {
             reads.pos_reads.insertRead(chr, tmp);
         } else {
@@ -38,24 +30,18 @@ void bamParser::insertRead(const BamTools::BamAlignment &read, Reads &reads,
     }
 }
 
-void bamParser::updateAvgReadLength(uint64_t &readCnt, uint32_t &meanReadLen,
-                                    BamTools::BamAlignment &read) {
+void bamParser::updateAvgReadLength(const BamTools::BamAlignment &read) {
     readCnt++;
-
-
-    uint64_t currentMeanLen = (reads::getReadLength(read)
-                               + meanReadLen * (readCnt - 1)) / readCnt;
+    uint64_t currentMeanLen = (reads::getReadLength(read) + meanReadLen * (readCnt - 1)) / readCnt;
     meanReadLen = (uint32_t) currentMeanLen;
 }
 
-void bamParser::parse(Reads &reads, string &filename,
+void bamParser::parse(Reads &reads, const string &filename,
                       vector<string> &chrs_to_parse) {
     BamTools::BamReader bam;
     BamTools::BamAlignment read;
 
     string chr;
-    uint64_t readCnt = 0;
-    uint32_t meanReadLen = 0;
 
     if (!(bam.Open(filename))) {
         throw FileNotGood(filename);
@@ -67,7 +53,7 @@ void bamParser::parse(Reads &reads, string &filename,
         chr = getR1Chr(read, refvec);
         if (isGoodRead(read)) {
             if (isChrToParse(chrs_to_parse, chr)) {
-                updateAvgReadLength(readCnt, meanReadLen, read);
+                updateAvgReadLength(read);
                 insertRead(read, reads, chr);
             }
         }
@@ -75,12 +61,10 @@ void bamParser::parse(Reads &reads, string &filename,
     reads.setReadlength(meanReadLen);
 }
 
-void bamParser::parse(Reads &reads, string &filename) {
+void bamParser::parse(Reads &reads, const string &filename) {
     BamTools::BamReader bam;
     BamTools::BamAlignment read, pre_read;
     string chr;
-    uint64_t readCnt = 0;
-    uint32_t meanReadLen = 0;
 
     if (!(bam.Open(filename))) {
         throw FileNotGood(filename);
@@ -89,7 +73,7 @@ void bamParser::parse(Reads &reads, string &filename) {
     while (bam.GetNextAlignment(read)) {
         chr = getR1Chr(read, refvec);
         if (isGoodRead(read)) {
-            updateAvgReadLength(readCnt, meanReadLen, read);
+            updateAvgReadLength(read);
             insertRead(read, reads, chr);
         }
     }

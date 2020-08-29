@@ -13,10 +13,6 @@ namespace reads {
 
     }
 
-    Strand::~Strand() {
-
-    }
-
     Strand::Strand(bool pos) :
             mDir(pos) {
     }
@@ -44,8 +40,6 @@ namespace reads {
     bool Strand::operator==(const Strand &rhs) const {
         return mDir == rhs.mDir;
     }
-
-    Strand::Strand(const Strand &str) : mDir(str.mDir) {}
 
     void Strand::toNeg() {
         mDir = false;

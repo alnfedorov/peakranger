@@ -27,7 +27,7 @@ namespace ranger {
 
         public:
 
-            Region();
+            Region() = default;
 
             Region(const LessThanComparable &l, const LessThanComparable &r);
 
@@ -45,26 +45,13 @@ namespace ranger {
 
             bool overlaps(const Region<LessThanComparable> &rhs) const;
 
-            Region<LessThanComparable> &operator=(
-                    const Region<LessThanComparable> &rhs);
-
             LessThanComparable getL() const;
 
             LessThanComparable getR() const;
-
-            void setL(const LessThanComparable &l);
-
-            void setR(const LessThanComparable &r);
-
         private:
             LessThanComparable mL;
             LessThanComparable mR;
         };
-
-        template<typename LessThanComparable>
-        concepts::Region<LessThanComparable>::Region() :
-                mL(), mR() {
-        }
 
         template<typename LessThanComparable>
         concepts::Region<LessThanComparable>::Region(const LessThanComparable &l,
@@ -93,31 +80,18 @@ namespace ranger {
         template<typename LessThanComparable>
         bool concepts::Region<LessThanComparable>::operator[](
                 const Region<LessThanComparable> &rhs) const {
-            return !(*this < rhs) && !(*this > rhs);
+            return *this >= rhs && *this <= rhs;
         }
 
         template<typename LessThanComparable>
         bool concepts::Region<LessThanComparable>::overlaps(
                 const Region<LessThanComparable> &rhs) const {
-            return !(*this < rhs) && !(*this > rhs);
-        }
-
-        template<typename LessThanComparable>
-        Region<LessThanComparable> &concepts::Region<LessThanComparable>::operator=(
-                const Region<LessThanComparable> &rhs) {
-            mL = rhs.mL;
-            mR = rhs.mR;
-            return *this;
+            return *this >= rhs && *this <= rhs;
         }
 
         template<typename LessThanComparable>
         LessThanComparable concepts::Region<LessThanComparable>::getL() const {
             return mL;
-        }
-
-        template<typename LessThanComparable>
-        void concepts::Region<LessThanComparable>::setL(const LessThanComparable &l) {
-            mL = l;
         }
 
         template<typename LessThanComparable>
@@ -132,11 +106,6 @@ namespace ranger {
         std::ostream &Region<LessThanComparable>::operator<<(std::ostream &os) {
             os << getL() << "\t" << getR();
             return os;
-        }
-
-        template<typename LessThanComparable>
-        void concepts::Region<LessThanComparable>::setR(const LessThanComparable &r) {
-            mR = r;
         }
 
         template<typename LessThanComparable>

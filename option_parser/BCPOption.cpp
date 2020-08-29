@@ -43,7 +43,6 @@ namespace options {
         setFormat(to_lower_copy(trim_copy(getFormat())));
 
         if (mVM.count("help")) {
-            setHelpRequested(true);
             options::aux::printHelp(all, cout);
             exit(0);
         }

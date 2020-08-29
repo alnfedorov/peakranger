@@ -199,7 +199,7 @@ void JT_wiggle_file::_process(uint32_t start, uint32_t end, uint32_t readlength,
     LOG_DEBUG1("QUIT: JT_JT_wiggle_file::_process");
 }
 
-void JT_wiggle_file::split_export_wiggle(Reads &reads, ostream &os) {
+void JT_wiggle_file::split_export_wiggle(Reads &, ostream &) {
     throw RangerException("Sorry, JT_wiggle_file::split_export_wiggle(Reads "
                           "& reads,ostream & os) not implemented yet.");
 }

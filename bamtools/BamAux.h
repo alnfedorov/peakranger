@@ -40,7 +40,7 @@
 //        typedef long long           int64_t;
 //        typedef unsigned long long uint64_t;
 //    #else
-#pragma warning(disable: 4820)
+//#pragma warning(disable: 4820)
 
 #include <stdint.h>
 //    #endif
@@ -74,11 +74,9 @@ namespace BamTools {
 
         // constructors & destructor
     public:
-        BamAlignment(void);
+        BamAlignment() = default;
 
-        BamAlignment(const BamAlignment &other);
-
-        ~BamAlignment(void);
+        BamAlignment(const BamAlignment &other) = default;
 
         // Queries against alignment flags
     public:
@@ -269,21 +267,6 @@ namespace BamTools {
 
 // ----------------------------------------------------------------
 // BamAlignment member methods
-
-// constructors & destructor
-    inline
-    BamAlignment::BamAlignment(void) {}
-
-    inline
-    BamAlignment::BamAlignment(const BamAlignment &other)
-            : Name(other.Name), Length(other.Length), QueryBases(other.QueryBases), AlignedBases(other.AlignedBases),
-              Qualities(other.Qualities), TagData(other.TagData), RefID(other.RefID), Position(other.Position),
-              Bin(other.Bin), MapQuality(other.MapQuality), AlignmentFlag(other.AlignmentFlag),
-              CigarData(other.CigarData), MateRefID(other.MateRefID), MatePosition(other.MatePosition),
-              InsertSize(other.InsertSize), SupportData(other.SupportData) {}
-
-    inline
-    BamAlignment::~BamAlignment(void) {}
 
 // Queries against alignment flags
     inline bool BamAlignment::IsDuplicate(void) const { return ((AlignmentFlag & bDUPLICATE) != 0); }

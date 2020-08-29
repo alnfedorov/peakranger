@@ -73,12 +73,10 @@ void cmd_option_parser::setFormat(string _format) {
 
 void cmd_option_parser::setOutput_dir(string _output_dir) {
     this->_output_dir = _output_dir;
-    this->setOutputSpecified(true);
 }
 
 void cmd_option_parser::setOutput_file(string _output_file) {
     this->_output_file = _output_file;
-    this->setOutputSpecified(true);
 }
 
 void cmd_option_parser::setPad(bool _pad) {

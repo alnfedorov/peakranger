@@ -90,7 +90,7 @@ public:
 
     }
 
-    FileNotGood(std::string &msg) :
+    FileNotGood(std::string msg) :
             RangerException(msg) {
     }
 

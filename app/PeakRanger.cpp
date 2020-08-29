@@ -120,9 +120,9 @@ namespace app {
         utils::Stamp::citationAndDate(of_raw);
         utils::Stamp::citationAndDate(of_smt);
         utils::Stamp::citationAndDate(of);
-        option.print_option(of_raw);
-        option.print_option(of_smt);
-        option.print_option(of);
+        option.report(of_raw);
+        option.report(of_smt);
+        option.report(of);
         of_smt
                 << "\n#summit_chr\tsummit_start\tsummit_end\tsummit_ID\tsummit_FDR\tsummit_strand\n";
         of
@@ -209,9 +209,8 @@ namespace app {
 
     }
 
-    void parseReads(peakranger_cmd_option_parser &option, string readsfile,
+    void parseReads(peakranger_cmd_option_parser &option, const string& readsfile,
                     boost::shared_ptr<readsParser> &parser, Reads &treads) {
-
         if (option.getChrtableSpecified()) {
             vector<string> chrs_to_parse = option.getChrs_to_parse();
             parser->parse(treads, readsfile, chrs_to_parse);
@@ -241,7 +240,7 @@ namespace app {
             utils::Tracer tracer(cout, option.getVerboseRequested());
 
             if (option.getVerboseRequested()) {
-                option.print_option(cout);
+                option.report(cout);
             }
 
             boost::shared_ptr<readsParser> parser;
@@ -254,8 +253,9 @@ namespace app {
             wig->use_default_setting();
 
             Reads treads, creads;
-            parseReads(option, option.getTreatFiles(), parser, treads);
 
+            for (auto& f: option.getTreatFiles())
+                parseReads(option, f, parser, treads);
             tracer << "Reads statistics:\n";
             tracer << " Treatment reads +:       " << treads.pos_reads.size()
                    << "\n";
@@ -263,8 +263,9 @@ namespace app {
                    << "\n";
             tracer << " Average read length:     " << treads.getReadlength()
                    << "\n";
-            parseReads(option, option.getControl_file(), parser, creads);
 
+            for (auto& f: option.getControlFiles())
+                parseReads(option, f, parser, creads);
             tracer << " Control reads +:         " << creads.pos_reads.size()
                    << "\n";
             tracer << " Control reads -:         " << creads.neg_reads.size()

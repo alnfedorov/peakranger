@@ -344,8 +344,8 @@ void bcp_algo::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
                         tracer << num2Chr[i] << "is empty.\n";
                     }
 
-                    for (m = 0; m < L1; m++)
-                        Weight[m] = 0;
+                    for (size_t a = 0; a < L1; a++)
+                        Weight[a] = 0;
                     delete[] data_frag;
                     delete[] input_frag;
                 }
@@ -394,7 +394,7 @@ void bcp_algo::trans2window(int r) {
     int pre_index = -1;
     int i1 = 0;
 
-    for (unsigned int j = 0; j < L1; j++) {
+    for (size_t j = 0; j < L1; j++) {
         if (Weight[j] > 0) {
             int n1 = j - pre_index - 1;
             if (n1 > 0) {

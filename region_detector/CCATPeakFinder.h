@@ -28,7 +28,7 @@ namespace ccat_aux {
 
     private:
         //GetPeaksInOneChrom1: strand-insensitive mode: get peak location from tags for one chromosome
-        int GetPeaksInOneChrom1(ccat_aux::chr_t &chrom, double l1Ratio, double l2Ratio, size_t &maxL1Count,
+        size_t GetPeaksInOneChrom1(ccat_aux::chr_t &chrom, double l1Ratio, double l2Ratio, size_t &maxL1Count,
                                 size_t &maxL2Count, const ccat_aux::ccat_config_t &config);
 
         //GetLocalMaxima: find the local maxima in the profile
@@ -40,7 +40,7 @@ namespace ccat_aux {
                        const ccat_config_t &config,
                        const size_t chromSize, std::vector<ccat_aux::peak_t> &result);
 
-        bool hasLargerNeighbors(size_t minDist, int &tmpStart, int &tmpEnd, const std::vector<size_t> &profile,
+        bool hasLargerNeighbors(size_t minDist, const size_t &tmpStart, const size_t &tmpEnd, const std::vector<size_t> &profile,
                                 const peak_t &pk);
 
         ccat_profile_t profile;
