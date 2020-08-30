@@ -68,15 +68,15 @@ namespace ccat_aux {
 
         assert(tmpPeakNum <= maxPossiblePeaks);
         LOG_DEBUG1("tmpPeakNum " << tmpPeakNum);
-                foreach(peak_t pk, tmp) {
-                        pk.l1Count = profile1[pk.peak];
-                        pk.l2Count = profile2[pk.peak];
-                        pk.reSampledL1Count = rsProfile1[pk.peak];
-                        pk.reSampledL2Count = rsProfile2[pk.peak];
-                        if ((pk.reSampledL1Count >= config.minCount)) {
-                            result.push_back(pk);
-                        }
-                    }
+        for (auto pk: tmp) {
+            pk.l1Count = profile1[pk.peak];
+            pk.l2Count = profile2[pk.peak];
+            pk.reSampledL1Count = rsProfile1[pk.peak];
+            pk.reSampledL2Count = rsProfile2[pk.peak];
+            if ((pk.reSampledL1Count >= config.minCount)) {
+                result.push_back(pk);
+            }
+        }
     }
 
 //GetPeaksInOneChrom1: strand-insensitive mode: get peak location from tags for one chromosome

@@ -14,9 +14,6 @@
 #include "short_reads/reads.h"
 #include "utils/assert_helpers.h"
 #include "utils/exceptions.h"
-#include <boost/foreach.hpp>
-
-#define foreach BOOST_FOREACH
 
 class region_profile {
 

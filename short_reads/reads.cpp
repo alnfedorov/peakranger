@@ -85,11 +85,9 @@ void Reads::pos_reads::insertRead(string &chr, uint32_t &read) {
 
 uint64_t Reads::pos_reads::size() const {
     uint64_t size = 0;
-    pair<string, vector<uint32_t> > reads;
-            foreach(reads,
-                    _reads._posReads) {
-                    size += (uint64_t) (reads.second.size());
-                }
+    for (auto &reads: _reads._posReads) {
+        size += (uint64_t) (reads.second.size());
+    }
     return size;
 }
 
@@ -228,10 +226,9 @@ void Reads::neg_reads::insertRead(string &chr, uint32_t &read) {
 
 uint64_t Reads::neg_reads::size() const {
     uint64_t size = 0;
-    pair<string, vector<uint32_t> > reads;
-            foreach(reads, _reads._negReads) {
-                    size += (uint64_t) (reads.second.size());
-                }
+    for (auto &reads: _reads._negReads) {
+        size += (uint64_t) (reads.second.size());
+    }
     return size;
 }
 
@@ -286,22 +283,22 @@ void Reads::removeUnequalChrs() {
     // todo: test this module
     if (neg_reads.chrs().size() < 1 && pos_reads.chrs().size() > 1) {
         chrs_to_remove = pos_reads.chrs();
-                foreach(string chr, chrs_to_remove) {
-                        cerr << "Warning: " << chr
-                             << " only contains reads in the positive strand."
-                             << " The chromosome is removed.\n";
-                        pos_reads.remove(chr);
-                    }
+        for (auto &chr: chrs_to_remove) {
+            cerr << "Warning: " << chr
+                 << " only contains reads in the positive strand."
+                 << " The chromosome is removed.\n";
+            pos_reads.remove(chr);
+        }
         return;
     }
     if (pos_reads.chrs().size() < 1 && neg_reads.chrs().size() > 1) {
         chrs_to_remove = neg_reads.chrs();
-                foreach(string chr, chrs_to_remove) {
-                        cerr << "Warning: " << chr
-                             << " only contains reads in the negative strand."
-                             << " The chromosome is removed.\n";
-                        neg_reads.remove(chr);
-                    }
+        for (auto &chr: chrs_to_remove) {
+            cerr << "Warning: " << chr
+                 << " only contains reads in the negative strand."
+                 << " The chromosome is removed.\n";
+            neg_reads.remove(chr);
+        }
         return;
     }
     //I dont trust the implementation of set_difference
@@ -309,23 +306,23 @@ void Reads::removeUnequalChrs() {
     it = std::set_difference(_posChrs.begin(), _posChrs.end(), _negChrs.begin(),
                              _negChrs.end(), chrs_to_remove.begin());
     chrs_to_remove.resize(it - chrs_to_remove.begin());
-            foreach(string chr, chrs_to_remove) {
-                    cerr << "Warning: " << chr
-                         << " only contains reads in the positive strand."
-                         << " The chromosome is removed.\n";
-                    pos_reads.remove(chr);
-                }
+    for (auto &chr: chrs_to_remove) {
+        cerr << "Warning: " << chr
+             << " only contains reads in the positive strand."
+             << " The chromosome is removed.\n";
+        pos_reads.remove(chr);
+    }
     vector<string> chrs_to_remove2(
             neg_reads.chrs().size() + pos_reads.chrs().size());
 
     it = std::set_difference(_negChrs.begin(), _negChrs.end(), _posChrs.begin(),
                              _posChrs.end(), chrs_to_remove2.begin());
     chrs_to_remove2.resize(it - chrs_to_remove2.begin());
-            foreach(string chr, chrs_to_remove2) {
-                    cerr << "Warning: " << chr
-                         << " only contains reads in the negative strand."
-                         << " The chromosome is removed.\n";
-                    neg_reads.remove(chr);
-                }
+    for (auto &chr: chrs_to_remove2) {
+        cerr << "Warning: " << chr
+             << " only contains reads in the negative strand."
+             << " The chromosome is removed.\n";
+        neg_reads.remove(chr);
+    }
 }
 

@@ -12,15 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <boost/foreach.hpp>
-#include <stdint.h>
-
-#define foreach BOOST_FOREACH
-
-#define COUT(msg, obj) \
-    std::cout <<msg<<"\t"<<obj<<"\n";
-#define QUIT(msg) \
-    std::cout << msg <<std::endl;exit(0)
+#include <cstdint>
 
 namespace ranger_debug {
     template<typename T>

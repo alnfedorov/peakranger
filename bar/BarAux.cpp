@@ -19,9 +19,9 @@ namespace ranger {
     namespace bar {
 
         void accHits(const std::vector<reads::Read> &hits, BarCounter &counter) {
-                    foreach(const Read &r, hits) {
-                            accHit(r, counter);
-                        }
+            for (auto &r: hits) {
+                accHit(r, counter);
+            }
         }
 
         void getCount(vector<RegionCount> &res, BarCounter &counter) {

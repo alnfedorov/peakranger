@@ -8,16 +8,11 @@
 #include "option_parser/ccatcmdoptionparser.h"
 #include "option_parser/OptionAux.h"
 #include "utils/stringutil.h"
-#include "utils/util_print.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/foreach.hpp>
-#include <boost/thread.hpp>
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include <stdio.h>
@@ -147,9 +142,9 @@ namespace options {
         if (vm.count("report")) {
             require("gene_annot_file", vm);
         }
-        for (const auto &f: _treat_files)
+        for (auto &f: _treat_files)
             file_r_good(f.c_str());
-        for (const auto &f: _control_files)
+        for (auto &f: _control_files)
             file_r_good(f.c_str());
 
         file_w_good(_output_dir.c_str());

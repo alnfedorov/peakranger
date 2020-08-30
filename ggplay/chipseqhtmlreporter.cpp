@@ -583,9 +583,9 @@ void chipseq_html_reporter::print_peak(called_peak &pk, string chr,
     RegionUint32 rg(pk.first, pk.second);
     vector<TabGene> overlapped;
     _nbgf.getOverlappedGenes(chr, rg, overlapped);
-            foreach(TabGene &g, overlapped) {
-                    geneNamess << g.name << ",";
-                }
+    for (auto &g: overlapped) {
+        geneNamess << g.name << ",";
+    }
     string geneNames(geneNamess.str());
     boost::replace_last(geneNames, ",", "");
     os << geneNames;

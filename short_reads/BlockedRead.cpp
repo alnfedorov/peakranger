@@ -58,10 +58,10 @@ namespace reads {
 void reads::offset(BlockedRead &read, int32_t length) {
     vector<Read> rds;
     read.getBlocks(rds);
-            foreach(Read &r, rds) {
-                    r.setStart(r.getStart() + length);
-                    r.setEnd(r.getEnd() + length);
-                }
+    for (auto &r: rds) {
+        r.setStart(r.getStart() + length);
+        r.setEnd(r.getEnd() + length);
+    }
     read.setBlocks(rds);
 }
 

@@ -17,9 +17,6 @@
 #include <algorithm>
 #include <iostream>
 #include <stdint.h>
-#include <boost/foreach.hpp>
-
-#define foreach BOOST_FOREACH
 
 
 typedef std::vector<uint32_t> reads_vec;
@@ -188,10 +185,9 @@ protected:
     }
 
     void extractChrs(reads_t &reads, std::vector<std::string> &chrs) {
-        std::pair<std::string, reads_vec> r;
-                foreach(r, reads) {
-                        chrs.push_back(r.first);
-                    }
+        for (auto &r: reads) {
+            chrs.push_back(r.first);
+        }
         sort(chrs.begin(), chrs.end());
     }
 

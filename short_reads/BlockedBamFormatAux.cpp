@@ -41,12 +41,12 @@ RegionInt32 reads::regionFromCigar(const CigarString &cigar) {
 void reads::getCigarString(const BamAlignment &bam,
                            vector<boost::shared_ptr<CigarString> > &lica) {
     int32_t newOffset = bam.Position;
-            foreach(CigarOp c, bam.CigarData) {
-                    lica.push_back(CigarStringFactory::buildCigar(c, newOffset));
-                    if (c.Type == 'M' || c.Type == 'D' || c.Type == 'N') {
-                        newOffset += c.Length;
-                    }
-                }
+    for (auto &c: bam.CigarData) {
+        lica.push_back(CigarStringFactory::buildCigar(c, newOffset));
+        if (c.Type == 'M' || c.Type == 'D' || c.Type == 'N') {
+            newOffset += c.Length;
+        }
+    }
 }
 
 bool reads::isAdditiveCigar(const CigarString &c) {

@@ -18,9 +18,9 @@ namespace reads {
  */
     class BlockedRead {
         friend std::ostream &operator<<(std::ostream &os, const BlockedRead &rhs) {
-                    foreach(Read r, rhs.mBlocks) {
-                            os << r;
-                        }
+            for (auto &r: rhs.mBlocks) {
+                os << r;
+            }
             return os;
         }
 

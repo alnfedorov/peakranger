@@ -40,7 +40,6 @@ using namespace utils;
 using namespace options;
 using namespace options::aux;
 using namespace ranger::concepts;
-#define foreach BOOST_FOREACH
 
 typedef map<string, vector<called_peak> > enriched_regions;
 typedef vector<called_peak>::iterator ritrr;
@@ -186,34 +185,34 @@ namespace app {
                 pritrr it = detector->_resultRegions.begin();
 
                 for (; it != detector->_resultRegions.end(); it++) {
-                            foreach(called_peak pk, it->second) {
-                                    //fdr control is disabled
-                                    //p_value control is done inside bcp
-                                    fdr_passed++;
-                                    of_raw << it->first << "\t" << pk.first << "\t" << pk.second
-                                           << "\t";
-                                    if (option.needHtml()) {
-                                        std::stringstream geneNamess;
-                                        vector<TabGene> genes;
-                                        _nbgf.getOverlappedGenes(it->first,
-                                                                 RegionUint32(pk.first, pk.second), genes);
-                                                foreach(TabGene &g, genes) {
-                                                        geneNamess << g.name << ",";
-                                                    }
-                                        string geneNames(geneNamess.str());
-                                        boost::replace_last(geneNames, ",", "");
-                                        of_raw << geneNames;
-                                    }
-                                    of_raw << "\tbcp";
-                                    of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
+                    for (auto &pk: it->second) {
+                        //fdr control is disabled
+                        //p_value control is done inside bcp
+                        fdr_passed++;
+                        of_raw << it->first << "\t" << pk.first << "\t" << pk.second
+                               << "\t";
+                        if (option.needHtml()) {
+                            std::stringstream geneNamess;
+                            vector<TabGene> genes;
+                            _nbgf.getOverlappedGenes(it->first,
+                                                     RegionUint32(pk.first, pk.second), genes);
+                            for (auto &g: genes) {
+                                geneNamess << g.name << ",";
+                            }
+                            string geneNames(geneNamess.str());
+                            boost::replace_last(geneNames, ",", "");
+                            of_raw << geneNames;
+                        }
+                        of_raw << "\tbcp";
+                        of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
 
-                                    of_raw << "\t" << pk.q << "\t+\t" << pk.treads << "\t"
-                                           << pk.creads << "\n";
+                        of_raw << "\t" << pk.q << "\t+\t" << pk.treads << "\t"
+                               << pk.creads << "\n";
 
-                                    of << it->first << "\t" << pk.first << "\t" << pk.second
-                                       << "\tbcp";
-                                    of << "_pval_" << pk.p << "\t" << pk.q << "\t+\n";
-                                }
+                        of << it->first << "\t" << pk.first << "\t" << pk.second
+                           << "\tbcp";
+                        of << "_pval_" << pk.p << "\t" << pk.q << "\t+\n";
+                    }
                 }
             }
 

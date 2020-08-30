@@ -31,11 +31,11 @@ namespace parser {
 
         bool BamBlockPEReadsParser_hotelImp::checkedIn(const BamAlignment &read) {
             void adjustPosition(BamAlignment &mread, const BamAlignment &read);
-                    foreach(BamAlignment &b, mUnMatched) {
-                            if (isSameReadName(read, b)) {
-                                return true;
-                            }
-                        }
+            for (auto &b: mUnMatched) {
+                if (isSameReadName(read, b)) {
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -68,10 +68,10 @@ namespace parser {
         void BamBlockPEReadsParser_hotelImp::flush(
                 reads::PairEndedReads<reads::BlockedRead> &reads,
                 const BamTools::RefVector &ref) {
-                    foreach(BamAlignment &b, mUnMatched) {
+            for (auto &b: mUnMatched) {
 //		cout << "flushed :" << (int)b.Position << "\t" << b.Name << "\n";
-                            insertRead(b, BamAlignment(), reads, ref);
-                        }
+                insertRead(b, BamAlignment(), reads, ref);
+            }
         }
 
         BamTools::BamAlignment BamBlockPEReadsParser_hotelImp::checkOut(

@@ -42,9 +42,9 @@ namespace ranger {
         }
 
         void BarHist::add(const std::vector<Read> &hits) {
-                    foreach(const Read &r, hits) {
-                            accHit(r, mCounter);
-                        }
+            for (auto &r: hits) {
+                accHit(r, mCounter);
+            }
         }
 
         void BarHist::add(const BamTools::BamAlignment &bam) {

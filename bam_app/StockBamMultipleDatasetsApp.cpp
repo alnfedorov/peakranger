@@ -31,7 +31,7 @@ namespace bam_app {
 
     void StockBamMultipleDatasetsApp::parseReads(
             const std::vector<std::string> &files) {
-        for (const auto &file: files) {
+        for (auto &file: files) {
             tracer << "[" << mAppID << "]" << "Parsing " << file << "\n";
             mReads.push_back(PairEndedReads<BlockedRead>());
             mParser->parse(mReads.back(), file);

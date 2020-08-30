@@ -37,7 +37,6 @@ using namespace utils;
 using namespace options;
 using namespace options::aux;
 using namespace ranger::concepts;
-#define foreach BOOST_FOREACH
 
 typedef map<string, vector<called_peak> > enriched_regions;
 typedef vector<called_peak>::iterator ritrr;
@@ -190,56 +189,56 @@ namespace app {
                 pritrr it = detector->_resultRegions.begin();
                 for (; it != detector->_resultRegions.end(); it++) {
 
-                            foreach(called_peak pk, it->second) {
-                                    of_raw << it->first << "\t" << pk.first << "\t" << pk.second
-                                           << "\t";
-                                    if (option.needHtml()) {
-                                        std::stringstream geneNamess;
-                                        vector<TabGene> genes;
-                                        _nbgf.getOverlappedGenes(it->first,
-                                                                 RegionUint32(pk.first, pk.second), genes);
-                                                foreach(TabGene &g, genes) {
-                                                        geneNamess << g.name << ",";
-                                                    }
-                                        string geneNames(geneNamess.str());
-                                        boost::replace_last(geneNames, ",", "");
-                                        of_raw << geneNames;
-                                    }
-                                    of_raw << "\tccat";
-                                    if (pk.q <= option.getFdrCutOff()) {
-                                        of_raw << "_fdrPassed_" << fdr_passed;
-                                    } else {
-                                        of_raw << "_fdrFailed_" << fdr_failed;
-                                    }
-                                    of_raw << "_fdr_" << pk.q;
-                                    of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
-                                    vector<uint32_t>::iterator sit = pk.summits.begin();
-                                    for (; sit != pk.summits.end(); sit++) {
+                    for (auto &pk: it->second) {
+                        of_raw << it->first << "\t" << pk.first << "\t" << pk.second
+                               << "\t";
+                        if (option.needHtml()) {
+                            std::stringstream geneNamess;
+                            vector<TabGene> genes;
+                            _nbgf.getOverlappedGenes(it->first,
+                                                     RegionUint32(pk.first, pk.second), genes);
+                            for (auto &g: genes) {
+                                geneNamess << g.name << ",";
+                            }
+                            string geneNames(geneNamess.str());
+                            boost::replace_last(geneNames, ",", "");
+                            of_raw << geneNames;
+                        }
+                        of_raw << "\tccat";
+                        if (pk.q <= option.getFdrCutOff()) {
+                            of_raw << "_fdrPassed_" << fdr_passed;
+                        } else {
+                            of_raw << "_fdrFailed_" << fdr_failed;
+                        }
+                        of_raw << "_fdr_" << pk.q;
+                        of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
+                        vector<uint32_t>::iterator sit = pk.summits.begin();
+                        for (; sit != pk.summits.end(); sit++) {
 
-                                        of_smt << it->first << "\t" << *sit << "\t"
-                                               << (*sit) + 1 << "\tccat_region_" << pk.first
-                                               << "_" << pk.second;
-                                        if (pk.q <= option.getFdrCutOff()) {
-                                            of_smt << "_fdrPassed_" << fdr_passed;
-                                        } else {
-                                            of_smt << "_fdrFailed_" << fdr_failed;
-                                        }
+                            of_smt << it->first << "\t" << *sit << "\t"
+                                   << (*sit) + 1 << "\tccat_region_" << pk.first
+                                   << "_" << pk.second;
+                            if (pk.q <= option.getFdrCutOff()) {
+                                of_smt << "_fdrPassed_" << fdr_passed;
+                            } else {
+                                of_smt << "_fdrFailed_" << fdr_failed;
+                            }
 
-                                        of_smt << "\t" << pk.q << "\t+\n";
-                                    }
+                            of_smt << "\t" << pk.q << "\t+\n";
+                        }
 
-                                    of_raw << "\t" << pk.q << "\t+\t" << pk.treads << "\t"
-                                           << pk.creads << "\n";
+                        of_raw << "\t" << pk.q << "\t+\t" << pk.treads << "\t"
+                               << pk.creads << "\n";
 
-                                    of << it->first << "\t" << pk.first << "\t" << pk.second
-                                       << "\tccat";
-                                    if (pk.q <= option.getFdrCutOff()) {
-                                        of << "_fdrPassed_" << fdr_passed++;
-                                    } else {
-                                        of << "_fdrFailed_" << fdr_failed++;
-                                    }
-                                    of << "_fdr_" << pk.q << "\t" << pk.q << "\t+\n";
-                                }
+                        of << it->first << "\t" << pk.first << "\t" << pk.second
+                           << "\tccat";
+                        if (pk.q <= option.getFdrCutOff()) {
+                            of << "_fdrPassed_" << fdr_passed++;
+                        } else {
+                            of << "_fdrFailed_" << fdr_failed++;
+                        }
+                        of << "_fdr_" << pk.q << "\t" << pk.q << "\t+\n";
+                    }
                 }
             }
 

@@ -12,11 +12,8 @@
 #include "utils/assert_helpers.h"
 #include "utils/exceptions.h"
 #include "math/distributions.h"
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 #include "common/stl_header.h"
-
-#define foreach BOOST_FOREACH
 
 /*
  * Manipulate reads

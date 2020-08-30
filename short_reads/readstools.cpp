@@ -40,14 +40,15 @@ void reads_tools::verify_and_correct_Reads_both_strands(Reads &treads,
     chrs_to_remove.resize(it - chrs_to_remove.begin());
     /*
      * Use set_symmertric_difference is you want them at one time
-     */foreach(string chr, chrs_to_remove) {
+     */
+    for (auto &chr: chrs_to_remove) {
 
-                    cerr << "Warning: "
-                         << "No reads were found in " << chr
-                         << " of the control dataset. The chromosome is removed.\n";
+        cerr << "Warning: "
+             << "No reads were found in " << chr
+             << " of the control dataset. The chromosome is removed.\n";
 
-                    treads.remove(chr);
-                }
+        treads.remove(chr);
+    }
     vector<string>::iterator it2;
     //Must initialize it before using it.
     vector<string> chrs_to_remove2(treads_chrs.size() + creads_chrs.size());
@@ -57,12 +58,12 @@ void reads_tools::verify_and_correct_Reads_both_strands(Reads &treads,
                               treads_chrs.end(),
                               chrs_to_remove2.begin());
     chrs_to_remove2.resize(it2 - chrs_to_remove2.begin());
-            foreach(string chr, chrs_to_remove2) {
-                    cerr << "Warning: "
-                         << "No reads were found in " << chr
-                         << " of the treatment dataset. The chromosome is removed.\n";
-                    creads.remove(chr);
-                }
+    for (auto &chr: chrs_to_remove2) {
+        cerr << "Warning: "
+             << "No reads were found in " << chr
+             << " of the treatment dataset. The chromosome is removed.\n";
+        creads.remove(chr);
+    }
 }
 
 void reads_tools::get_merged_chrs_for_both_strands(Reads &reads,
@@ -112,10 +113,10 @@ void reads_tools::_insert_random_reads(Reads &reads,
                                   _h,
                                   _rs,
                                   _rds);
-            foreach(uint32_t _rd, _rds) {
-                    result.pos_reads.insertRead(chr,
-                                                _rd);
-                }
+    for (auto &_rd: _rds) {
+        result.pos_reads.insertRead(chr,
+                                    _rd);
+    }
 }
 
 void reads_tools::generate_random_reads_based_on_reads(Reads &reads,
@@ -128,27 +129,27 @@ void reads_tools::generate_random_reads_based_on_reads(Reads &reads,
     get_merged_chrs_for_both_strands(reads,
                                      chrs);
 
-            foreach(string chr, chrs) {
+    for (auto &chr: chrs) {
 
-                    _insert_random_reads(reads,
-                                         chr,
-                                         result);
+        _insert_random_reads(reads,
+                             chr,
+                             result);
 
-                    _rds.clear();
-                    uint32_t _rs = reads.neg_reads.size();
-                    uint32_t _l = (reads.neg_reads.begin_of(chr))[0];
-                    uint32_t _h = (reads.neg_reads.end_of(chr) - 1)[0];
-                    _rs = reads.neg_reads.end_of(chr) - reads.neg_reads.begin_of(chr);
-                    if (_rs < 1) continue;
-                    distributions::random_int_std(_l,
-                                                  _h,
-                                                  _rs,
-                                                  _rds);
-                            foreach(uint32_t _rd, _rds) {
-                                    result.neg_reads.insertRead(chr,
-                                                                _rd);
-                                }
-                }
+        _rds.clear();
+        uint32_t _rs = reads.neg_reads.size();
+        uint32_t _l = (reads.neg_reads.begin_of(chr))[0];
+        uint32_t _h = (reads.neg_reads.end_of(chr) - 1)[0];
+        _rs = reads.neg_reads.end_of(chr) - reads.neg_reads.begin_of(chr);
+        if (_rs < 1) continue;
+        distributions::random_int_std(_l,
+                                      _h,
+                                      _rs,
+                                      _rds);
+        for (auto &_rd: _rds) {
+            result.neg_reads.insertRead(chr,
+                                        _rd);
+        }
+    }
 
     result.setReadlength(reads.getReadlength());
     result.pos_reads.begin();

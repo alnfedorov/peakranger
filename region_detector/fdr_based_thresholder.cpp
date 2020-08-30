@@ -18,7 +18,6 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 
 #include <cmath>
@@ -36,7 +35,7 @@
 #define MIN_FDR  0.001
 #define MIN_PEAKSIZE   2
 #define MAX_PEAKSIZE   100000
-#define foreach BOOST_FOREACH
+
 using namespace std;
 typedef vector<pair<uint32_t, int8_t> > reads_count_t;
 typedef std::pair<uint32_t, uint32_t> profile_pos_t;
@@ -931,30 +930,30 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
     assert_eq(creads.pos_reads.chrs().size(), creads.neg_reads.chrs().size());
     assert_eq(treads.pos_reads.chrs().size(), creads.pos_reads.chrs().size());
 
-            foreach(string chr, treads.pos_reads.chrs()) {
-                    treadsstart = treads.pos_reads.begin_of(chr);
-                    treadsend = treads.pos_reads.end_of(chr);
-                    creadsstart = creads.pos_reads.begin_of(chr);
-                    creadsend = creads.pos_reads.end_of(chr);
-                    all_pos_treads.insert(
-                            pair<string, readsregion>(chr,
-                                                      readsregion(treadsstart, treadsend)));
-                    all_pos_creads.insert(
-                            pair<string, readsregion>(chr,
-                                                      readsregion(creadsstart, creadsend)));
-                }
-            foreach(string chr, treads.neg_reads.chrs()) {
-                    treadsstart = treads.neg_reads.begin_of(chr);
-                    treadsend = treads.neg_reads.end_of(chr);
-                    creadsstart = creads.neg_reads.begin_of(chr);
-                    creadsend = creads.neg_reads.end_of(chr);
-                    all_neg_treads.insert(
-                            pair<string, readsregion>(chr,
-                                                      readsregion(treadsstart, treadsend)));
-                    all_neg_creads.insert(
-                            pair<string, readsregion>(chr,
-                                                      readsregion(creadsstart, creadsend)));
-                }
+    for (auto &chr: treads.pos_reads.chrs()) {
+        treadsstart = treads.pos_reads.begin_of(chr);
+        treadsend = treads.pos_reads.end_of(chr);
+        creadsstart = creads.pos_reads.begin_of(chr);
+        creadsend = creads.pos_reads.end_of(chr);
+        all_pos_treads.insert(
+                pair<string, readsregion>(chr,
+                                          readsregion(treadsstart, treadsend)));
+        all_pos_creads.insert(
+                pair<string, readsregion>(chr,
+                                          readsregion(creadsstart, creadsend)));
+    }
+    for (auto &chr: treads.neg_reads.chrs()) {
+        treadsstart = treads.neg_reads.begin_of(chr);
+        treadsend = treads.neg_reads.end_of(chr);
+        creadsstart = creads.neg_reads.begin_of(chr);
+        creadsend = creads.neg_reads.end_of(chr);
+        all_neg_treads.insert(
+                pair<string, readsregion>(chr,
+                                          readsregion(treadsstart, treadsend)));
+        all_neg_creads.insert(
+                pair<string, readsregion>(chr,
+                                          readsregion(creadsstart, creadsend)));
+    }
     _workerPara.setAllPosTreads(all_pos_treads);
     _workerPara.setAllPosCreads(all_pos_creads);
     _workerPara.setAllNegTreads(all_neg_treads);
@@ -1026,16 +1025,16 @@ void fdr_based_thresholder::_normalize_reads(Reads &treads, Reads &creads) {
     assert_eq(creads.pos_reads.chrs().size(), creads.neg_reads.chrs().size());
     assert_eq(treads.pos_reads.chrs().size(), creads.pos_reads.chrs().size());
 
-            foreach(string chr, treads.pos_reads.chrs()) {
-                    _norm_factors[chr] = _normalize_reads_onchr(treads, creads, chr,
-                                                                _binlength);
+    for (auto &chr: treads.pos_reads.chrs()) {
+        _norm_factors[chr] = _normalize_reads_onchr(treads, creads, chr,
+                                                    _binlength);
 
-                }
-            foreach(string chr, treads.pos_reads.chrs()) {
-                    if (_norm_factors[chr] == 1) {
-                        LOG_DEBUG2("Warning: Normalization for " << chr << " failed." << endl);
-                    }
-                }
+    }
+    for (auto &chr :treads.pos_reads.chrs()) {
+        if (_norm_factors[chr] == 1) {
+            LOG_DEBUG2("Warning: Normalization for " << chr << " failed." << endl);
+        }
+    }
 }
 
 /*  Calculate the normalization factor of creads toward treads.

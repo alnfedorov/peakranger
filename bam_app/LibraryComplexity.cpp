@@ -30,20 +30,20 @@ namespace bam_app {
 
                 size_t be = 0;
                 size_t af = 0;
-                        foreach(string chr, rds.getChrs()) {
-                                tracer << "[" << mAppID << "]" << "Processing " << chr << "\n";
-                                be += rds.endOf(chr) - rds.beginOf(chr);
-                                tracer << "[" << mAppID << "]" << "Total reads in " << chr << ":\t";
-                                tracer << rds.endOf(chr) - rds.beginOf(chr) << "\n";
-                                vector<ReadPair<BlockedRead> > ga;
-                                rds.getReadPairs(chr.c_str(), ga);
-                                ga.resize(
-                                        std::unique(ga.begin(), ga.end(), sameStartAndDir)
-                                        - ga.begin());
-                                tracer << "[" << mAppID << "]" << "Unique reads in " << chr << ":\t";
-                                tracer << ga.size() << "\n";
-                                af += ga.size();
-                            }
+                for (auto chr: rds.getChrs()) {
+                    tracer << "[" << mAppID << "]" << "Processing " << chr << "\n";
+                    be += rds.endOf(chr) - rds.beginOf(chr);
+                    tracer << "[" << mAppID << "]" << "Total reads in " << chr << ":\t";
+                    tracer << rds.endOf(chr) - rds.beginOf(chr) << "\n";
+                    vector<ReadPair<BlockedRead> > ga;
+                    rds.getReadPairs(chr.c_str(), ga);
+                    ga.resize(
+                            std::unique(ga.begin(), ga.end(), sameStartAndDir)
+                            - ga.begin());
+                    tracer << "[" << mAppID << "]" << "Unique reads in " << chr << ":\t";
+                    tracer << ga.size() << "\n";
+                    af += ga.size();
+                }
 
                 if (rdsVec.size()) {
                     if (mIsPE) {

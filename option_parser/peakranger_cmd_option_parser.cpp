@@ -13,7 +13,6 @@
 #include <cstdint>
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/foreach.hpp>
 
 #include <boost/thread.hpp>
 #include <iostream>

@@ -203,9 +203,9 @@ namespace ccat_aux {
             return -1;
         }
         sum = 0.0;
-                foreach(int h, hist) {
-                        sum += h;
-                    }
+        for (auto &h: hist) {
+            sum += h;
+        }
         if (sum < 1.0) {
             return -1;
         }
@@ -301,30 +301,30 @@ namespace ccat_aux {
         chromNum = treads.pos_reads.chrs().size();
 
         size_t i = 0;
-                foreach(string chr, treads.pos_reads.chrs()) {
-                        //todo: assuming reads are sorted.
-                        chr_t chrom;
-                        chrom.chromName = chr;
-                        chrom.chromIndex = i;
-                        size_t treads_chr_size = reads_tools::chromSize(treads, chr);
-                        size_t creads_chr_size = reads_tools::chromSize(creads, chr);
+        for (auto &chr: treads.pos_reads.chrs()) {
+            //todo: assuming reads are sorted.
+            chr_t chrom;
+            chrom.chromName = chr;
+            chrom.chromIndex = i;
+            size_t treads_chr_size = reads_tools::chromSize(treads, chr);
+            size_t creads_chr_size = reads_tools::chromSize(creads, chr);
 
-                        chrom.chromSize =
-                                treads_chr_size > creads_chr_size ?
-                                treads_chr_size : creads_chr_size;
+            chrom.chromSize =
+                    treads_chr_size > creads_chr_size ?
+                    treads_chr_size : creads_chr_size;
 
-                        copy(treads.pos_reads.begin_of(chr), treads.pos_reads.end_of(chr),
-                             std::back_inserter(chrom.l1PosTags));
-                        copy(treads.neg_reads.begin_of(chr), treads.neg_reads.end_of(chr),
-                             std::back_inserter(chrom.l1NegTags));
-                        copy(creads.pos_reads.begin_of(chr), creads.pos_reads.end_of(chr),
-                             std::back_inserter(chrom.l2PosTags));
-                        copy(creads.neg_reads.begin_of(chr), creads.neg_reads.end_of(chr),
-                             std::back_inserter(chrom.l2NegTags));
+            copy(treads.pos_reads.begin_of(chr), treads.pos_reads.end_of(chr),
+                 std::back_inserter(chrom.l1PosTags));
+            copy(treads.neg_reads.begin_of(chr), treads.neg_reads.end_of(chr),
+                 std::back_inserter(chrom.l1NegTags));
+            copy(creads.pos_reads.begin_of(chr), creads.pos_reads.end_of(chr),
+                 std::back_inserter(chrom.l2PosTags));
+            copy(creads.neg_reads.begin_of(chr), creads.neg_reads.end_of(chr),
+                 std::back_inserter(chrom.l2NegTags));
 
-                        chroms.push_back(chrom);
-                        i++;
-                    }
+            chroms.push_back(chrom);
+            i++;
+        }
 
     }
 

@@ -41,25 +41,25 @@ using namespace boost;
 void bcp_algo::loadPosData(data_t &data, Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
-            foreach(std::string chr, reads.pos_reads.chrs()) {
-                    std::vector<uint32_t>::iterator it = reads.pos_reads.begin_of(chr);
-                    while (it != reads.pos_reads.end_of(chr)) {
-                        // This is safe due to the length of chromosome
-                        data[chr2Num[chr]].push_back((int) (*it++));
-                    }
-                }
+    for (auto &chr: reads.pos_reads.chrs()) {
+        std::vector<uint32_t>::iterator it = reads.pos_reads.begin_of(chr);
+        while (it != reads.pos_reads.end_of(chr)) {
+            // This is safe due to the length of chromosome
+            data[chr2Num[chr]].push_back((int) (*it++));
+        }
+    }
 }
 
 void bcp_algo::loadNegData(data_t &data, Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
-            foreach(string chr, reads.neg_reads.chrs()) {
-                    std::vector<uint32_t>::iterator it = reads.neg_reads.begin_of(chr);
-                    while (it != reads.neg_reads.end_of(chr)) {
-                        // This is safe due to the length of chromosome
-                        data[chr2Num[chr]].push_back((int) (*it++));
-                    }
-                }
+    for (auto &chr: reads.neg_reads.chrs()) {
+        std::vector<uint32_t>::iterator it = reads.neg_reads.begin_of(chr);
+        while (it != reads.neg_reads.end_of(chr)) {
+            // This is safe due to the length of chromosome
+            data[chr2Num[chr]].push_back((int) (*it++));
+        }
+    }
 }
 
 void bcp_algo::insertPeak(const string &chr, called_peak &pk) {
@@ -95,260 +95,259 @@ void bcp_algo::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
     loadPosData(Plus_input, creads);
     loadNegData(Minus_input, creads);
 
-    std::pair<uint32_t, std::string> mi;
     uint32_t i = 0;
-            foreach (mi, num2Chr) {
-                    i = mi.first;
-                    /*The data part*/
-                    data_frag = new int[Plus_data[i].size() + Minus_data[i].size() + 1];
-                    num = 1;
-                    data_frag[0] = 0;
-                    if (Plus_data[i].size() > 0) {
-                        temp = new int[Plus_data[i].size()];
+    for (auto &mi: num2Chr) {
+        i = mi.first;
+        /*The data part*/
+        data_frag = new int[Plus_data[i].size() + Minus_data[i].size() + 1];
+        num = 1;
+        data_frag[0] = 0;
+        if (Plus_data[i].size() > 0) {
+            temp = new int[Plus_data[i].size()];
 
-                        for (unsigned int j = 0; j < Plus_data[i].size(); j++)
-                            temp[j] = Plus_data[i][j];
+            for (unsigned int j = 0; j < Plus_data[i].size(); j++)
+                temp[j] = Plus_data[i][j];
 
-                        qsort(temp, Plus_data[i].size(), sizeof(int), cmp);
+            qsort(temp, Plus_data[i].size(), sizeof(int), cmp);
 
-                        pre = -1;
-                        for (unsigned int j = 0; j < Plus_data[i].size(); j++) {
-                            if (temp[j] != pre) {
-                                data_frag[num] = temp[j];
-                                Add(temp[j], temp[j] + frag_size - 1);
-                                num++;
-                            }
-                            pre = temp[j];
-                        }
-                        delete[] temp;
-                    }
-
-                    if (Minus_data[i].size() > 0) {
-                        temp = new int[Minus_data[i].size()];
-
-                        for (unsigned int j = 0; j < Minus_data[i].size(); j++)
-                            temp[j] = Minus_data[i][j];
-
-                        qsort(temp, Minus_data[i].size(), sizeof(int), cmp);
-
-                        pre = -1;
-                        for (unsigned int j = 0; j < Minus_data[i].size(); j++) {
-                            if (temp[j] != pre) {
-                                data_frag[num] = temp[j];
-                                Add(temp[j], temp[j] + frag_size - 1);
-                                num++;
-                            }
-                            pre = temp[j];
-                        }
-                        delete[] temp;
-                    }
-                    // in fact the num_data should be num-1, just for convenient for qsort;
-                    num_data_frag = num;
-                    qsort(data_frag, num_data_frag, sizeof(int), cmp);
-
-                    //The input part
-                    //TODO: Refactor to extract the function
-                    input_frag = new int[Plus_input[i].size() + Minus_input[i].size() + 1];
-                    num = 1;
-                    input_frag[0] = 0;
-                    if (Plus_input[i].size() > 0) {
-                        temp = new int[Plus_input[i].size()];
-
-                        for (unsigned int j = 0; j < Plus_input[i].size(); j++)
-                            temp[j] = Plus_input[i][j];
-
-                        qsort(temp, Plus_input[i].size(), sizeof(int), cmp);
-
-                        pre = -1;
-                        for (unsigned int j = 0; j < Plus_input[i].size(); j++) {
-                            if (temp[j] != pre) {
-                                input_frag[num] = temp[j];
-                                num++;
-                            }
-                            pre = temp[j];
-                        }
-                        delete[] temp;
-                    }
-
-                    if (Minus_input[i].size() > 0) {
-                        temp = new int[Minus_input[i].size()];
-
-                        for (unsigned int j = 0; j < Minus_input[i].size(); j++)
-                            temp[j] = Minus_input[i][j];
-
-                        qsort(temp, Minus_input[i].size(), sizeof(int), cmp);
-
-                        pre = -1;
-                        for (unsigned int j = 0; j < Minus_input[i].size(); j++) {
-                            if (temp[j] != pre) {
-                                input_frag[num] = temp[j];
-                                num++;
-                            }
-                            pre = temp[j];
-                        }
-                        delete[] temp;
-                    }
-                    num_input_frag = num;
-                    // in fact the num_input should be num-1, just for convenient for qsort;
-                    qsort(input_frag, num_input_frag, sizeof(int), cmp);
-                    if (Plus_data[i].size() + Minus_data[i].size() > 0) {
-                        win_data = new double[L2][4];
-                        trans2window(i);
-
-                        len_bf = sum_bf = 0.0;
-                        for (m = 2; m <= num_win; m++) {
-                            len_bf += win_data[m][3];
-                            sum_bf += win_data[m][2] * win_data[m][3];
-                        }
-                        average_bf = sum_bf / len_bf;
-
-                        Matrix<double> obs(num_win + 1, 4);
-                        Matrix<double> data(num_win + 1, 5);
-
-                        m = 0;
-                        obs[m][0] = obs[m][1] = obs[m][2] = obs[m][3] = 0.0;
-                        for (m = 1; m <= num_win; m++) {
-                            obs[m][0] = win_data[m][0];
-                            obs[m][1] = win_data[m][1];
-                            obs[m][2] = floor(win_data[m][2] + 0.5);
-                            obs[m][3] = win_data[m][3];
-                        }
-
-                        len_aft = sum_aft = 0.0;
-                        for (m = 2; m <= num_win; m++) {
-                            len_aft += obs[m][3];
-                            sum_aft += obs[m][2] * obs[m][3];
-                        }
-                        average_aft = sum_aft / len_aft;
-
-                        for (m = 1; m < num_win; m++)
-                            if ((obs[m][2] == 0) && (obs[m][3] == 1)
-                                && ((obs[m - 1][2] != 0) || (obs[m + 1][2] != 0)))
-                                obs[m][3] = 0;
-
-                        num_temp = floor(log10((double) num_win) + 0.5);
-                        double p = 1.0 / pow(10.0, num_temp);
-                        if (average_aft < 0.1 && p < 0.0001)
-                            p = p * 100;
-                        if (average_aft >= 0.1 && average_aft <= 0.5 && p < 0.0001)
-                            p = p * 10;
-
-                        if (win_size >= 200) {
-                            t1 = 10;
-                            t2 = 5;
-                        }
-                        if (win_size < 200 && win_size >= 100) {
-                            t1 = 7;
-                            t2 = 4;
-                        }
-                        if (win_size < 100) {
-                            t1 = 5;
-                            t2 = 3;
-                        }
-                        if (t1 >= num_win) {
-                            t1 = 5;
-                            t2 = 3;
-                        }
-                        if (t1 >= num_win) {
-                            tracer << "Too few data for the model. Program stopped prematurely.\n";
-                            exit(1);
-                        }
-
-                        cppoisson tmp(obs, p, 1.0, 1.0, t1, t2);
-                        tmp.BcmixSmooth();
-
-                        m = 0;
-                        data[m][0] = data[m][1] = data[m][2] = data[m][3] = data[m][4] =
-                                0.0;
-                        for (m = 1; m <= num_win; m++) {
-                            data[m][0] = obs[m][0];
-                            data[m][1] = obs[m][1];
-                            data[m][2] = obs[m][2];
-                            data[m][3] = obs[m][3];
-                            data[m][4] = tmp.estPara[m];
-                        }
-
-
-                        thre = 0.9;
-                        //calculationg the factorial first
-                        st[0] = 0;
-                        for (m = 1; m <= 100000; m++)
-                            st[m] = st[m - 1] + log(m);
-
-                        m = 0;
-                        while (prob_pois(m, average_aft) < thre)
-                            m++;
-
-                        if (m == 0)
-                            cutline = 1.0;
-                        if (m > 3)
-                            cutline = m * 1.0 - 0.5;
-                        if (m >= 1 && m <= 3)
-                            cutline = m * 1.0;
-
-                        ss = new double[num_win][6];
-
-                        seg(data, cutline);
-
-                        rseg = new double[num_seg + 1][7];
-
-                        int m1 = 0;
-                        for (m = 1; m <= num_allseg; m++) {
-                            if (ss[m][3] >= cutline) {
-                                m1++;
-                                rseg[m1][0] = ss[m][0];
-                                rseg[m1][1] = ss[m][1];
-                                rseg[m1][2] = ss[m][2];
-                                rseg[m1][3] = ss[m][3];
-                                rseg[m1][4] = rseg[m1][5] = 0;
-                                rseg[m1][6] = 1.0;
-                            }
-                        }
-
-                        c = (double) num_data_frag / (double) num_input_frag;
-
-                        max = (num_input_frag - 1)
-                              / (double) (input_frag[num_input_frag - 1] + frag_size - 1
-                                          - input_frag[1]);
-
-                        for (m = 1; m <= num_seg; m++) {
-                            seg_len = (int) rseg[m][2];
-                            max1 = max * seg_len;
-
-                            l1 = frag_count1(m);
-                            rseg[m][4] = (double) l1;
-
-                            l2 = frag_count2(m);
-                            lambda = l2 >= max1 ? l2 : max1;
-
-                            rseg[m][5] = c * lambda;
-                            rseg[m][6] = fabs(1.0 - prob_pois(l1, rseg[m][5]));
-                        }
-
-                        for (m = 1; m <= num_seg; m++) {
-                            if ((rseg[m][6] <= p_value) && (rseg[m][4] > rseg[m][5])) {
-                                std::vector<uint32_t> tmp;
-                                called_peak pk((rseg[m][0] - 1), rseg[m][1], rseg[m][6],
-                                               rseg[m][6], rseg[m][2], rseg[m][3], tmp);
-                                insertPeak(num2Chr[i], pk);
-                            }
-                        }
-
-                        tracer << "Discovered " << _resultRegions[num2Chr[i]].size() << "\tregions in " << num2Chr[i]
-                               << ".\n";
-
-                        delete[] rseg;
-                        delete[] ss;
-                        delete[] win_data;
-                    } else {
-                        tracer << num2Chr[i] << "is empty.\n";
-                    }
-
-                    for (size_t a = 0; a < L1; a++)
-                        Weight[a] = 0;
-                    delete[] data_frag;
-                    delete[] input_frag;
+            pre = -1;
+            for (unsigned int j = 0; j < Plus_data[i].size(); j++) {
+                if (temp[j] != pre) {
+                    data_frag[num] = temp[j];
+                    Add(temp[j], temp[j] + frag_size - 1);
+                    num++;
                 }
+                pre = temp[j];
+            }
+            delete[] temp;
+        }
+
+        if (Minus_data[i].size() > 0) {
+            temp = new int[Minus_data[i].size()];
+
+            for (unsigned int j = 0; j < Minus_data[i].size(); j++)
+                temp[j] = Minus_data[i][j];
+
+            qsort(temp, Minus_data[i].size(), sizeof(int), cmp);
+
+            pre = -1;
+            for (unsigned int j = 0; j < Minus_data[i].size(); j++) {
+                if (temp[j] != pre) {
+                    data_frag[num] = temp[j];
+                    Add(temp[j], temp[j] + frag_size - 1);
+                    num++;
+                }
+                pre = temp[j];
+            }
+            delete[] temp;
+        }
+        // in fact the num_data should be num-1, just for convenient for qsort;
+        num_data_frag = num;
+        qsort(data_frag, num_data_frag, sizeof(int), cmp);
+
+        //The input part
+        //TODO: Refactor to extract the function
+        input_frag = new int[Plus_input[i].size() + Minus_input[i].size() + 1];
+        num = 1;
+        input_frag[0] = 0;
+        if (Plus_input[i].size() > 0) {
+            temp = new int[Plus_input[i].size()];
+
+            for (unsigned int j = 0; j < Plus_input[i].size(); j++)
+                temp[j] = Plus_input[i][j];
+
+            qsort(temp, Plus_input[i].size(), sizeof(int), cmp);
+
+            pre = -1;
+            for (unsigned int j = 0; j < Plus_input[i].size(); j++) {
+                if (temp[j] != pre) {
+                    input_frag[num] = temp[j];
+                    num++;
+                }
+                pre = temp[j];
+            }
+            delete[] temp;
+        }
+
+        if (Minus_input[i].size() > 0) {
+            temp = new int[Minus_input[i].size()];
+
+            for (unsigned int j = 0; j < Minus_input[i].size(); j++)
+                temp[j] = Minus_input[i][j];
+
+            qsort(temp, Minus_input[i].size(), sizeof(int), cmp);
+
+            pre = -1;
+            for (unsigned int j = 0; j < Minus_input[i].size(); j++) {
+                if (temp[j] != pre) {
+                    input_frag[num] = temp[j];
+                    num++;
+                }
+                pre = temp[j];
+            }
+            delete[] temp;
+        }
+        num_input_frag = num;
+        // in fact the num_input should be num-1, just for convenient for qsort;
+        qsort(input_frag, num_input_frag, sizeof(int), cmp);
+        if (Plus_data[i].size() + Minus_data[i].size() > 0) {
+            win_data = new double[L2][4];
+            trans2window(i);
+
+            len_bf = sum_bf = 0.0;
+            for (m = 2; m <= num_win; m++) {
+                len_bf += win_data[m][3];
+                sum_bf += win_data[m][2] * win_data[m][3];
+            }
+            average_bf = sum_bf / len_bf;
+
+            Matrix<double> obs(num_win + 1, 4);
+            Matrix<double> data(num_win + 1, 5);
+
+            m = 0;
+            obs[m][0] = obs[m][1] = obs[m][2] = obs[m][3] = 0.0;
+            for (m = 1; m <= num_win; m++) {
+                obs[m][0] = win_data[m][0];
+                obs[m][1] = win_data[m][1];
+                obs[m][2] = floor(win_data[m][2] + 0.5);
+                obs[m][3] = win_data[m][3];
+            }
+
+            len_aft = sum_aft = 0.0;
+            for (m = 2; m <= num_win; m++) {
+                len_aft += obs[m][3];
+                sum_aft += obs[m][2] * obs[m][3];
+            }
+            average_aft = sum_aft / len_aft;
+
+            for (m = 1; m < num_win; m++)
+                if ((obs[m][2] == 0) && (obs[m][3] == 1)
+                    && ((obs[m - 1][2] != 0) || (obs[m + 1][2] != 0)))
+                    obs[m][3] = 0;
+
+            num_temp = floor(log10((double) num_win) + 0.5);
+            double p = 1.0 / pow(10.0, num_temp);
+            if (average_aft < 0.1 && p < 0.0001)
+                p = p * 100;
+            if (average_aft >= 0.1 && average_aft <= 0.5 && p < 0.0001)
+                p = p * 10;
+
+            if (win_size >= 200) {
+                t1 = 10;
+                t2 = 5;
+            }
+            if (win_size < 200 && win_size >= 100) {
+                t1 = 7;
+                t2 = 4;
+            }
+            if (win_size < 100) {
+                t1 = 5;
+                t2 = 3;
+            }
+            if (t1 >= num_win) {
+                t1 = 5;
+                t2 = 3;
+            }
+            if (t1 >= num_win) {
+                tracer << "Too few data for the model. Program stopped prematurely.\n";
+                exit(1);
+            }
+
+            cppoisson tmp(obs, p, 1.0, 1.0, t1, t2);
+            tmp.BcmixSmooth();
+
+            m = 0;
+            data[m][0] = data[m][1] = data[m][2] = data[m][3] = data[m][4] =
+                    0.0;
+            for (m = 1; m <= num_win; m++) {
+                data[m][0] = obs[m][0];
+                data[m][1] = obs[m][1];
+                data[m][2] = obs[m][2];
+                data[m][3] = obs[m][3];
+                data[m][4] = tmp.estPara[m];
+            }
+
+
+            thre = 0.9;
+            //calculationg the factorial first
+            st[0] = 0;
+            for (m = 1; m <= 100000; m++)
+                st[m] = st[m - 1] + log(m);
+
+            m = 0;
+            while (prob_pois(m, average_aft) < thre)
+                m++;
+
+            if (m == 0)
+                cutline = 1.0;
+            if (m > 3)
+                cutline = m * 1.0 - 0.5;
+            if (m >= 1 && m <= 3)
+                cutline = m * 1.0;
+
+            ss = new double[num_win][6];
+
+            seg(data, cutline);
+
+            rseg = new double[num_seg + 1][7];
+
+            int m1 = 0;
+            for (m = 1; m <= num_allseg; m++) {
+                if (ss[m][3] >= cutline) {
+                    m1++;
+                    rseg[m1][0] = ss[m][0];
+                    rseg[m1][1] = ss[m][1];
+                    rseg[m1][2] = ss[m][2];
+                    rseg[m1][3] = ss[m][3];
+                    rseg[m1][4] = rseg[m1][5] = 0;
+                    rseg[m1][6] = 1.0;
+                }
+            }
+
+            c = (double) num_data_frag / (double) num_input_frag;
+
+            max = (num_input_frag - 1)
+                  / (double) (input_frag[num_input_frag - 1] + frag_size - 1
+                              - input_frag[1]);
+
+            for (m = 1; m <= num_seg; m++) {
+                seg_len = (int) rseg[m][2];
+                max1 = max * seg_len;
+
+                l1 = frag_count1(m);
+                rseg[m][4] = (double) l1;
+
+                l2 = frag_count2(m);
+                lambda = l2 >= max1 ? l2 : max1;
+
+                rseg[m][5] = c * lambda;
+                rseg[m][6] = fabs(1.0 - prob_pois(l1, rseg[m][5]));
+            }
+
+            for (m = 1; m <= num_seg; m++) {
+                if ((rseg[m][6] <= p_value) && (rseg[m][4] > rseg[m][5])) {
+                    std::vector<uint32_t> tmp;
+                    called_peak pk((rseg[m][0] - 1), rseg[m][1], rseg[m][6],
+                                   rseg[m][6], rseg[m][2], rseg[m][3], tmp);
+                    insertPeak(num2Chr[i], pk);
+                }
+            }
+
+            tracer << "Discovered " << _resultRegions[num2Chr[i]].size() << "\tregions in " << num2Chr[i]
+                   << ".\n";
+
+            delete[] rseg;
+            delete[] ss;
+            delete[] win_data;
+        } else {
+            tracer << num2Chr[i] << "is empty.\n";
+        }
+
+        for (size_t a = 0; a < L1; a++)
+            Weight[a] = 0;
+        delete[] data_frag;
+        delete[] input_frag;
+    }
 }
 
 void bcp_algo::printhelp() {
@@ -421,13 +420,13 @@ void bcp_algo::trans2window(int r) {
 void bcp_algo::buildChrMap(Reads &reads) {
     //treads should have been normalized against creads in the main app.cpp
     size_t chrNum = 0;
-            foreach(std::string chr, reads.pos_reads.chrs()) {
+    for (auto &chr: reads.pos_reads.chrs()) {
 
-                    chr2Num[chr] = chrNum;
-                    num2Chr[chrNum] = chr;
+        chr2Num[chr] = chrNum;
+        num2Chr[chrNum] = chr;
 
-                    chrNum++;
-                }
+        chrNum++;
+    }
 }
 
 double bcp_algo::prob_pois(int l1, double lambda) {

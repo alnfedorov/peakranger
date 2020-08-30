@@ -14,11 +14,6 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
-#include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
-
-
-#define foreach BOOST_FOREACH
-
 
 #endif /* BOOST_HEADER_H_ */

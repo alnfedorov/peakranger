@@ -37,20 +37,20 @@ namespace ccat_aux {
 
         size_t ind;
 
-                foreach(size_t val, vals) {
+        for (auto &val: vals) {
 
-                        if (isNegStrand) {
-                            ind = NegReadMapper(val);
-                        } else {
-                            ind = PosReadMapper(val);
-                        }
-                        if (!ccat_aux::rsRatio(ratio)) {
+            if (isNegStrand) {
+                ind = NegReadMapper(val);
+            } else {
+                ind = PosReadMapper(val);
+            }
+            if (!ccat_aux::rsRatio(ratio)) {
 
-                            result[ind] += 1;
+                result[ind] += 1;
 
-                        }
+            }
 
-                    }
+        }
     }
 
     void ccat_profile_t::rsPosReadMapper(size_t read, double ratio, size_t &mapped) {

@@ -279,66 +279,66 @@ void JT_wiggle_file::export_wiggle(Reads &reads, ostream &os) {
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
 
-            foreach(string chr, mergedchrs) {
-                    LOG_DEBUG1("In export_wiggle, start processing chr: " << chr);
-                    if (reads.pos_reads.hasReadsOnChr(chr)) {
-                        preadsstart = reads.pos_reads.begin_of(chr);
-                        preadsend = reads.pos_reads.end_of(chr);
-                    } else {
-                        preadsstart = preadsend;
-                    }
-                    if (reads.neg_reads.hasReadsOnChr(chr)) {
-                        npreadsstart = reads.neg_reads.begin_of(chr);
-                        npreadsend = reads.neg_reads.end_of(chr);
-                    } else {
-                        npreadsend = npreadsstart;
-                    }
+    for (auto &chr: mergedchrs) {
+        LOG_DEBUG1("In export_wiggle, start processing chr: " << chr);
+        if (reads.pos_reads.hasReadsOnChr(chr)) {
+            preadsstart = reads.pos_reads.begin_of(chr);
+            preadsend = reads.pos_reads.end_of(chr);
+        } else {
+            preadsstart = preadsend;
+        }
+        if (reads.neg_reads.hasReadsOnChr(chr)) {
+            npreadsstart = reads.neg_reads.begin_of(chr);
+            npreadsend = reads.neg_reads.end_of(chr);
+        } else {
+            npreadsend = npreadsstart;
+        }
 
-                    /*
-                     * in case some chrs only contain pos or neg reads
-                     * do not use
-                     * pchrlength = (*(preadsend-1));
-                     */
-                    //ignore the strand if it contains less than 2 read
-                    //todo: this can not rule out the case preadsend = 0x00 if this function
-                    // is not called after reads correction.
-                    uint32_t pchrlength = preadsend == preadsstart ? 0 : (*(preadsend - 1));
-                    uint32_t nchrlength =
-                            npreadsend == npreadsstart ? 0 : (*(npreadsend - 1));
+        /*
+         * in case some chrs only contain pos or neg reads
+         * do not use
+         * pchrlength = (*(preadsend-1));
+         */
+        //ignore the strand if it contains less than 2 read
+        //todo: this can not rule out the case preadsend = 0x00 if this function
+        // is not called after reads correction.
+        uint32_t pchrlength = preadsend == preadsstart ? 0 : (*(preadsend - 1));
+        uint32_t nchrlength =
+                npreadsend == npreadsstart ? 0 : (*(npreadsend - 1));
 
-                    uint32_t apchrlength =
-                            pchrlength > nchrlength ? pchrlength : nchrlength;
-                    uint32_t noofbins = apchrlength ? 1 + (apchrlength / _binlength) : 0;
-                    uint32_t binind = 0;
-                    uint32_t binstart, binend;
-                    LOG_DEBUG2("pchrlength: " << pchrlength << " nchrlength:" << nchrlength);
-                    os << "variableStep chrom=" << chr << " span=1\n";
-                    assert_gt(_binlength, 1)
-                    while (noofbins-- > 0) {
-                        LOG_DEBUG2("start Bin: " << binind);
-                        binstart = _binlength * binind + 1;
-                        binend = _binlength * (binind + 1);
-                        LOG_DEBUG2("binstart: " << binstart << " binend:" << binend);
-                        binind++;
+        uint32_t apchrlength =
+                pchrlength > nchrlength ? pchrlength : nchrlength;
+        uint32_t noofbins = apchrlength ? 1 + (apchrlength / _binlength) : 0;
+        uint32_t binind = 0;
+        uint32_t binstart, binend;
+        LOG_DEBUG2("pchrlength: " << pchrlength << " nchrlength:" << nchrlength);
+        os << "variableStep chrom=" << chr << " span=1\n";
+        assert_gt(_binlength, 1)
+        while (noofbins-- > 0) {
+            LOG_DEBUG2("start Bin: " << binind);
+            binstart = _binlength * binind + 1;
+            binend = _binlength * (binind + 1);
+            LOG_DEBUG2("binstart: " << binstart << " binend:" << binend);
+            binind++;
 
-                        if (preadsstart != preadsend) {
-                            ppreadsstart = lower_bound(preadsstart, preadsend, binstart);
-                            ppreadsend = upper_bound(ppreadsstart, preadsend, binend);
-                        } else {
-                            ppreadsstart = ppreadsend;
-                        }
-                        if (npreadsstart != npreadsend) {
-                            nppreadsstart = lower_bound(npreadsstart, npreadsend, binstart);
-                            nppreadsend = upper_bound(nppreadsstart, npreadsend, binend);
-                        } else {
-                            nppreadsstart = nppreadsend;
-                        }
-                        _process(binstart, binend, reads.getReadlength(), _readextlength,
-                                 ppreadsstart, ppreadsend, nppreadsstart, nppreadsend, os);
-                        LOG_DEBUG2("Bin processed: " << binind);
+            if (preadsstart != preadsend) {
+                ppreadsstart = lower_bound(preadsstart, preadsend, binstart);
+                ppreadsend = upper_bound(ppreadsstart, preadsend, binend);
+            } else {
+                ppreadsstart = ppreadsend;
+            }
+            if (npreadsstart != npreadsend) {
+                nppreadsstart = lower_bound(npreadsstart, npreadsend, binstart);
+                nppreadsend = upper_bound(nppreadsstart, npreadsend, binend);
+            } else {
+                nppreadsstart = nppreadsend;
+            }
+            _process(binstart, binend, reads.getReadlength(), _readextlength,
+                     ppreadsstart, ppreadsend, nppreadsstart, nppreadsend, os);
+            LOG_DEBUG2("Bin processed: " << binind);
 
-                    }LOG_DEBUG1("In export_wiggle, finished processing chr: " << chr);
-                }
+        }LOG_DEBUG1("In export_wiggle, finished processing chr: " << chr);
+    }
 }
 
 void JT_wiggle_file::split_export_wiggle(Reads &reads, const char *file) {
@@ -354,40 +354,40 @@ void JT_wiggle_file::split_export_wiggle(Reads &reads, const char *file) {
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
 #ifdef USE_LOGGING
-    foreach(string chr, reads.pos_reads.chrs()) {
+    for(auto& chr: reads.pos_reads.chrs()) {
         LOG_DEBUG1("POS chr:"<<chr);
     }
-    foreach(string chr, reads.neg_reads.chrs()) {
+    for(auto& chr: reads.neg_reads.chrs()) {
         LOG_DEBUG1("Neg chr:"<<chr);
     }
-    foreach(string chr, mergedchrs) {
+    for(auto& chr: mergedchrs) {
         LOG_DEBUG1("Merged chr:"<<chr);
     }
 #endif
-            foreach(string chr, mergedchrs) {
-                    setWiggleName(sfile + "_" + chr + ".wig");
+    for (auto &chr: mergedchrs) {
+        setWiggleName(sfile + "_" + chr + ".wig");
 
-                    string newfile(sfile + "_" + chr + ".wig");
-                    ofstream ofs(newfile.c_str());
-                    utils::Stamp::citationAndDate(ofs);
-                    rt_assert_msg(ofs.is_open(), "file not good")
-                    vector<uint32_t> preads;
+        string newfile(sfile + "_" + chr + ".wig");
+        ofstream ofs(newfile.c_str());
+        utils::Stamp::citationAndDate(ofs);
+        rt_assert_msg(ofs.is_open(), "file not good")
+        vector<uint32_t> preads;
 
-                    vector<uint32_t> nreads;
-                    if (reads.pos_reads.hasReadsOnChr(chr)) {
-                        preads.insert(preads.begin(), reads.pos_reads.begin_of(chr),
-                                      reads.pos_reads.end_of(chr));
-                    }
+        vector<uint32_t> nreads;
+        if (reads.pos_reads.hasReadsOnChr(chr)) {
+            preads.insert(preads.begin(), reads.pos_reads.begin_of(chr),
+                          reads.pos_reads.end_of(chr));
+        }
 
-                    if (reads.neg_reads.hasReadsOnChr(chr)) {
-                        nreads.insert(nreads.begin(), reads.neg_reads.begin_of(chr),
-                                      reads.neg_reads.end_of(chr));
-                    }
+        if (reads.neg_reads.hasReadsOnChr(chr)) {
+            nreads.insert(nreads.begin(), reads.neg_reads.begin_of(chr),
+                          reads.neg_reads.end_of(chr));
+        }
 
-                    LOG_DEBUG1("Generating: " << newfile);
-                    export_wiggle(preads, nreads, chr, ofs);
-                    ofs.close();
-                }
+        LOG_DEBUG1("Generating: " << newfile);
+        export_wiggle(preads, nreads, chr, ofs);
+        ofs.close();
+    }
 }
 
 void JT_wiggle_file::export_wiggle(Reads &reads, const char *file) {
@@ -441,39 +441,39 @@ void JT_wiggle_file::split_export_wiggle_gzip(Reads &reads, const char *file) {
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
 #ifdef USE_LOGGING
-    foreach(string chr, reads.pos_reads.chrs()) {
+    for(auto& chr: reads.pos_reads.chrs()) {
         LOG_DEBUG1("POS chr:"<<chr);
     }
-    foreach(string chr, reads.neg_reads.chrs()) {
+    for(auto& chr: reads.neg_reads.chrs()) {
         LOG_DEBUG1("Neg chr:"<<chr);
     }
-    foreach(string chr, mergedchrs) {
+    for(auto& chr: mergedchrs) {
         LOG_DEBUG1("Merged chr:"<<chr);
     }
 #endif
-            foreach(string chr, mergedchrs) {
-                    string newfile(sfile + "_" + chr + ".wig.gz");
-                    setWiggleName(newfile);
+    for (auto &chr: mergedchrs) {
+        string newfile(sfile + "_" + chr + ".wig.gz");
+        setWiggleName(newfile);
 
-                    ogzstream ofs(newfile.c_str());
-                    utils::Stamp::citationAndDate(ofs);
-                    rt_assert_msg(ofs.is_open(), "file not good")
-                    vector<uint32_t> preads;
+        ogzstream ofs(newfile.c_str());
+        utils::Stamp::citationAndDate(ofs);
+        rt_assert_msg(ofs.is_open(), "file not good")
+        vector<uint32_t> preads;
 
-                    vector<uint32_t> nreads;
-                    if (reads.pos_reads.hasReadsOnChr(chr)) {
-                        preads.insert(preads.begin(), reads.pos_reads.begin_of(chr),
-                                      reads.pos_reads.end_of(chr));
-                    }
+        vector<uint32_t> nreads;
+        if (reads.pos_reads.hasReadsOnChr(chr)) {
+            preads.insert(preads.begin(), reads.pos_reads.begin_of(chr),
+                          reads.pos_reads.end_of(chr));
+        }
 
-                    if (reads.neg_reads.hasReadsOnChr(chr)) {
-                        nreads.insert(nreads.begin(), reads.neg_reads.begin_of(chr),
-                                      reads.neg_reads.end_of(chr));
-                    }
+        if (reads.neg_reads.hasReadsOnChr(chr)) {
+            nreads.insert(nreads.begin(), reads.neg_reads.begin_of(chr),
+                          reads.neg_reads.end_of(chr));
+        }
 
-                    LOG_DEBUG1("Generating: " << newfile);
-                    export_wiggle(preads, nreads, chr, ofs);
-                    ofs.close();
-                }
+        LOG_DEBUG1("Generating: " << newfile);
+        export_wiggle(preads, nreads, chr, ofs);
+        ofs.close();
+    }
 }
 

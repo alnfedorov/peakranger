@@ -41,25 +41,25 @@ void wiggle_reporter::split_export_wiggle(Reads &reads,
     assert_eq(reads.pos_reads.chrs().size(),
               reads.neg_reads.chrs().size())
 
-            foreach(string chr, reads.pos_reads.chrs()) {
+    for (auto &chr: reads.pos_reads.chrs()) {
 
-                    setWiggleName(sfile + chr + ".wig");
-                    string newfile(sfile + chr + ".wig");
-                    ofstream ofs(newfile.c_str());
-                    assert(ofs.is_open());
-                    if (!(ofs.is_open())) throw FileNotGood(newfile.c_str());
+        setWiggleName(sfile + chr + ".wig");
+        string newfile(sfile + chr + ".wig");
+        ofstream ofs(newfile.c_str());
+        assert(ofs.is_open());
+        if (!(ofs.is_open())) throw FileNotGood(newfile.c_str());
 
-                    vector<uint32_t> preads(reads.pos_reads.begin_of(chr),
-                                            reads.pos_reads.end_of(chr));
-                    vector<uint32_t> nreads(reads.neg_reads.begin_of(chr),
-                                            reads.neg_reads.end_of(chr));
+        vector<uint32_t> preads(reads.pos_reads.begin_of(chr),
+                                reads.pos_reads.end_of(chr));
+        vector<uint32_t> nreads(reads.neg_reads.begin_of(chr),
+                                reads.neg_reads.end_of(chr));
 
-                    export_wiggle(preads,
-                                  nreads,
-                                  chr,
-                                  ofs);
-                    ofs.close();
-                }
+        export_wiggle(preads,
+                      nreads,
+                      chr,
+                      ofs);
+        ofs.close();
+    }
 }
 
 void wiggle_reporter::export_wiggle(vector<uint32_t> &preads,
