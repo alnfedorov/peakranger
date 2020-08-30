@@ -71,9 +71,9 @@ public:
 
     bool getPad() const;
 
-    const std::vector<std::string>& getTreatFiles() const;
+    const std::vector<std::string> &getTreatFiles() const;
 
-    const std::vector<std::string>& getControlFiles() const;
+    const std::vector<std::string> &getControlFiles() const;
 
     uint32_t getBandwidth() const;
 

@@ -209,7 +209,7 @@ namespace app {
 
     }
 
-    void parseReads(peakranger_cmd_option_parser &option, const string& readsfile,
+    void parseReads(peakranger_cmd_option_parser &option, const string &readsfile,
                     boost::shared_ptr<readsParser> &parser, Reads &treads) {
         if (option.getChrtableSpecified()) {
             vector<string> chrs_to_parse = option.getChrs_to_parse();
@@ -254,7 +254,7 @@ namespace app {
 
             Reads treads, creads;
 
-            for (auto& f: option.getTreatFiles())
+            for (auto &f: option.getTreatFiles())
                 parseReads(option, f, parser, treads);
             tracer << "Reads statistics:\n";
             tracer << " Treatment reads +:       " << treads.pos_reads.size()
@@ -264,7 +264,7 @@ namespace app {
             tracer << " Average read length:     " << treads.getReadlength()
                    << "\n";
 
-            for (auto& f: option.getControlFiles())
+            for (auto &f: option.getControlFiles())
                 parseReads(option, f, parser, creads);
             tracer << " Control reads +:         " << creads.pos_reads.size()
                    << "\n";

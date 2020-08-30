@@ -159,10 +159,10 @@ void peakranger_cmd_option_parser::parse() {
         require("gene_annot_file", vm);
     }
 
-    for (const auto& f: _treat_files)
+    for (const auto &f: _treat_files)
         file_r_good(f.c_str());
 
-    for (const auto& f: _control_files)
+    for (const auto &f: _control_files)
         file_r_good(f.c_str());
 
     file_w_good(_output_dir.c_str());
@@ -188,10 +188,10 @@ void peakranger_cmd_option_parser::report(ostream &os) const {
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
     os << (" Treatment file[s]:") << endl;
-    for (const auto& f: getTreatFiles())
+    for (const auto &f: getTreatFiles())
         os << "                          " << f << endl;
     os << (" Control file[s]:") << endl;
-    for (const auto& f: getControlFiles())
+    for (const auto &f: getControlFiles())
         os << "                          " << f << endl;
     os << ("Qualities:\n");
     os << (" P value cut off:         ") << getCutOff() << endl;

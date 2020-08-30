@@ -36,7 +36,7 @@ namespace ranger {
                 mCnt = cnt;
             }
 
-            const concepts::RegionInt32& getRegion() const {
+            const concepts::RegionInt32 &getRegion() const {
                 return mRegion;
             }
 

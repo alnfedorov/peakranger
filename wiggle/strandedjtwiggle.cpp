@@ -49,7 +49,7 @@ void stranded_jtwiggle::export_wiggle(Reads &, ostream &) {
     exit(0);
 }
 
-void stranded_jtwiggle::export_wiggle(vector<uint32_t>&, vector<uint32_t>&, string, ostream&) {
+void stranded_jtwiggle::export_wiggle(vector<uint32_t> &, vector<uint32_t> &, string, ostream &) {
     cout << "stranded_jtwiggle::export_wiggle is not conceptually right\n";
     exit(0);
 }

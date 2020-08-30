@@ -81,8 +81,8 @@ namespace ccat_aux {
 
 //GetPeaksInOneChrom1: strand-insensitive mode: get peak location from tags for one chromosome
     size_t CCATPeakFinder::GetPeaksInOneChrom1(chr_t &chrom, double l1Ratio,
-                                            double l2Ratio, size_t &maxL1Count, size_t &maxL2Count,
-                                            const ccat_config_t &config) {
+                                               double l2Ratio, size_t &maxL1Count, size_t &maxL2Count,
+                                               const ccat_config_t &config) {
 
         MARK_FUN("Entering ccat::GetPeaksInOneChrom1");
         size_t profileLen = (chrom.chromSize) / config.movingStep + 1;

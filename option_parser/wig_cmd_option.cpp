@@ -121,7 +121,7 @@ void wig_cmd_option::parse() {
     require("output", vm);
     require("format", vm);
 
-    for (const auto& f: _treat_files)
+    for (const auto &f: _treat_files)
         file_r_good(f.c_str());
 
     string dir, file, file_ext;
@@ -143,7 +143,7 @@ void wig_cmd_option::report(ostream &os) const {
     os << ("Data files:\n");
     os << (" File format:             ") << getFormat() << endl;
     os << (" Treatment file[s]:") << endl;
-    for (const auto& f: getTreatFiles())
+    for (const auto &f: getTreatFiles())
         os << "                          " << f << endl;
 
     os << ("Qualities:\n");

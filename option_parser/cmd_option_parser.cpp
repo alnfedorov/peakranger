@@ -50,11 +50,11 @@ bool cmd_option_parser::getPad() const {
     return _pad;
 }
 
-const vector<string>& cmd_option_parser::getTreatFiles() const {
+const vector<string> &cmd_option_parser::getTreatFiles() const {
     return _treat_files;
 }
 
-const vector<string>& cmd_option_parser::getControlFiles() const {
+const vector<string> &cmd_option_parser::getControlFiles() const {
     return _control_files;
 }
 

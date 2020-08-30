@@ -48,6 +48,7 @@ namespace ranger {
             LessThanComparable getL() const;
 
             LessThanComparable getR() const;
+
         private:
             LessThanComparable mL;
             LessThanComparable mR;

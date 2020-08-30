@@ -70,10 +70,10 @@ namespace app {
             Reads reads;
             if (option.getChrtableSpecified()) {
                 vector<string> chrs_to_parse = option.getChrs_to_parse();
-                for (const auto& f: option.getTreatFiles())
+                for (const auto &f: option.getTreatFiles())
                     parser->parse(reads, f, chrs_to_parse);
             } else {
-                for (const auto& f: option.getTreatFiles())
+                for (const auto &f: option.getTreatFiles())
                     parser->parse(reads, f);
             }
             tracer << "\nReads statistics:\n";

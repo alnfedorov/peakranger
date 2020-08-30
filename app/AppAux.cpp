@@ -25,11 +25,11 @@ namespace app {
             map<string, vector<called_peak> >::const_iterator it;
             it = toFilter.begin();
             for (; it != toFilter.end(); it++) {
-                        for(const auto& pk: it->second) {
-                                if (pk.q <= fdr) {
-                                    passFDR[it->first].push_back(pk);
-                                }
-                            }
+                for (const auto &pk: it->second) {
+                    if (pk.q <= fdr) {
+                        passFDR[it->first].push_back(pk);
+                    }
+                }
             }
 
         }

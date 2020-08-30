@@ -33,7 +33,8 @@ public:
 
     virtual void detectSummits(Reads &treatment_reads, Reads &control_reads, cmd_option_parser &option) = 0;
 
-    virtual void detectSummits(Reads &treatment_reads, Reads &control_reads, cmd_option_parser &option, std::ostream &os) = 0;
+    virtual void
+    detectSummits(Reads &treatment_reads, Reads &control_reads, cmd_option_parser &option, std::ostream &os) = 0;
 
 public:
     enriched_regions _resultRegions;

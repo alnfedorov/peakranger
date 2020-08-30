@@ -108,13 +108,13 @@ namespace app {
             boost::shared_ptr<result_reporter> reporter = boost::make_shared<
                     bed6_result_reporter>();
             Reads treads, creads;
-            for (auto& f: option.getTreatFiles())
+            for (auto &f: option.getTreatFiles())
                 parser->parse(treads, f);
             tracer << "\nReads statistics:\n";
             tracer << "\n Treatment reads +:       " << treads.pos_reads.size();
             tracer << "\n Treatment reads -:       " << treads.neg_reads.size();
             tracer << "\n Average read length:     " << treads.getReadlength();
-            for (auto& f: option.getControlFiles())
+            for (auto &f: option.getControlFiles())
                 parser->parse(creads, f);
             tracer << "\n Control reads +:         " << creads.pos_reads.size();
             tracer << "\n Control reads -:         " << creads.neg_reads.size();
