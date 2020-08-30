@@ -183,43 +183,43 @@ void peakranger_cmd_option_parser::parse() {
 }
 
 void peakranger_cmd_option_parser::report(ostream &os) const {
-    os << ("program version:          ") << version << endl;
-    os << ("Data files:\n");
-    os << (" File format:             ") << getFormat() << endl;
-    os << (" Treatment file[s]:") << endl;
+    os << ("#program version:         ") << version << endl;
+    os << ("#Data files:\n");
+    os << ("# File format:            ") << getFormat() << endl;
+    os << ("# Treatment file[s]:") << endl;
     for (const auto &f: getTreatFiles())
         os << "                          " << f << endl;
-    os << (" Control file[s]:") << endl;
+    os << ("# Control file[s]:") << endl;
     for (const auto &f: getControlFiles())
         os << "                          " << f << endl;
-    os << ("Qualities:\n");
-    os << (" P value cut off:         ") << getCutOff() << endl;
-    os << (" FDR cut off:             ") << getFdrCutOff() << endl;
-    os << (" Read extension length:   ") << getExt_length() << endl;
-    os << (" Smoothing bandwidth:     ") << getBandwidth() << endl;
-    os << (" Delta:                   ") << getDelta() << endl;
-    os << (" Pad region profile:      ");
+    os << ("#Qualities:\n");
+    os << ("# P value cut off:        ") << getCutOff() << endl;
+    os << ("# FDR cut off:            ") << getFdrCutOff() << endl;
+    os << ("# Read extension length:  ") << getExt_length() << endl;
+    os << ("# Smoothing bandwidth:    ") << getBandwidth() << endl;
+    os << ("# Delta:                  ") << getDelta() << endl;
+    os << ("# Pad region profile:     ");
     if (getPad()) {
         os << "Enabled" << endl;
     } else {
         os << "Disabled\n";
     }
-    os << ("Running modes:\n");
+    os << ("#Running modes:\n");
 
-    os << (" Number of threads:       ") << getNo_of_thread() << endl;
-    os << ("Output:\n");
+    os << ("# Number of threads:      ") << getNo_of_thread() << endl;
+    os << ("#Output:\n");
 
-    os << (" Regions:                 ") << getOutput_file() + "_region.bed"
+    os << ("# Regions:                ") << getOutput_file() + "_region.bed"
        << endl;
-    os << (" Summits:                 ") << getOutput_file() + "_summit.bed"
+    os << ("# Summits:                ") << getOutput_file() + "_summit.bed"
        << endl;
-    os << (" Details of regions:      ") << getOutput_file() + "_details"
+    os << ("# Details of regions:     ") << getOutput_file() + "_details"
        << endl;
-    os << (" HTML reports:            ");
+    os << ("# HTML reports:           ");
     if (needHtml()) {
         os << "Enabled" << endl;
-        os << (" Plot region length:      ") << getHtmlRegionLength() << endl;
-        os << (" Annotation file:         ") << getGeneAnnoFile() << endl;
+        os << ("# Plot region length:     ") << getHtmlRegionLength() << endl;
+        os << ("# Annotation file:        ") << getGeneAnnoFile() << endl;
     } else {
         os << "Disabled(--report not specified)\n";
     }

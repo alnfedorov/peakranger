@@ -166,36 +166,36 @@ namespace options {
     }
 
     void ccat_cmd_option_parser::report(ostream &os) const {
-        os << ("program version:          ") << version << endl;
-        os << ("Data files:\n");
-        os << (" File format:             ") << getFormat() << endl;
-        os << (" Treatment file[s]:") << endl;
+        os << ("#program version:         ") << version << endl;
+        os << ("#Data files:\n");
+        os << ("# File format:           ") << getFormat() << endl;
+        os << ("# Treatment file[s]:") << endl;
         for (const auto &f: getTreatFiles())
-            os << "                          " << f << endl;
-        os << (" Control file[s]:") << endl;
+            os << "#                         " << f << endl;
+        os << ("# Control file[s]:") << endl;
         for (const auto &f: getControlFiles())
-            os << "                          " << f << endl;
-        os << ("Qualities:\n");
-        os << (" FDR cut off:             ") << getFdrCutOff() << endl;
-        os << (" sliding window size:     ") << slidingWinSize << endl;
-        os << (" window moving step:      ") << movingStep << endl;
-        os << (" min window reads:        ") << minCount << endl;
-        os << (" min window fold-change:  ") << minScore << endl;
-        os << (" Read extension length:   ") << _ext_length << endl;
-        os << ("Running modes:\n");
-        os << (" Number of threads:       ") << getNo_of_thread() << endl;
-        os << ("Output:\n");
-        os << (" Regions:                 ") << getOutput_file() + "_region.bed"
+            os << "#                         " << f << endl;
+        os << ("#Qualities:\n");
+        os << ("# FDR cut off:            ") << getFdrCutOff() << endl;
+        os << ("# sliding window size:    ") << slidingWinSize << endl;
+        os << ("# window moving step:     ") << movingStep << endl;
+        os << ("# min window reads:       ") << minCount << endl;
+        os << ("# min window fold-change: ") << minScore << endl;
+        os << ("# Read extension length:  ") << _ext_length << endl;
+        os << ("#Running modes:\n");
+        os << ("# Number of threads:      ") << getNo_of_thread() << endl;
+        os << ("#Output:\n");
+        os << ("# Regions:                ") << getOutput_file() + "_region.bed"
            << endl;
-        os << (" Summits:                 ") << getOutput_file() + "_summit.bed"
+        os << ("# Summits:                ") << getOutput_file() + "_summit.bed"
            << endl;
-        os << (" Details of regions:      ") << getOutput_file() + "_details"
+        os << ("# Details of regions:     ") << getOutput_file() + "_details"
            << endl;
-        os << (" HTML reports:            ");
+        os << ("#HTML reports:            ");
         if (needHtml()) {
             os << "Enabled" << endl;
-            os << (" Plot region length:      ") << getHtmlRegionLength() << endl;
-            os << (" Annotation file:         ") << getGeneAnnoFile() << endl;
+            os << ("# Plot region length:     ") << getHtmlRegionLength() << endl;
+            os << ("# Annotation file:        ") << getGeneAnnoFile() << endl;
         } else {
             os << "Disabled(--report not specified)\n";
         }

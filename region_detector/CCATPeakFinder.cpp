@@ -135,7 +135,7 @@ namespace ccat_aux {
 
     bool CCATPeakFinder::hasLargerNeighbors(size_t minDist, const size_t &tmpStart,
                                             const size_t &tmpEnd, const vector<size_t> &profile, const peak_t &pk) {
-        int tmpStart1, tmpEnd1;
+        size_t tmpStart1, tmpEnd1;
         assert_gt(tmpStart, 0);
         assert_gt(tmpEnd, 0);
 

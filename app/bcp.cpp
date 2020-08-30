@@ -157,7 +157,7 @@ namespace app {
             size_t fdr_passed = 0;
             size_t fdr_failed = 0;
             {
-                ga = (option.getOutput_file() + "_region.bed");
+                ga = option.getOutput_file() + "_region.bed";
                 ofstream of(ga.c_str());
                 if (!(of.is_open())) {
                     throw FileNotGood(ga.c_str());

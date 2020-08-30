@@ -138,37 +138,37 @@ void wig_cmd_option::parse() {
 }
 
 void wig_cmd_option::report(ostream &os) const {
-    os << "\n" << "program version:          " << version << "\n";
-    os << ("Data files:\n");
-    os << (" File format:             ") << getFormat() << endl;
-    os << (" Treatment file[s]:") << endl;
+    os << "\n" << "#program version:          " << version << "\n";
+    os << ("#Data files:\n");
+    os << ("# File format:            ") << getFormat() << endl;
+    os << ("# Treatment file[s]:") << endl;
     for (const auto &f: getTreatFiles())
         os << "                          " << f << endl;
 
-    os << ("Qualities:\n");
+    os << ("#Qualities:\n");
 
-    os << (" Read extension length:   ") << getExt_length() << endl;
+    os << ("# Read extension length:  ") << getExt_length() << endl;
 
-    os << ("Output:\n");
+    os << ("#Output:\n");
     if (isGz()) {
-        os << (" Gzip results:            Yes") << endl;
+        os << ("# Gzip results:           Yes") << endl;
     } else {
-        os << (" Gzip results:            No") << endl;
+        os << ("# Gzip results:            No") << endl;
     }
     if (isStranded()) {
-        os << (" One wig per strand:      Yes") << endl;
+        os << ("# One wig per strand:     Yes") << endl;
     } else {
-        os << (" One wig per strand:      No") << endl;
+        os << ("# One wig per strand:      No") << endl;
     }
     if (isSplit()) {
-        os << (" Splitting results:       Yes") << endl;
-        os << (" Result file:             ") << getOutput_file() << endl;
+        os << ("# Splitting results:       Yes") << endl;
+        os << ("# Result file:             ") << getOutput_file() << endl;
         os
-                << ("                          and other splitted files in this directory")
+                << ("#                         and other splitted files in this directory")
                 << endl;
     } else {
-        os << (" Splitting results:       No") << endl;
-        os << (" Result file:             ") << getOutput_file() << endl;
+        os << ("# Splitting results:      No") << endl;
+        os << ("# Result file:           ") << getOutput_file() << endl;
     }
 }
 

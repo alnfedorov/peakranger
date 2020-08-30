@@ -58,10 +58,10 @@ namespace ccat_aux {
                           size_t binCount, double smoothingFactor, vector<double> &lookUpTable,
                           vector<int> &flag) {
 
-        int32_t i, j, len;
+        int32_t i, j;
         double tmpF;
         int halfWinSize = slidingWinSize / movingStep / 2;
-        len = l1Profile.size();
+        size_t len = l1Profile.size();
         assert(len > 1);
         assert(l1Profile.size() == l2Profile.size());
         assert(l1Profile.size() == region.size());

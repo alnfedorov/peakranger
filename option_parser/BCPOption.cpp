@@ -69,8 +69,6 @@ namespace options {
         //todo: linux only
         setOutput_file(_output_dir);
         setOutput_dir(dir);
-
-        verifyOptions();
     }
 
     void BCPOption::hasEnoughArgs(int argc) {
@@ -104,28 +102,28 @@ namespace options {
     }
 
     void BCPOption::report(std::ostream &os) const {
-        os << ("program version:          ") << version << endl;
-        os << ("Data files:\n");
-        os << (" File format:             ") << getFormat() << endl;
-        os << (" Treatment file[s]:") << endl;
+        os << ("#program version:         ") << version << endl;
+        os << ("#Data files:\n");
+        os << ("# File format:             ") << getFormat() << endl;
+        os << ("# Treatment file[s]:") << endl;
         for (const auto &f: getTreatFiles())
             os << "                          " << f << endl;
-        os << (" Control file[s]:") << endl;
+        os << ("# Control file[s]:") << endl;
         for (const auto &f: getControlFiles())
             os << "                          " << f << endl;
-        os << ("Qualities:\n");
-        os << (" P value cut off:         ") << getCutOff() << endl;
-        os << (" FDR cut off:             ") << getFdrCutOff() << endl;
-        os << (" sliding window size:     ") << slidingWinSize << endl;
-        os << (" Read extension length:   ") << _ext_length << endl;
-        os << ("Output:\n");
-        os << (" Regions:                 ") << getOutput_file() + "_region.bed"
+        os << ("#Qualities:\n");
+        os << ("# P value cut off:         ") << getCutOff() << endl;
+        os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
+        os << ("# sliding window size:     ") << slidingWinSize << endl;
+        os << ("# Read extension length:   ") << _ext_length << endl;
+        os << ("#Output:\n");
+        os << ("# Regions:                ") << getOutput_file() + "_region.bed"
            << endl;
-        os << (" HTML reports:            ");
+        os << ("#HTML reports:           ");
         if (needHtml()) {
             os << "Enabled" << endl;
-            os << (" Plot region length:      ") << getHtmlRegionLength() << endl;
-            os << (" Annotation file:         ") << getGeneAnnoFile() << endl;
+            os << ("# Plot region length:     ") << getHtmlRegionLength() << endl;
+            os << ("# Annotation file:        ") << getGeneAnnoFile() << endl;
         } else {
             os << "Disabled(--report not specified)\n";
         }
