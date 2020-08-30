@@ -21,21 +21,21 @@
 class wig_builder {
 public:
     void _process(uint32_t start, uint32_t end, uint32_t readlength,
-                  uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-                  std::vector<uint32_t>::iterator readsEnd,
-                  std::vector<uint32_t>::iterator nreadsStart,
-                  std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
+                  uint32_t readextlength, std::vector<uint32_t>::const_iterator readsStart,
+                  std::vector<uint32_t>::const_iterator readsEnd,
+                  std::vector<uint32_t>::const_iterator nreadsStart,
+                  std::vector<uint32_t>::const_iterator nreadsEnd, wigs &r);
 
     void _process(uint32_t readlength, uint32_t readextlength,
-                  std::vector<uint32_t>::iterator readsStart,
-                  std::vector<uint32_t>::iterator readsEnd,
-                  std::vector<uint32_t>::iterator nreadsStart,
-                  std::vector<uint32_t>::iterator nreadsEnd, wigs &r);
+                  std::vector<uint32_t>::const_iterator readsStart,
+                  std::vector<uint32_t>::const_iterator readsEnd,
+                  std::vector<uint32_t>::const_iterator nreadsStart,
+                  std::vector<uint32_t>::const_iterator nreadsEnd, wigs &r);
 
     template<class _T>
     void _process(uint32_t readlength, uint32_t readextlength,
-                  std::vector<uint32_t>::iterator readsStart,
-                  std::vector<uint32_t>::iterator readsEnd, wigs &r, _T trans) {
+                  std::vector<uint32_t>::const_iterator readsStart,
+                  std::vector<uint32_t>::const_iterator readsEnd, wigs &r, _T trans) {
 
         LOG_DEBUG1("Entering wig_builder::_process");
 
@@ -62,8 +62,8 @@ public:
 
     template<class _T>
     void _process(uint32_t start, uint32_t end, uint32_t readlength,
-                  uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-                  std::vector<uint32_t>::iterator readsEnd, wigs &r, _T trans) {
+                  uint32_t readextlength, std::vector<uint32_t>::const_iterator readsStart,
+                  std::vector<uint32_t>::const_iterator readsEnd, wigs &r, _T trans) {
 
         LOG_DEBUG1("Entering wig_builder::_process");
 
@@ -144,25 +144,30 @@ public:
         LOG_DEBUG1("QUIT: wig_builder::_process");
     }
 
-    void _binned_wig_compiler(uint32_t binlength, uint32_t readlength,
-                              uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
-                              std::vector<uint32_t>::iterator preadsend,
-                              std::vector<uint32_t>::iterator npreadsstart,
-                              std::vector<uint32_t>::iterator npreadsend, std::ostream &pof);
+    void _binned_wig_compiler(uint32_t binlength,
+                              uint32_t readlength,
+                              uint32_t readextlength,
+                              std::vector<uint32_t>::const_iterator preadsstart,
+                              std::vector<uint32_t>::const_iterator preadsend,
+                              std::vector<uint32_t>::const_iterator npreadsstart,
+                              std::vector<uint32_t>::const_iterator npreadsend,
+                              std::ostream &pof);
 
-    void _binned_wig_compiler(uint32_t binlength, uint32_t readlength,
-                              uint32_t readextlength, std::vector<uint32_t>::iterator preadsstart,
-                              std::vector<uint32_t>::iterator preadsend,
-                              std::vector<uint32_t>::iterator npreadsstart,
-                              std::vector<uint32_t>::iterator npreadsend, wigs &pof);
+    void _binned_wig_compiler(uint32_t binlength,
+                              uint32_t readlength,
+                              uint32_t readextlength,
+                              std::vector<uint32_t>::const_iterator preadsstart,
+                              std::vector<uint32_t>::const_iterator preadsend,
+                              std::vector<uint32_t>::const_iterator npreadsstart,
+                              std::vector<uint32_t>::const_iterator npreadsend, wigs &pof);
 
     template<typename _T>
     void _binned_wig_compiler(uint32_t _binlength, uint32_t _readlength,
-                              uint32_t _readextlength, std::vector<uint32_t>::iterator preadsstart,
-                              std::vector<uint32_t>::iterator preadsend, std::ostream &pof,
+                              uint32_t _readextlength, std::vector<uint32_t>::const_iterator preadsstart,
+                              std::vector<uint32_t>::const_iterator preadsend, std::ostream &pof,
                               const char *_neg, _T trans) {
         LOG_DEBUG1("wig_builder::_binned_wig_compiler");
-        std::vector<uint32_t>::iterator ppreadsstart, pppreadsstart, ppreadsend,
+        std::vector<uint32_t>::const_iterator ppreadsstart, pppreadsstart, ppreadsend,
                 pppreadsend;
         //todo: this can not rule out the case preadsend = 0x00 if this function
         // is not called after reads correction.

@@ -96,7 +96,6 @@ peakranger_cmd_option_parser::peakranger_cmd_option_parser(int argc,
     running_modes.add_options()("thread,t",
                                 po::value<uint32_t>(&_no_of_thread)->default_value(maxThreads - 1),
                                 "number of worker threads");
-    _config_file = "";
 
     popt.add("data", 1).add("control", 1).add("output", 1);
     all.add(input).add(output).add(qualities).add(running_modes).add(other);
@@ -169,8 +168,8 @@ void peakranger_cmd_option_parser::parse() {
     string dir, file, file_ext;
     stringutil::get_dir_file(_output_dir, dir, file, file_ext);
     //todo: linux only
-    setOutput_file(_output_dir);
-    setOutput_dir(dir);
+    setOutputFile(_output_dir);
+    setOutputDir(dir);
 
     if (vm.count("pad")) {
         setPad(true);
@@ -195,7 +194,7 @@ void peakranger_cmd_option_parser::report(ostream &os) const {
     os << ("#Qualities:\n");
     os << ("# P value cut off:        ") << getCutOff() << endl;
     os << ("# FDR cut off:            ") << getFdrCutOff() << endl;
-    os << ("# Read extension length:  ") << getExt_length() << endl;
+    os << ("# Read extension length:  ") << getExtLength() << endl;
     os << ("# Smoothing bandwidth:    ") << getBandwidth() << endl;
     os << ("# Delta:                  ") << getDelta() << endl;
     os << ("# Pad region profile:     ");
@@ -206,14 +205,14 @@ void peakranger_cmd_option_parser::report(ostream &os) const {
     }
     os << ("#Running modes:\n");
 
-    os << ("# Number of threads:      ") << getNo_of_thread() << endl;
+    os << ("# Number of threads:      ") << getNoOfThread() << endl;
     os << ("#Output:\n");
 
-    os << ("# Regions:                ") << getOutput_file() + "_region.bed"
+    os << ("# Regions:                ") << getOutputFile() + "_region.bed"
        << endl;
-    os << ("# Summits:                ") << getOutput_file() + "_summit.bed"
+    os << ("# Summits:                ") << getOutputFile() + "_summit.bed"
        << endl;
-    os << ("# Details of regions:     ") << getOutput_file() + "_details"
+    os << ("# Details of regions:     ") << getOutputFile() + "_details"
        << endl;
     os << ("# HTML reports:           ");
     if (needHtml()) {
@@ -268,8 +267,8 @@ void peakranger_cmd_option_parser::verify() {
     }
 
 
-    if (maxThreads < getNo_of_thread()) {
-        oss << "number of threads " << getNo_of_thread()
+    if (maxThreads < getNoOfThread()) {
+        oss << "number of threads " << getNoOfThread()
             << " is not valid. The current system allows up to "
             << maxThreads << " threads.\n";
         throw not_in_range(oss.str().c_str());

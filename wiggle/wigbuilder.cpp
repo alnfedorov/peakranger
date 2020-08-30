@@ -20,10 +20,10 @@ void wig_builder::_process(uint32_t start,
                            uint32_t end,
                            uint32_t readlength,
                            uint32_t readextlength,
-                           std::vector<uint32_t>::iterator readsStart,
-                           std::vector<uint32_t>::iterator readsEnd,
-                           std::vector<uint32_t>::iterator nreadsStart,
-                           std::vector<uint32_t>::iterator nreadsEnd,
+                           std::vector<uint32_t>::const_iterator readsStart,
+                           std::vector<uint32_t>::const_iterator readsEnd,
+                           std::vector<uint32_t>::const_iterator nreadsStart,
+                           std::vector<uint32_t>::const_iterator nreadsEnd,
                            wigs &r) {
     assert_gt(end,
               2)
@@ -116,10 +116,10 @@ void wig_builder::_get_ab(uint32_t read,
 
 void wig_builder::_process(uint32_t readlength,
                            uint32_t readextlength,
-                           std::vector<uint32_t>::iterator readsStart,
-                           std::vector<uint32_t>::iterator readsEnd,
-                           std::vector<uint32_t>::iterator nreadsStart,
-                           std::vector<uint32_t>::iterator nreadsEnd,
+                           std::vector<uint32_t>::const_iterator readsStart,
+                           std::vector<uint32_t>::const_iterator readsEnd,
+                           std::vector<uint32_t>::const_iterator nreadsStart,
+                           std::vector<uint32_t>::const_iterator nreadsEnd,
                            wigs &r) {
     LOG_DEBUG1("Entering wig_builder::_process");
 
@@ -145,41 +145,41 @@ void wig_builder::_process(uint32_t readlength,
          wig::compa);
 }
 
-void wig_builder::_binned_wig_compiler(uint32_t _binlength,
-                                       uint32_t _readlength,
-                                       uint32_t _readextlength,
-                                       std::vector<uint32_t>::iterator preadsstart,
-                                       std::vector<uint32_t>::iterator preadsend,
-                                       std::vector<uint32_t>::iterator npreadsstart,
-                                       std::vector<uint32_t>::iterator npreadsend,
+void wig_builder::_binned_wig_compiler(uint32_t binlength,
+                                       uint32_t readlength,
+                                       uint32_t readextlength,
+                                       vector<uint32_t>::const_iterator preadsstart,
+                                       vector<uint32_t>::const_iterator preadsend,
+                                       vector<uint32_t>::const_iterator npreadsstart,
+                                       vector<uint32_t>::const_iterator npreadsend,
                                        ostream &pof) {
     LOG_DEBUG1("wig_builder::_binned_wig_compiler");
-    std::vector<uint32_t>::iterator ppreadsstart, pppreadsstart,
+    std::vector<uint32_t>::const_iterator ppreadsstart, pppreadsstart,
             ppreadsend, pppreadsend, nppreadsstart, nppreadsend;
     //todo: this can not rule out the case preadsend = 0x00 if this function
     // is not called after reads correction.
     uint32_t pchrlength = preadsend == preadsstart ? 0 : (*(preadsend - 1));
     uint32_t nchrlength = npreadsend == npreadsstart ? 0 : (*(npreadsend - 1));
 
-    uint32_t noofbins = pchrlength ? 1 + (pchrlength / _binlength) : 0;
+    uint32_t noofbins = pchrlength ? 1 + (pchrlength / binlength) : 0;
     uint32_t binind = 0;
     uint32_t binstart = 0, binend = 0;
-    uint32_t nnoofbins = nchrlength ? 1 + (nchrlength / _binlength) : 0;
+    uint32_t nnoofbins = nchrlength ? 1 + (nchrlength / binlength) : 0;
     uint32_t nbinind = 0;
     uint32_t nbinstart = 0, nbinend = 0;
     LOG_DEBUG1("pos chr length:" << pchrlength);
     LOG_DEBUG1("neg chr length:" << nchrlength);
     LOG_DEBUG1("pos chr bins:" << noofbins);
     LOG_DEBUG1("pos chr bins:" << nnoofbins);
-    assert_gt(_binlength,
+    assert_gt(binlength,
               1)
     bool _pb = false;
     bool _nb = false;
     wigs _wigs;
     while (true) {
         if (noofbins > 0) {
-            binstart = _binlength * binind + 1;
-            binend = _binlength * (binind + 1);
+            binstart = binlength * binind + 1;
+            binend = binlength * (binind + 1);
             LOG_DEBUG2("in pos chr bin:" << binstart << ":" << binend);
             binind++;
             ppreadsstart = lower_bound(preadsstart,
@@ -190,8 +190,8 @@ void wig_builder::_binned_wig_compiler(uint32_t _binlength,
                                      binend);
             _process(binstart,
                      binend,
-                     _readlength,
-                     _readextlength,
+                     readlength,
+                     readextlength,
                      ppreadsstart,
                      ppreadsend,
                      _wigs,
@@ -203,8 +203,8 @@ void wig_builder::_binned_wig_compiler(uint32_t _binlength,
             _pb = true;
         }
         if (nnoofbins > 0) {
-            nbinstart = _binlength * nbinind + 1;
-            nbinend = _binlength * (nbinind + 1);
+            nbinstart = binlength * nbinind + 1;
+            nbinend = binlength * (nbinind + 1);
             LOG_DEBUG2("in neg chr bin:" << nbinstart << ":" << nbinend);
             nbinind++;
             nppreadsstart = lower_bound(npreadsstart,
@@ -215,8 +215,8 @@ void wig_builder::_binned_wig_compiler(uint32_t _binlength,
                                       nbinend);
             _process(nbinstart,
                      nbinend,
-                     _readlength,
-                     _readextlength,
+                     readlength,
+                     readextlength,
                      nppreadsstart,
                      nppreadsend,
                      _wigs,
@@ -240,13 +240,13 @@ void wig_builder::_binned_wig_compiler(uint32_t _binlength,
 void wig_builder::_binned_wig_compiler(uint32_t _binlength,
                                        uint32_t _readlength,
                                        uint32_t _readextlength,
-                                       std::vector<uint32_t>::iterator preadsstart,
-                                       std::vector<uint32_t>::iterator preadsend,
-                                       std::vector<uint32_t>::iterator npreadsstart,
-                                       std::vector<uint32_t>::iterator npreadsend,
+                                       std::vector<uint32_t>::const_iterator preadsstart,
+                                       std::vector<uint32_t>::const_iterator preadsend,
+                                       std::vector<uint32_t>::const_iterator npreadsstart,
+                                       std::vector<uint32_t>::const_iterator npreadsend,
                                        wigs &pof) {
     LOG_DEBUG1("wig_builder::_binned_wig_compiler");
-    std::vector<uint32_t>::iterator ppreadsstart, pppreadsstart,
+    std::vector<uint32_t>::const_iterator ppreadsstart, pppreadsstart,
             ppreadsend, pppreadsend, nppreadsstart, nppreadsend;
     //todo: this can not rule out the case preadsend = 0x00 if this function
     // is not called after reads correction.

@@ -57,10 +57,9 @@ namespace ccat_aux {
                           double minScore, size_t row, size_t column, size_t tagCount,
                           size_t binCount, double smoothingFactor, vector<double> &lookUpTable,
                           vector<int> &flag) {
-
-        int32_t i, j;
+        size_t i, j;
         double tmpF;
-        int halfWinSize = slidingWinSize / movingStep / 2;
+        size_t halfWinSize = slidingWinSize / movingStep / 2;
         size_t len = l1Profile.size();
         assert(len > 1);
         assert(l1Profile.size() == l2Profile.size());
@@ -94,27 +93,23 @@ namespace ccat_aux {
         copy(tmpRegion.begin(), tmpRegion.end(), region.begin());
         for (i = 1; i < len - 1; i++) {
             if ((tmpRegion[i] == 1) && (tmpRegion[i - 1] == 0)) {
-                for (j = i - 1; j >= i - halfWinSize; j--) {
-                    if ((tmpRegion[j]) || (j < 0)) {
+                for (j = i - 1; j + halfWinSize >= i; j--) {
+                    if (tmpRegion[j]) {
                         break;
                     }
                     region[j] = 1;
                 }
-
             }
 
             if ((tmpRegion[i] == 1) && (tmpRegion[i + 1] == 0)) {
                 for (j = i + 1; j <= i + halfWinSize; j++) {
-                    if ((tmpRegion[j]) || (j >= len)) {
+                    if (tmpRegion[j] || j >= len) {
                         break;
                     }
                     region[j] = 1;
                 }
-
             }
-
         }
-
     }
 
     double BootstrapFoldChange(size_t l1Count, size_t l2Count, double l1Ratio,

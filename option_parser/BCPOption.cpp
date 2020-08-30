@@ -19,15 +19,11 @@ namespace options {
 
     int BCPOption::min_args = 2;
 
-    BCPOption::BCPOption() = default;
-
-    BCPOption::~BCPOption() = default;
-
     void BCPOption::parse() {
-        hasEnoughArgs(_ac);
+        hasEnoughArgs(_argc);
 
         po::store(
-                po::command_line_parser(_ac, _av).options(all).positional(popt).run(),
+                po::command_line_parser(_argc, _argv).options(all).positional(popt).run(),
                 mVM);
         if (mVM.count("help")) {
             oa::printHelp(all, cout);
@@ -67,8 +63,8 @@ namespace options {
         string dir, file, file_ext;
         utils::stringutil::get_dir_file(_output_dir, dir, file, file_ext);
         //todo: linux only
-        setOutput_file(_output_dir);
-        setOutput_dir(dir);
+        setOutputFile(_output_dir);
+        setOutputDir(dir);
     }
 
     void BCPOption::hasEnoughArgs(int argc) {
@@ -114,10 +110,10 @@ namespace options {
         os << ("#Qualities:\n");
         os << ("# P value cut off:         ") << getCutOff() << endl;
         os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
-        os << ("# sliding window size:     ") << slidingWinSize << endl;
+        os << ("# sliding window size:     ") << getSlidingWinSize() << endl;
         os << ("# Read extension length:   ") << _ext_length << endl;
         os << ("#Output:\n");
-        os << ("# Regions:                ") << getOutput_file() + "_region.bed"
+        os << ("# Regions:                ") << getOutputFile() + "_region.bed"
            << endl;
         os << ("#HTML reports:           ");
         if (needHtml()) {
@@ -132,9 +128,9 @@ namespace options {
 
 
 options::BCPOption::BCPOption(int argc, char **argv,
-                              const std::string &version) : cmd_option_parser(argc, argv), version(version),
-                                                            _html(false),
-                                                            all("\nbcp " + version + "\n\nUsage"), popt() {
+                              const std::string &version): _argc(argc), _argv(argv),
+                                                            all("\nbcp " + version + "\n\nUsage"), popt(){
+    _html = false;
 
     opt other("Other");
     opt input("Input");
@@ -178,7 +174,7 @@ options::BCPOption::BCPOption(int argc, char **argv,
             ("pval,p", po::value<double>(&_p_cut_off)->default_value(double(0.0001L)),
              "p value cut-off")
 
-            ("win_size", po::value<uint32_t>(&slidingWinSize)->default_value(500),
+            ("win_size", po::value<uint32_t>(&_sliding_win_size)->default_value(500),
              "sliding window size")
 
             ("ext_length,l", po::value<uint32_t>(&_ext_length)->default_value(200),

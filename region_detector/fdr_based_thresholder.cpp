@@ -77,7 +77,7 @@ namespace {
         uint32_t b = 0;
         uint32_t read = 0;
 
-        vector<uint32_t>::iterator readsStart, readsEnd;
+        vector<uint32_t>::const_iterator readsStart, readsEnd;
         readsStart = reads.begin();
         readsEnd = reads.end();
 
@@ -379,10 +379,10 @@ uint32_t fdr_based_thresholder::_calculate_last_pos(int32_t pos_read,
 
 // Input reads do not have to be sorted
 void fdr_based_thresholder::get_profile_of_reads(uint32_t extension,
-                                                 uint32_t readlength, vector<uint32_t>::iterator readsStart,
-                                                 vector<uint32_t>::iterator readsEnd,
-                                                 vector<uint32_t>::iterator nreadsStart,
-                                                 vector<uint32_t>::iterator nreadsEnd, SGR &result) const {
+                                                 uint32_t readlength, vector<uint32_t>::const_iterator readsStart,
+                                                 vector<uint32_t>::const_iterator readsEnd,
+                                                 vector<uint32_t>::const_iterator nreadsStart,
+                                                 vector<uint32_t>::const_iterator nreadsEnd, SGR &result) const {
     uint32_t a = 0;
     uint32_t b = 0;
     uint32_t read = 0;
@@ -564,11 +564,11 @@ void fdr_based_thresholder::_processChr(ostream &os, bool print_stream) {
     double __delta = _delta;
 
     //index for reads in the chromosome(p), bin(pp) and the peak (ppp)
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend, pcreadsstart, ppcreadsstart,
             pppcreadsstart, pcreadsend, ppcreadsend, pppcreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend, npcreadsstart,
             nppcreadsstart, npppcreadsstart, npcreadsend, nppcreadsend,
             npppcreadsend;
@@ -916,7 +916,7 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
      * combine results
      */
 
-    vector<uint32_t>::iterator treadsstart, treadsend, creadsstart, creadsend;
+    vector<uint32_t>::const_iterator treadsstart, treadsend, creadsstart, creadsend;
     /**
      * Each thread will fetch its own readsstart and readsend from this map
      */
@@ -979,10 +979,10 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
                                           cmd_option_parser &option) {
 
     ofstream os;
-    detectSummits(treads, creads, option.getNo_of_thread(), option.getCutOff(),
+    detectSummits(treads, creads, option.getNoOfThread(), option.getCutOff(),
                   option.getDelta(), option.getPeakHeightCutoff(), MERGE_DISTANCE,
                   option.getBinlength(), option.getBandwidth(),
-                  option.getExt_length(), os, option.getVerboseRequested());
+                  option.getExtLength(), os, option.getVerboseRequested());
 }
 
 /*
@@ -998,19 +998,19 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
     os
             << "#chr\tstart\tend\tsummits\tvalleys\tp-value\tsample_reads\tcontrol_reads\n";
     LOG_DEBUG("\nParameters for simple thresholder detector:"
-                      << "\nthreads:" << option.getNo_of_thread()
+                      << "\nthreads:" << option.getNoOfThread()
                       << "\np value cut off:" << option.getCutOff()
                       << "\ndelta:" << option.getDelta()
                       << "\npeak height cutoff:" << option.getPeakHeightCutoff()
                       << "\nmerge distance:" << MERGE_DISTANCE
                       << "\nbin length:" << option.getBinlength()
                       << "\nbandwidth:" << option.getBandwidth()
-                      << "\nextension length:" << option.getExt_length());
+                      << "\nextension length:" << option.getExtLength());
 
-    detectSummits(treads, creads, option.getNo_of_thread(), option.getCutOff(),
+    detectSummits(treads, creads, option.getNoOfThread(), option.getCutOff(),
                   option.getDelta(), option.getPeakHeightCutoff(), MERGE_DISTANCE,
                   option.getBinlength(), option.getBandwidth(),
-                  option.getExt_length(), os, option.getVerboseRequested());
+                  option.getExtLength(), os, option.getVerboseRequested());
 
 }
 
@@ -1044,8 +1044,8 @@ void fdr_based_thresholder::_normalize_reads(Reads &treads, Reads &creads) {
  * pre-requisite:
  * return: a value ~0 ~ 1. If the normalization cant finish, return 1
  */
-inline double fdr_based_thresholder::_normalize_reads_onchr(Reads &treads,
-                                                            Reads &creads, string &chr, uint32_t binlength) {
+inline double fdr_based_thresholder::_normalize_reads_onchr(const Reads &treads,
+                                                            const Reads &creads, const string &chr, uint32_t binlength) {
     /*
      * 	Least square regression
      *
@@ -1058,11 +1058,11 @@ inline double fdr_based_thresholder::_normalize_reads_onchr(Reads &treads,
 
     double result = 1;
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend, pcreadsstart, ppcreadsstart,
             pppcreadsstart, pcreadsend, ppcreadsend, pppcreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend, npcreadsstart,
             nppcreadsstart, npppcreadsstart, npcreadsend, nppcreadsend,
             npppcreadsend;

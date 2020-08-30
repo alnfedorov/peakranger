@@ -9,20 +9,27 @@
 #define BCP_H_
 
 #include <string>
+#include "option_parser/BCPOption.h"
+#include "short_reads/reads.h"
+#include "region_detector/calledpeak.h"
 
-namespace app {
+namespace app::bcp {
+    typedef std::map<std::string, std::vector<called_peak> > enriched_regions;
 
-    class BCP {
-    public:
-        BCP();
+    options::BCPOption parse_options(int argc, char **argv, const std::string &version);
 
-        virtual ~BCP();
+    std::pair<Reads, Reads> parse_data(options::BCPOption &option);
 
-        static void run(int argc, char **argv);
+    enriched_regions predict(const Reads &treads, const Reads &creads, const options::BCPOption &option);
 
-        static std::string version;
-    };
+    void report_regions(const enriched_regions &regions, const options::BCPOption &option);
 
-} /* namespace app */
+    void report_details(const enriched_regions &regions, const options::BCPOption &option);
+
+    void report_html(const Reads &treads, const Reads &creads,
+                     const enriched_regions &regions, const options::BCPOption &option);
+
+    void run(int args, char **argv, const std::string &version);
+}
 #endif /* BCP_H_ */
 

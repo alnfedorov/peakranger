@@ -130,8 +130,8 @@ void wig_cmd_option::parse() {
     if (file_ext != "wig") {
         _output_dir += ".wig";
     }
-    setOutput_file(_output_dir);
-    setOutput_dir(dir);
+    setOutputFile(_output_dir);
+    setOutputDir(dir);
 
     verify();
 
@@ -147,7 +147,7 @@ void wig_cmd_option::report(ostream &os) const {
 
     os << ("#Qualities:\n");
 
-    os << ("# Read extension length:  ") << getExt_length() << endl;
+    os << ("# Read extension length:  ") << getExtLength() << endl;
 
     os << ("#Output:\n");
     if (isGz()) {
@@ -162,13 +162,13 @@ void wig_cmd_option::report(ostream &os) const {
     }
     if (isSplit()) {
         os << ("# Splitting results:       Yes") << endl;
-        os << ("# Result file:             ") << getOutput_file() << endl;
+        os << ("# Result file:             ") << getOutputFile() << endl;
         os
                 << ("#                         and other splitted files in this directory")
                 << endl;
     } else {
         os << ("# Splitting results:      No") << endl;
-        os << ("# Result file:           ") << getOutput_file() << endl;
+        os << ("# Result file:           ") << getOutputFile() << endl;
     }
 }
 

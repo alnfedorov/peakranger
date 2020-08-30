@@ -69,7 +69,7 @@ namespace app {
                 exit(0);
             }
 
-            SET_LOG_FILE(option.getOutput_file() + "_ccat.log");
+            SET_LOG_FILE(option.getOutputFile() + "_ccat.log");
 
             SET_LOG_LEVEL("DEBUG3");
 
@@ -133,37 +133,37 @@ namespace app {
             }
             uint32_t treadslen = treads.getReadlength();
             uint32_t creadslen = creads.getReadlength();
-            uint32_t optExtlen = option.getExt_length();
+            uint32_t optExtlen = option.getExtLength();
             uint32_t longerlen = treadslen > creadslen ? treadslen : creadslen;
             if (optExtlen < treadslen || optExtlen < creadslen) {
                 tracer << "\nWarning: Specified read extension length " << optExtlen
                        << " is shorter than" << " the read length " << treadslen
                        << "(+)/" << creadslen << "(-). Forced to use " << longerlen
                        << " as the read extension length\n ";
-                option.setExt_length(longerlen);
+                option.setExtLength(longerlen);
             }
 
             string ga;
             {
                 tracer << "\n\n Calling peaks...\n\n";
-                ga = option.getOutput_file() + "_raw";
+                ga = option.getOutputFile() + "_raw";
                 detector->detectSummits(treads, creads, option);
             }
 
             size_t fdr_passed = 0;
             size_t fdr_failed = 0;
             {
-                ga = (option.getOutput_file() + "_region.bed");
+                ga = (option.getOutputFile() + "_region.bed");
                 ofstream of(ga.c_str());
                 if (!(of.is_open())) {
                     throw FileNotGood(ga.c_str());
                 }
-                ga = (option.getOutput_file() + "_summit.bed");
+                ga = (option.getOutputFile() + "_summit.bed");
                 ofstream of_smt(ga.c_str());
                 if (!(of_smt.is_open())) {
                     throw FileNotGood(ga.c_str());
                 }
-                ga = (option.getOutput_file() + "_details");
+                ga = (option.getOutputFile() + "_details");
                 ofstream of_raw(ga.c_str());
                 if (!(of_raw.is_open())) {
                     throw FileNotGood(ga.c_str());
@@ -212,7 +212,7 @@ namespace app {
                         }
                         of_raw << "_fdr_" << pk.q;
                         of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
-                        vector<uint32_t>::iterator sit = pk.summits.begin();
+                        vector<uint32_t>::const_iterator sit = pk.summits.begin();
                         for (; sit != pk.summits.end(); sit++) {
 
                             of_smt << it->first << "\t" << *sit << "\t"

@@ -100,17 +100,17 @@ namespace app {
                        boost::shared_ptr<region_detector> &detector, size_t &fdr_passed,
                        size_t &fdr_failed) {
         string ga;
-        ga = (option.getOutput_file() + "_region.bed");
+        ga = (option.getOutputFile() + "_region.bed");
         ofstream of(ga.c_str());
         if (!(of.is_open())) {
             throw FileNotGood(ga.c_str());
         }
-        ga = (option.getOutput_file() + "_summit.bed");
+        ga = (option.getOutputFile() + "_summit.bed");
         ofstream of_smt(ga.c_str());
         if (!(of_smt.is_open())) {
             throw FileNotGood(ga.c_str());
         }
-        ga = (option.getOutput_file() + "_details");
+        ga = (option.getOutputFile() + "_details");
         ofstream of_raw(ga.c_str());
         if (!(of_raw.is_open())) {
             throw FileNotGood(ga.c_str());
@@ -157,7 +157,7 @@ namespace app {
                 }
                 of_raw << "_pval_" << pk.p << "_fdr_" << pk.q;
                 of_raw << "\t" << utils::vector_to_string(pk.summits, ",");
-                vector<uint32_t>::iterator sit = pk.summits.begin();
+                vector<uint32_t>::const_iterator sit = pk.summits.begin();
                 for (; sit != pk.summits.end(); sit++) {
 
                     of_smt << it->first << "\t" << *sit << "\t" << (*sit) + 1
@@ -209,12 +209,7 @@ namespace app {
 
     void parseReads(peakranger_cmd_option_parser &option, const string &readsfile,
                     boost::shared_ptr<readsParser> &parser, Reads &treads) {
-        if (option.getChrtableSpecified()) {
-            vector<string> chrs_to_parse = option.getChrs_to_parse();
-            parser->parse(treads, readsfile, chrs_to_parse);
-        } else {
-            parser->parse(treads, readsfile);
-        }
+        parser->parse(treads, readsfile);
     }
 
     std::string PeakRanger::version = "";
@@ -227,7 +222,7 @@ namespace app {
 
             peakranger_cmd_option_parser option(argc, argv, version);
             option.parse();
-            SET_LOG_FILE(option.getOutput_file() + "_ranger.log");
+            SET_LOG_FILE(option.getOutputFile() + "_ranger.log");
 
             SET_LOG_LEVEL("DEBUG3");
 
@@ -294,18 +289,18 @@ namespace app {
             }
             uint32_t treadslen = treads.getReadlength();
             uint32_t creadslen = creads.getReadlength();
-            uint32_t optExtlen = option.getExt_length();
+            uint32_t optExtlen = option.getExtLength();
             uint32_t longerlen = treadslen > creadslen ? treadslen : creadslen;
             if (optExtlen < treadslen || optExtlen < creadslen) {
                 tracer << "Warning: Specified read extension length " << optExtlen
                        << " is shorter than" << " the read length " << treadslen
                        << "(+)/" << creadslen << "(-). Forced to use " << longerlen
                        << " as the read extension length\n ";
-                option.setExt_length(longerlen);
+                option.setExtLength(longerlen);
             }
             {
                 tracer << "\n Calling peaks...\n" << "\n";
-                string ga = (option.getOutput_file() + "_raw");
+                string ga = (option.getOutputFile() + "_raw");
                 detector->detectSummits(treads, creads, option);
             }
             CalculateFDR(option, detector);

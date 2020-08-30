@@ -44,7 +44,7 @@ struct thresh {
 typedef struct thresh Thresh;
 
 typedef std::map<std::string, std::vector<called_peak> > enriched_regions;
-typedef std::vector<uint32_t>::iterator read_itr;
+typedef std::vector<uint32_t>::const_iterator read_itr;
 typedef std::pair<read_itr, read_itr> readsregion;
 typedef std::vector<std::pair<uint32_t, int8_t> > reads_count_t;
 struct window {
@@ -95,9 +95,7 @@ typedef struct _SGR SGR;
  *
  * detect regions above the cut-off as peaks.
  *
- * Good for high-quality sharp peaks, not good
- *
- * for histone marks.
+ * Good for high-quality sharp peaks, not good for histone marks.
  */
 class fdr_based_thresholder : public region_detector {
 public:
@@ -149,8 +147,8 @@ protected:
 
     void _normalize_reads(Reads &treads, Reads &creads);
 
-    inline double _normalize_reads_onchr(Reads &treads, Reads &creads,
-                                         std::string &chr, uint32_t binlength);
+    inline double _normalize_reads_onchr(const Reads &treads, const Reads &creads,
+                                         const std::string &chr, uint32_t binlength);
 
     void _processChr(std::ostream &os, bool print_stream);
 
@@ -173,10 +171,10 @@ protected:
                                   uint32_t binend) const;
 
     virtual void get_profile_of_reads(uint32_t extension, uint32_t readlength,
-                                      std::vector<uint32_t>::iterator readsStart,
-                                      std::vector<uint32_t>::iterator readsEnd,
-                                      std::vector<uint32_t>::iterator nreadsStart,
-                                      std::vector<uint32_t>::iterator nreadsEnd, SGR &result) const;
+                                      std::vector<uint32_t>::const_iterator readsStart,
+                                      std::vector<uint32_t>::const_iterator readsEnd,
+                                      std::vector<uint32_t>::const_iterator nreadsStart,
+                                      std::vector<uint32_t>::const_iterator nreadsEnd, SGR &result) const;
 
 protected:
     struct workerPara {

@@ -66,7 +66,7 @@ void reads_tools::verify_and_correct_Reads_both_strands(Reads &treads,
     }
 }
 
-void reads_tools::get_merged_chrs_for_both_strands(Reads &reads,
+void reads_tools::get_merged_chrs_for_both_strands(const Reads &reads,
                                                    vector<string> &mergedchrs) {
     if (reads.size() < 1) {
         return;
@@ -156,8 +156,8 @@ void reads_tools::generate_random_reads_based_on_reads(Reads &reads,
     result.neg_reads.begin();
 }
 
-size_t reads_tools::chromSize(Reads &treads,
-                              string &chr) {
+size_t reads_tools::chromSize(const Reads &treads,
+                              const string &chr) {
     return *(treads.pos_reads.end_of(chr) - 1)
            > *(treads.neg_reads.end_of(chr) - 1) ?
            *(treads.pos_reads.end_of(chr) - 1)

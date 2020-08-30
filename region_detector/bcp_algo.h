@@ -17,34 +17,27 @@
 #include "region_detector.h"
 #include "tnt_cmat.h"
 
-class bcp_algo : public region_detector {
+class bcp_algo {
 public:
-    bcp_algo();
+    bcp_algo(uint32_t frag_size, uint32_t window_size, double pvalue_cutoff);
 
-    virtual ~bcp_algo();
+    void detectSummits(const Reads &treatment_reads, const Reads &control_reads, bool verbose);
 
-    virtual void detectSummits(Reads &treatment_reads, Reads &control_reads,
-                               cmd_option_parser &option);
-
-    virtual void detectSummits(Reads &treatment_reads, Reads &control_reads,
-                               cmd_option_parser &option, std::ostream &os) {
-    }
-
+    enriched_regions _resultRegions;
 private:
     typedef std::vector<std::vector<int> > data_t;
 
     void insertPeak(const std::string &chr, called_peak &pk);
 
-    void cmain(Reads &treads, Reads &creads, cmd_option_parser &option);
+    void cmain(const Reads &treads, const Reads &creads, bool verbose);
 
-    void loadPosData(data_t &data, Reads &reads);
+    void loadPosData(data_t &data, const Reads &reads);
 
-    void loadNegData(data_t &data, Reads &reads);
+    void loadNegData(data_t &data, const Reads &reads);
 
-    void buildChrMap(Reads &reads);
+    void buildChrMap(const Reads &reads);
 
     void printhelp();
-
 
     void Add(int aa, int bb);
 
@@ -58,7 +51,6 @@ private:
 
     double prob_pois(int g, double a);
 
-    std::vector<double> lookUpTable;
     std::vector<int> flag;
     std::vector<double> q;
     std::vector<double> value;
@@ -76,10 +68,10 @@ private:
     int win_size;
     double p_value;
     int num_win, num_data_frag, num_input_frag, num_seg, num_allseg;
-    double len_bf, len_aft, sum_bf, sum_aft, average_bf, average_aft, cutline;
+    double len_bf, len_aft, sum_bf, sum_aft, average_aft, cutline;
     const size_t L1;
-    const int L2;
-    const int N;
+    const size_t L2;
+    const size_t N;
     std::vector<int> Weight;
 
 };

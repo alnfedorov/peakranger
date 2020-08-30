@@ -5,23 +5,15 @@
  *      Author: Xin Feng 
  */
 #include "bcp_algo.h"
-#include "common/boost_header.h"
-#include "common/stl_header.h"
-#include "utils/assert_helpers.h"
-#include "utils/logger.h"
-#include "utils/debug.h"
 #include "short_reads/readstools.h"
 #include "region_detector/calledpeak.h"
 #include "utils/Tracer.h"
 #include <iostream>
-#include <fstream>
 #include <string>
 #include <vector>
 #include <map>
 #include <cmath>
-#include <iomanip>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
 #include <unistd.h>
 #include "cppoisson_HM.h"
 
@@ -38,11 +30,11 @@ using namespace std;
 using namespace TNT;
 using namespace boost;
 
-void bcp_algo::loadPosData(data_t &data, Reads &reads) {
+void bcp_algo::loadPosData(data_t &data, const Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
     for (auto &chr: reads.pos_reads.chrs()) {
-        std::vector<uint32_t>::iterator it = reads.pos_reads.begin_of(chr);
+        std::vector<uint32_t>::const_iterator it = reads.pos_reads.begin_of(chr);
         while (it != reads.pos_reads.end_of(chr)) {
             // This is safe due to the length of chromosome
             data[chr2Num[chr]].push_back((int) (*it++));
@@ -50,11 +42,11 @@ void bcp_algo::loadPosData(data_t &data, Reads &reads) {
     }
 }
 
-void bcp_algo::loadNegData(data_t &data, Reads &reads) {
+void bcp_algo::loadNegData(data_t &data, const Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
     for (auto &chr: reads.neg_reads.chrs()) {
-        std::vector<uint32_t>::iterator it = reads.neg_reads.begin_of(chr);
+        std::vector<uint32_t>::const_iterator it = reads.neg_reads.begin_of(chr);
         while (it != reads.neg_reads.end_of(chr)) {
             // This is safe due to the length of chromosome
             data[chr2Num[chr]].push_back((int) (*it++));
@@ -73,12 +65,9 @@ void bcp_algo::insertPeak(const string &chr, called_peak &pk) {
     _resultRegions[chr].push_back(pk);
 }
 
-void bcp_algo::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
-    utils::TimeStampTracer tracer(std::cout, option.getVerboseRequested());
+void bcp_algo::cmain(const Reads &treads, const Reads &creads, bool verbose) {
 
-    p_value = option.getCutOff();
-    win_size = option.slidingWinSize;
-    frag_size = option.getExt_length();
+    utils::TimeStampTracer tracer(std::cout, verbose);
 
     data_t Plus_data(N), Minus_data(N);
     data_t Plus_input(N), Minus_input(N);
@@ -199,7 +188,6 @@ void bcp_algo::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
                 len_bf += win_data[m][3];
                 sum_bf += win_data[m][2] * win_data[m][3];
             }
-            average_bf = sum_bf / len_bf;
 
             Matrix<double> obs(num_win + 1, 4);
             Matrix<double> data(num_win + 1, 5);
@@ -417,13 +405,14 @@ void bcp_algo::trans2window(int r) {
 
 }
 
-void bcp_algo::buildChrMap(Reads &reads) {
+void bcp_algo::buildChrMap(const Reads &reads) {
     //treads should have been normalized against creads in the main app.cpp
-    size_t chrNum = 0;
+    uint32_t chrNum = 0;
     for (auto &chr: reads.pos_reads.chrs()) {
-
-        chr2Num[chr] = chrNum;
-        num2Chr[chrNum] = chr;
+        chr2Num.insert({chr, chrNum});
+        num2Chr.insert({chrNum, chr});
+//        chr2Num[chr] = chrNum;
+//        num2Chr[chrNum] = chr;
 
         chrNum++;
     }
@@ -572,15 +561,12 @@ int bcp_algo::frag_count2(int rec) {
     return count;
 }
 
-bcp_algo::bcp_algo() :
-        frag_size(200), win_size(200), p_value(0.001), L1(3000000), L2(1500000), N(56), Weight(3000000, 0) {
+bcp_algo::bcp_algo(uint32_t frag_size, uint32_t window_size, double pvalue_cutoff) :
+        frag_size(frag_size), win_size(window_size), p_value(pvalue_cutoff), L1(3000000), L2(1500000), N(56), Weight(3000000, 0) {
 }
 
-bcp_algo::~bcp_algo() {
-}
 
-void bcp_algo::detectSummits(Reads &treatment_reads, Reads &control_reads,
-                             cmd_option_parser &option) {
-    cmain(treatment_reads, control_reads, option);
+void bcp_algo::detectSummits(const Reads &treatment_reads, const Reads &control_reads, bool verbose) {
+    cmain(treatment_reads, control_reads, verbose);
 }
 

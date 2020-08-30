@@ -68,14 +68,8 @@ namespace app {
             }
 
             Reads reads;
-            if (option.getChrtableSpecified()) {
-                vector<string> chrs_to_parse = option.getChrs_to_parse();
-                for (const auto &f: option.getTreatFiles())
-                    parser->parse(reads, f, chrs_to_parse);
-            } else {
-                for (const auto &f: option.getTreatFiles())
+            for (const auto &f: option.getTreatFiles())
                     parser->parse(reads, f);
-            }
             tracer << "\nReads statistics:\n";
             tracer << "\n Processed reads +:       " << reads.pos_reads.size();
             tracer << "\n Processed reads -:       " << reads.neg_reads.size();
@@ -88,17 +82,17 @@ namespace app {
                 wig = boost::make_shared<JT_wiggle_file>();
             }
             wig->use_default_setting();
-            wig->setReadextlength(option.getExt_length());
-            if (option.getExt_length() < reads.getReadlength()) {
+            wig->setReadextlength(option.getExtLength());
+            if (option.getExtLength() < reads.getReadlength()) {
                 tracer << "Warning: Specified read extension length "
-                       << option.getExt_length() << " is shorter than"
+                       << option.getExtLength() << " is shorter than"
                        << " the read length " << reads.getReadlength()
                        << ". Forced to use the read length"
                        << " as the read extension length\n ";
                 wig->setReadextlength(reads.getReadlength());
             }
             wig->setReadlength(reads.getReadlength());
-            string ga = option.getOutput_file();
+            string ga = option.getOutputFile();
             if (option.isSplit()) {
                 if (option.isGz()) {
                     wig->split_export_wiggle_gzip(reads, ga.c_str());

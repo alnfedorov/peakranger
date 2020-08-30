@@ -29,7 +29,7 @@ public:
     cmd_option_parser() = default;
 
     cmd_option_parser(int argc, char **argv) :
-            _pad(false), _verboseRequested(false), _chrtableSpecified(false), _ac(argc), _av(argv) {
+            _pad(false), _verboseRequested(false), _ac(argc), _av(argv) {
         maxThreads = boost::thread::hardware_concurrency();
     }
 
@@ -44,30 +44,30 @@ public:
     uint32_t slidingWinSize;
     uint32_t movingStep;
     uint32_t minCount;
-    bool isStrandSensitiveMode;
     uint32_t outputNum;
     int randomSeed;
     double minScore;
     uint32_t bootstrapPass;
     double smoothingFactor;
 public:
-    std::string getChr_table() const;
-
     double getCutOff() const;
 
     double getDelta() const;
 
-    uint32_t getExt_length() const;
+    uint32_t getExtLength() const;
 
     std::string getFormat() const;
+    void setFormat(std::string _format);
 
     std::string getMode() const;
 
-    uint32_t getNo_of_thread() const;
+    uint32_t getNoOfThread() const;
 
-    std::string getOutput_dir() const;
+    void setOutputDir(std::string _output_dir);
+    std::string getOutputDir() const;
 
-    std::string getOutput_file() const;
+    void setOutputFile(std::string _output_file);
+    std::string getOutputFile() const;
 
     bool getPad() const;
 
@@ -77,33 +77,14 @@ public:
 
     uint32_t getBandwidth() const;
 
-    void setAc(int _ac);
-
-    void setChr_table(std::string _chr_table);
-
-    void setExt_length(uint32_t _ext_length);
-
-    void setFormat(std::string _format);
-
-    void setOutput_dir(std::string _output_dir);
-
-    void setOutput_file(std::string _output_file);
+    void setExtLength(uint32_t _ext_length);
 
     void setPad(bool _pad);
 
-    bool getChrtableSpecified() const;
-
-    void setChrtableSpecified(bool _chrtableSpecified);
-
     bool getVerboseRequested() const;
-
     void setVerboseRequested(bool _verboseRequested);
 
-    std::vector<std::string> getChrs_to_parse() const;
-
     uint32_t getBinlength() const;
-
-    void setConfigFile(std::string _config_file);
 
     double getFdrCutOff() const;
 
@@ -137,8 +118,6 @@ protected:
     std::vector<std::string> _control_files;
     std::string _output_file;
     std::string _output_dir;
-    std::string _config_file;
-    std::string _chr_table_file;
     std::string _format;
     std::string _mode;
     std::string _gene_anno_file;
@@ -154,10 +133,8 @@ protected:
     uint32_t _html_region_length{};
     bool _pad{};
     bool _verboseRequested{};
-    bool _chrtableSpecified{};
     int _ac{};
     char **_av{};
-    std::vector<std::string> _chrs_to_parse;
     uint32_t maxThreads{};
 };
 

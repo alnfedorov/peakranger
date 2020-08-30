@@ -43,7 +43,7 @@ void bed6_result_reporter::report_fdr_summit(enriched_regions &regions,
             s << "PeakRanger_" << cnt++ << "_region_" << rit->first << "_"
               << rit->second << "_pval_" << rit->p << "_FDR_"
               << rit->q;
-            vector<uint32_t>::iterator sit = rit->summits.begin();
+            vector<uint32_t>::const_iterator sit = rit->summits.begin();
             for (; sit != rit->summits.end(); sit++) {
                 om << chr << "\t" << *sit << "\t" << (*sit) + 1 << "\t"
                    << s.str() << "\t" << rit->q << "\t+\n";

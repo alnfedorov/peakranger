@@ -55,7 +55,6 @@ int main(int argc, char **argv) {
     PeakRanger::version = version.str();
     CCAT::version = version.str();
     LC::version = version.str();
-    BCP::version = version.str();
 
     try {
         if (cmd == "nr")
@@ -71,7 +70,7 @@ int main(int argc, char **argv) {
         else if (cmd == "lc")
             LC::run(argc - 1, argv + 1);
         else if (cmd == "bcp")
-            BCP::run(argc - 1, argv + 1);
+            bcp::run(argc - 1, argv + 1, version.str());
         else {
             cout << "\nUnrecognized command name: " << cmd;
             helpAndQuit(cout);

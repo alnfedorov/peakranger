@@ -40,10 +40,10 @@ JT_wiggle_file::~JT_wiggle_file() {
 }
 
 void JT_wiggle_file::_process(uint32_t start, uint32_t end, uint32_t readlength,
-                              uint32_t readextlength, vector<uint32_t>::iterator readsStart,
-                              vector<uint32_t>::iterator readsEnd,
-                              vector<uint32_t>::iterator nreadsStart,
-                              vector<uint32_t>::iterator nreadsEnd, ostream &os) {
+                              uint32_t readextlength, vector<uint32_t>::const_iterator readsStart,
+                              vector<uint32_t>::const_iterator readsEnd,
+                              vector<uint32_t>::const_iterator nreadsStart,
+                              vector<uint32_t>::const_iterator nreadsEnd, ostream &os) {
 //    cout << "in JT_process" << endl;
     assert_gt(end, 2)
     assert_gt(end - 2, start)
@@ -214,10 +214,10 @@ void JT_wiggle_file::export_wiggle(vector<uint32_t> &preads,
        << _colorRGB[0] << "," << _colorRGB[1] << "," << _colorRGB[2] << " "
        << "priority=" << _priority << "\n";
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
 
     LOG_DEBUG1("In export_wiggle, start processing chr: " << chr);
@@ -263,7 +263,7 @@ void JT_wiggle_file::export_wiggle(vector<uint32_t> &preads,
 
 }
 
-void JT_wiggle_file::export_wiggle(Reads &reads, ostream &os) {
+void JT_wiggle_file::export_wiggle(const Reads &reads, ostream &os) {
 
     os << "track type=wiggle_0 name=\"" << getWiggleName() << "\" "
        << "visibility=dense " << "color=" << _colorRGB[0] << ","
@@ -271,10 +271,10 @@ void JT_wiggle_file::export_wiggle(Reads &reads, ostream &os) {
        << _colorRGB[0] << "," << _colorRGB[1] << "," << _colorRGB[2] << " "
        << "priority=" << _priority << "\n";
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
@@ -390,7 +390,7 @@ void JT_wiggle_file::split_export_wiggle(Reads &reads, const char *file) {
     }
 }
 
-void JT_wiggle_file::export_wiggle(Reads &reads, const char *file) {
+void JT_wiggle_file::export_wiggle(const Reads &reads, const char *file) {
 
     string sfile(file);
     size_t ind = sfile.find_last_of(".wig");
@@ -409,7 +409,7 @@ void JT_wiggle_file::export_wiggle(Reads &reads, const char *file) {
     ofs.close();
 }
 
-void JT_wiggle_file::export_wiggle_gzip(Reads &reads, const char *file) {
+void JT_wiggle_file::export_wiggle_gzip(const Reads &reads, const char *file) {
     string sfile(file);
     size_t ind = sfile.find_last_of(".wig");
     if (ind != string::npos) {

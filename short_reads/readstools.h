@@ -34,13 +34,13 @@ public:
     /*
      * Get all chrs ever appeared in both strands
      */
-    static void get_merged_chrs_for_both_strands(Reads &reads,
+    static void get_merged_chrs_for_both_strands(const Reads &reads,
                                                  std::vector<std::string> &mergedchrs);
 
     static void generate_random_reads_based_on_reads(Reads &reads,
                                                      Reads &result);
 
-    static size_t chromSize(Reads &reads, std::string &chr);
+    static size_t chromSize(const Reads &treads, const std::string &chr);
 
 private:
     static void _insert_random_reads(Reads &reads, std::string chr, Reads &result);

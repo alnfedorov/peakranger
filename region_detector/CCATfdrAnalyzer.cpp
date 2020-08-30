@@ -129,20 +129,17 @@ namespace ccat_aux {
 
             i = l1PeakNum - 1;
             while (true) {
-                if (i < l1PeakNum - 1) {
-                    if (p1[i] - p1[i + 1] < 0.00000001) {
-                        continue;
+                if (!(i < l1PeakNum - 1 && p1[i] - p1[i + 1] < 0.00000001)) {
+                    posCount = i + 1;
+                    negCount = lower_bound(p2.begin(), p2.end(), p1.at(i) - 0.00000001, greater<double>()) - p2.begin();
+                    if (posCount * q[j] - negCount > score) {
+                        score = posCount * q[j] - negCount;
+                        tmpIndex = i;
                     }
                 }
-                posCount = i + 1;
-                negCount = lower_bound(p2.begin(), p2.end(), p1.at(i) - 0.00000001, greater<double>()) - p2.begin();
-                if (posCount * q[j] - negCount > score) {
-                    score = posCount * q[j] - negCount;
-                    tmpIndex = i;
-                }
+
                 if (i == 0)
                     break;
-
                 i -= 1;
             }
 

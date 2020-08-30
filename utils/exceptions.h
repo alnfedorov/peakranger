@@ -105,7 +105,7 @@ public:
             RangerException(chr) {
     }
 
-    ChrNotFound(const char *chr) :
+    ChrNotFound(std::basic_string<char, std::char_traits<char>, std::allocator<char>> chr) :
             RangerException(chr) {
     }
 

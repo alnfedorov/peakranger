@@ -545,8 +545,8 @@ void chipseq_html_reporter::print_axis_to_end(ostream &os) {
     os << "dev.off();\n";
 }
 
-void chipseq_html_reporter::print_css(cmd_option_parser &option) {
-    string dir = option.getOutput_dir();
+void chipseq_html_reporter::print_css(const cmd_option_parser &option) {
+    string dir = option.getOutputDir();
     string dir_r = dir + "/" + _report_name;
     string scripts = dir_r + "/scripts/";
     string jq = scripts + "jquery-1.2.3.js";
@@ -613,15 +613,15 @@ void chipseq_html_reporter::print_peak(called_peak &pk, string chr,
        << "<p style=\"font-weight: bold;\">Download the image</p></a></td></tr>\n";
 }
 
-void chipseq_html_reporter::prepare_wigs(Reads &treads, Reads &creads,
-                                         string &chr, cmd_option_parser &option, wigs &wt, wigs &wc) {
+void chipseq_html_reporter::prepare_wigs(const Reads &treads, const Reads &creads,
+                                         string &chr, const cmd_option_parser &option, wigs &wt, wigs &wc) {
     _wig._binned_wig_compiler(_binlength, treads.getReadlength(),
-                              option.getExt_length(), treads.pos_reads.begin_of(chr),
+                              option.getExtLength(), treads.pos_reads.begin_of(chr),
                               treads.pos_reads.end_of(chr), treads.neg_reads.begin_of(chr),
                               treads.neg_reads.end_of(chr), wt);
 
     _wig._binned_wig_compiler(_binlength, creads.getReadlength(),
-                              option.getExt_length(), creads.pos_reads.begin_of(chr),
+                              option.getExtLength(), creads.pos_reads.begin_of(chr),
                               creads.pos_reads.end_of(chr), creads.neg_reads.begin_of(chr),
                               creads.neg_reads.end_of(chr), wc);
 }
@@ -632,10 +632,10 @@ void chipseq_html_reporter::print_end(ostream &os) {
     os << "</body></html>";
 }
 
-void chipseq_html_reporter::prepare_dir(cmd_option_parser &option,
+void chipseq_html_reporter::prepare_dir(const cmd_option_parser &option,
                                         const string &reportname) {
     //todo: win
-    string dir = option.getOutput_dir();
+    string dir = option.getOutputDir();
     string dir_r = dir + "/" + reportname;
     mkdir(dir_r.c_str(), 0777);
     string scripts = dir_r + "/scripts";
@@ -653,29 +653,27 @@ void chipseq_html_reporter::run_pk_img_script(string &rf) {
     system(rm.c_str());
 }
 
-void chipseq_html_reporter::run_img_scripts(cmd_option_parser &option,
-                                            map<string, vector<called_peak> > &peaks) {
-    string dir = option.getOutput_dir();
+void chipseq_html_reporter::run_img_scripts(const cmd_option_parser &option,
+                                            const std::map<std::string, std::vector<called_peak> > &peaks) {
+    string dir = option.getOutputDir();
     string imgs = dir + "/" + _report_name + "/imgs/";
-    map<string, vector<called_peak> >::iterator it;
-    it = peaks.begin();
+    auto it = peaks.begin();
     if (option.getVerboseRequested()) {
         cout << "Generating details of peaks...\n";
         cout.flush();
     }
     for (; it != peaks.end(); it++) {
         string chr = it->first;
-        vector<called_peak>::iterator it;
-        it = peaks[chr].begin();
+        auto it2 = it->second.begin();
         vector<string> imgScripts;
-        for (; it != peaks[chr].end(); it++) {
+        for (; it2 != it->second.end(); it2++) {
             std::ostringstream pkname;
-            pkname << imgs << chr << "_" << it->first << "_" << it->second;
+            pkname << imgs << chr << "_" << it2->first << "_" << it2->second;
             string rs = pkname.str();
             imgScripts.push_back(rs);
         }
 
-        ImgScriptRunner runner(imgScripts, option.getNo_of_thread());
+        ImgScriptRunner runner(imgScripts, option.getNoOfThread());
         runner.run();
         if (option.getVerboseRequested()) {
             cout << "Finished HTML reports for " << chr << "\n";
@@ -687,7 +685,7 @@ void chipseq_html_reporter::run_img_scripts(cmd_option_parser &option,
 }
 
 void chipseq_html_reporter::print_html_table(
-        map<string, vector<called_peak> > &peaks, cmd_option_parser &option,
+        map<string, vector<called_peak> > &peaks, const cmd_option_parser &option,
         ostream &os) {
     map<string, vector<called_peak> >::iterator it;
     it = peaks.begin();
@@ -707,7 +705,7 @@ void chipseq_html_reporter::print_chr(string &chr,
 }
 
 void chipseq_html_reporter::print_pk_img_wig(wigs &wt, wigs &wc,
-                                             called_peak &pk, ostream &os) {
+                                             const called_peak &pk, ostream &os) {
     /*  bb=data.frame(V1=c(),V2=c())
      cc=data.frame(V1=c(),V2=c())
      */
@@ -757,7 +755,7 @@ void chipseq_html_reporter::print_pk_img_wig(wigs &wt, wigs &wc,
     os << final;
 }
 
-void chipseq_html_reporter::print_pk_img_para(ostream &os, called_peak &pk,
+void chipseq_html_reporter::print_pk_img_para(ostream &os, const called_peak &pk,
                                               string &rf) {
     os << "pk =c(" << pk.first << "," << pk.second << ");";
     os << "d = " << _d << ";";
@@ -765,7 +763,7 @@ void chipseq_html_reporter::print_pk_img_para(ostream &os, called_peak &pk,
     os << "\",";
 }
 
-void chipseq_html_reporter::print_peak_img_script(called_peak &pk, string rf,
+void chipseq_html_reporter::print_peak_img_script(const called_peak &pk, string rf,
                                                   wigs &wt, wigs &wc, ostream &os, string chr) {
     print_r_head(os);
     print_pk_img_wig(wt, wc, pk, os);
@@ -775,33 +773,32 @@ void chipseq_html_reporter::print_peak_img_script(called_peak &pk, string rf,
     print_axis_to_end(os);
 }
 
-void chipseq_html_reporter::print_img_script(Reads &treads, Reads &creads,
-                                             map<string, vector<called_peak> > &peaks, cmd_option_parser &option) {
+void chipseq_html_reporter::print_img_script(const Reads &treads, const Reads &creads,
+                                             const std::map<std::string, std::vector<called_peak> > &peaks,
+                                             const cmd_option_parser &option) {
 
     wigs wt, wc;
-    string dir = option.getOutput_dir();
+    string dir = option.getOutputDir();
     string imgs = dir + "/" + _report_name + "/imgs/";
 
-    map<string, vector<called_peak> >::iterator it;
-    it = peaks.begin();
+    auto it = peaks.begin();
     for (; it != peaks.end(); it++) {
         string chr = it->first;
         wt.clear();
         wc.clear();
         prepare_wigs(treads, creads, chr, option, wt, wc);
-        vector<called_peak>::iterator it;
-        it = peaks[chr].begin();
-        for (; it != peaks[chr].end(); it++) {
+        auto it2 = it->second.begin();
+        for (; it2 != it->second.end(); it2++) {
             std::ostringstream pkname;
-            pkname << imgs << chr << "_" << it->first << "_" << it->second;
+            pkname << imgs << chr << "_" << it2->first << "_" << it2->second;
             ofstream os(pkname.str().c_str());
             pkname << ".png";
-            print_peak_img_script(*it, pkname.str(), wt, wc, os, chr);
+            print_peak_img_script(*it2, pkname.str(), wt, wc, os, chr);
         }
     }
 }
 
-void chipseq_html_reporter::prepare_report_name(cmd_option_parser &option) {
+void chipseq_html_reporter::prepare_report_name(const cmd_option_parser &option) {
     string date;
     getDate(date);
     _report_name = boost::algorithm::join(option.getTreatFiles(), ",") + "_report_" + date;
@@ -810,11 +807,11 @@ void chipseq_html_reporter::prepare_report_name(cmd_option_parser &option) {
     boost::replace_all(_report_name, " ", "_");
 }
 
-void chipseq_html_reporter::generate_report(Reads &treads, Reads &creads,
-                                            map<string, vector<called_peak> > &peaks, cmd_option_parser &option) {
+void chipseq_html_reporter::generate_report(const Reads &treads, const Reads &creads,
+                                            map<string, vector<called_peak> > &peaks, const cmd_option_parser &option) {
     prepare_report_name(option);
     prepare_dir(option, _report_name);
-    string dir = option.getOutput_dir();
+    string dir = option.getOutputDir();
     string dir_r = dir + "/" + _report_name;
     string idx = dir_r + "/index.html";
     string exp_img = dir_r + "/scripts/tablesorter_expand.png";

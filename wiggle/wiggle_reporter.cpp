@@ -73,10 +73,10 @@ void wiggle_reporter::export_wiggle(vector<uint32_t> &preads,
        << _colorRGB[1] << "," << _colorRGB[2] << " " << "priority=" << _priority
        << "\n";
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
     assert_neq(chr,
                "") LOG_DEBUG1("In export_wiggle, start processing chr: " << chr);
@@ -152,10 +152,10 @@ void wiggle_reporter::_process(uint32_t start,
                                uint32_t end,
                                uint32_t readlength,
                                uint32_t readextlength,
-                               vector<uint32_t>::iterator readsStart,
-                               vector<uint32_t>::iterator readsEnd,
-                               vector<uint32_t>::iterator nreadsStart,
-                               vector<uint32_t>::iterator nreadsEnd,
+                               vector<uint32_t>::const_iterator readsStart,
+                               vector<uint32_t>::const_iterator readsEnd,
+                               vector<uint32_t>::const_iterator nreadsStart,
+                               vector<uint32_t>::const_iterator nreadsEnd,
                                ostream &os) {
     assert_gt(end,
               2)
@@ -328,7 +328,7 @@ void wiggle_reporter::_process(uint32_t start,
     LOG_DEBUG1("QUIT: wiggle_reporter::_process");
 }
 
-void wiggle_reporter::export_wiggle(Reads &reads,
+void wiggle_reporter::export_wiggle(const Reads &reads,
                                     ostream &os) {
 
     os << "track type=wiggle_0 name=\"" << getWiggleName() << "\" "
@@ -338,13 +338,13 @@ void wiggle_reporter::export_wiggle(Reads &reads,
        << "," << _colorRGB[1] << "," << _colorRGB[2] << " " << "priority="
        << _priority << "\n";
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
 
-    map<string, vector<uint32_t> >::iterator rit;
+    map<string, vector<uint32_t> >::const_iterator rit;
     rit = reads.pos_reads.begin();
     string chr;
     assert_eq(reads.pos_reads.chrs().size(),
@@ -460,7 +460,7 @@ void wiggle_reporter::setViewLimitUp(uint32_t _viewLimitUp) {
     this->_viewLimitUp = _viewLimitUp;
 }
 
-void wiggle_reporter::export_wiggle_gzip(Reads &,
+void wiggle_reporter::export_wiggle_gzip(const Reads &,
                                          const char *) {
     std::cerr << "Wiggle gzip export is not implemented";
     exit(1);
@@ -490,7 +490,7 @@ void wiggle_reporter::setWiggleName(string _wiggleName) {
     this->_wiggleName = filename;
 }
 
-void wiggle_reporter::export_wiggle(Reads &reads,
+void wiggle_reporter::export_wiggle(const Reads &reads,
                                     const char *file) {
 
     string sfile(file);

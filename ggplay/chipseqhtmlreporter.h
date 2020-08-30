@@ -25,9 +25,9 @@ class chipseq_html_reporter {
 public:
     chipseq_html_reporter();
 
-    void generate_report(Reads &treads, Reads &creads,
+    void generate_report(const Reads &treads, const Reads &creads,
                          std::map<std::string, std::vector<called_peak> > &peaks,
-                         cmd_option_parser &option);
+                         const cmd_option_parser &option);
 
     void setRegionLength(uint32_t _d);
 
@@ -46,31 +46,31 @@ private:
 
     void print_end(std::ostream &os);
 
-    void print_css(cmd_option_parser &option);
+    void print_css(const cmd_option_parser &option);
 
-    void prepare_dir(cmd_option_parser &option, const std::string &reportname);
+    void prepare_dir(const cmd_option_parser &option, const std::string &reportname);
 
-    void run_img_scripts(cmd_option_parser &option,
-                         std::map<std::string, std::vector<called_peak> > &peaks);
+    void run_img_scripts(const cmd_option_parser &option,
+                         const std::map<std::string, std::vector<called_peak> > &peaks);
 
     void print_html_table(
             std::map<std::string, std::vector<called_peak> > &peaks,
-            cmd_option_parser &option, std::ostream &os);
+            const cmd_option_parser &option, std::ostream &os);
 
-    void print_pk_img_wig(wigs &wt, wigs &wc, called_peak &pk,
+    void print_pk_img_wig(wigs &wt, wigs &wc, const called_peak &pk,
                           std::ostream &os);
 
-    void print_pk_img_para(std::ostream &os, called_peak &pk, std::string &rf);
+    void print_pk_img_para(std::ostream &os, const called_peak &pk, std::string &rf);
 
-    void print_peak_img_script(called_peak &pk, std::string rf, wigs &wt,
+    void print_peak_img_script(const called_peak &pk, std::string rf, wigs &wt,
                                wigs &wc, std::ostream &os, std::string chr);
 
-    void prepare_wigs(Reads &treads, Reads &creads, std::string &chr,
-                      cmd_option_parser &option, wigs &wt, wigs &wc);
+    void prepare_wigs(const Reads &treads, const Reads &creads, std::string &chr,
+                      const cmd_option_parser &option, wigs &wt, wigs &wc);
 
-    void print_img_script(Reads &treads, Reads &creads,
-                          std::map<std::string, std::vector<called_peak> > &peaks,
-                          cmd_option_parser &option);
+    void print_img_script(const Reads &treads, const Reads &creads,
+                          const std::map<std::string, std::vector<called_peak> > &peaks,
+                          const cmd_option_parser &option);
 
     void print_r_head(std::ostream &os);
 
@@ -87,7 +87,7 @@ private:
 
     void print_axis_to_end(std::ostream &os);
 
-    void prepare_report_name(cmd_option_parser &option);
+    void prepare_report_name(const cmd_option_parser &option);
 
     void filter_in_range_anno(std::vector<tab_file::TabGene> &genes_to_filter,
                               std::vector<tab_file::TabGene> &genes_to_print);

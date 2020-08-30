@@ -29,18 +29,18 @@ public:
 
     void setup();
 
-    virtual void export_wiggle(Reads &reads, std::ostream &os);
+    virtual void export_wiggle(const Reads &reads, std::ostream &os);
 
     virtual void export_wiggle(std::vector<uint32_t> &preads,
                                std::vector<uint32_t> &nreads, std::string chr, std::ostream &os);
 
     typedef std::vector<std::pair<uint32_t, double> > data_type;
 
-    virtual void export_wiggle(Reads &reads, const char *file);
+    virtual void export_wiggle(const Reads &reads, const char *file);
 
     virtual void split_export_wiggle(Reads &reads, const char *file);
 
-    virtual void export_wiggle_gzip(Reads &reads, const char *file);
+    virtual void export_wiggle_gzip(const Reads &reads, const char *file);
 
     virtual void split_export_wiggle_gzip(Reads &reads, const char *file);
 
@@ -82,10 +82,10 @@ public:
 
 protected:
     virtual void _process(uint32_t start, uint32_t end, uint32_t readlength,
-                          uint32_t readextlength, std::vector<uint32_t>::iterator readsStart,
-                          std::vector<uint32_t>::iterator readsEnd,
-                          std::vector<uint32_t>::iterator nreadsStart,
-                          std::vector<uint32_t>::iterator nreadsEnd, std::ostream &os);
+                          uint32_t readextlength, std::vector<uint32_t>::const_iterator readsStart,
+                          std::vector<uint32_t>::const_iterator readsEnd,
+                          std::vector<uint32_t>::const_iterator nreadsStart,
+                          std::vector<uint32_t>::const_iterator nreadsEnd, std::ostream &os);
 
     uint32_t _viewLimitDown;
     uint32_t _viewLimitUp;

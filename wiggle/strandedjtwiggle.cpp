@@ -38,7 +38,7 @@ stranded_jtwiggle::~stranded_jtwiggle() {
 
 }
 
-void stranded_jtwiggle::export_wiggle(Reads &, ostream &) {
+void stranded_jtwiggle::export_wiggle(const Reads &, ostream &) {
     cout << "stranded_jtwiggle::export_wiggle is not conceptually right\n";
     exit(0);
 }
@@ -48,7 +48,7 @@ void stranded_jtwiggle::export_wiggle(vector<uint32_t> &, vector<uint32_t> &, st
     exit(0);
 }
 
-void stranded_jtwiggle::export_wiggle(Reads &reads, const char *file) {
+void stranded_jtwiggle::export_wiggle(const Reads &reads, const char *file) {
     string sfile(file);
     size_t ind = sfile.find_last_of(".wig");
     if (ind != string::npos) {
@@ -56,10 +56,10 @@ void stranded_jtwiggle::export_wiggle(Reads &reads, const char *file) {
         sfile = sfile.substr(0, ind - 3);
     }
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
@@ -225,7 +225,7 @@ void stranded_jtwiggle::split_export_wiggle(Reads &reads, const char *file) {
 
 }
 
-void stranded_jtwiggle::export_wiggle_gzip(Reads &reads, const char *file) {
+void stranded_jtwiggle::export_wiggle_gzip(const Reads &reads, const char *file) {
     LOG_DEBUG1("stranded_jtwiggle::export_wiggle_gzip");
     string sfile(file);
     size_t ind = sfile.find_last_of(".wig");
@@ -234,10 +234,10 @@ void stranded_jtwiggle::export_wiggle_gzip(Reads &reads, const char *file) {
         sfile = sfile.substr(0, ind - 3);
     }
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend;
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
     vector<string> mergedchrs;
     reads_tools::get_merged_chrs_for_both_strands(reads, mergedchrs);
@@ -357,7 +357,7 @@ void stranded_jtwiggle::export_wiggle_pos(vector<uint32_t> &preads, string chr,
        << _colorRGB[0] << "," << _colorRGB[1] << "," << _colorRGB[2] << " "
        << "priority=" << _priority << "\n";
 
-    vector<uint32_t>::iterator preadsstart, ppreadsstart, pppreadsstart,
+    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
             preadsend, ppreadsend, pppreadsend, nppreadsstart, nppreadsend;
 
     LOG_DEBUG1("In stranded_jtwiggle::export_wiggle_pos, start processing chr: " << chr);
@@ -408,7 +408,7 @@ void stranded_jtwiggle::export_wiggle_neg(vector<uint32_t> &nreads, string chr,
        << _ncolorRGB[0] << "," << _ncolorRGB[1] << "," << _ncolorRGB[2]
        << " " << "priority=" << _priority << "\n";
 
-    vector<uint32_t>::iterator npreadsstart, nppreadsstart, npppreadsstart,
+    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
             npreadsend, nppreadsend, npppreadsend;
 
     LOG_DEBUG1("In stranded_jtwiggle::export_wiggle_neg, start processing chr: " << chr);
@@ -512,8 +512,8 @@ void stranded_jtwiggle::split_export_wiggle_gzip(Reads &reads,
 
 void stranded_jtwiggle::_process_neg(uint32_t start, uint32_t end,
                                      uint32_t readlength, uint32_t readextlength,
-                                     vector<uint32_t>::iterator nreadsStart,
-                                     vector<uint32_t>::iterator nreadsEnd, ostream &os) {
+                                     vector<uint32_t>::const_iterator nreadsStart,
+                                     vector<uint32_t>::const_iterator nreadsEnd, ostream &os) {
     //    cout << "in JT_process" << endl;
     assert_gt(end, 2)
     assert_gt(end - 2, start)
@@ -623,8 +623,8 @@ void stranded_jtwiggle::_process_neg(uint32_t start, uint32_t end,
 //                                 uint32_t end,
 //                                 uint32_t readlength,
 //                                 uint32_t readextlength,
-//                                 vector<uint32_t>::iterator nreadsStart,
-//                                 vector<uint32_t>::iterator nreadsEnd,
+//                                 vector<uint32_t>::const_iterator nreadsStart,
+//                                 vector<uint32_t>::const_iterator nreadsEnd,
 //                                 data_type & os) {
 //
 ////    assert_gt(end,

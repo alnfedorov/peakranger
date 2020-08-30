@@ -186,7 +186,7 @@ void ccat::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
     double l2Ratio = 1;
     size_t maxL1Count, maxL2Count;
 
-    conf.fragmentSize = option.getExt_length();
+    conf.fragmentSize = option.getExtLength();
     conf.bootstrapPass = option.bootstrapPass;
     conf.isStrandSensitiveMode = 0;
     conf.minCount = option.minCount;
@@ -198,7 +198,7 @@ void ccat::cmain(Reads &treads, Reads &creads, cmd_option_parser &option) {
     noise.setFragmentSize(conf.fragmentSize);
     config_validation(conf);
 
-    projectName = option.getOutput_file();
+    projectName = option.getOutputFile();
     LoadData(chroms, treads, creads, chromNum);
     SortAndDedup(chroms);
     srand(conf.randomSeed);

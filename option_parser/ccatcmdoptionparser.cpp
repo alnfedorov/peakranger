@@ -93,8 +93,6 @@ namespace options {
                 ("thread,t", po::value<uint32_t>(&_no_of_thread)->default_value(maxThreads - 1),
                  "number of worker threads");
 
-        _config_file = "";
-
         popt.add("data", 1).add("control", 1).add("output", 1);
         all.add(input).add(output).add(qualities).add(running_modes).add(other);
     }
@@ -152,8 +150,8 @@ namespace options {
         string dir, file, file_ext;
         stringutil::get_dir_file(_output_dir, dir, file, file_ext);
         //todo: linux only
-        setOutput_file(_output_dir);
-        setOutput_dir(dir);
+        setOutputFile(_output_dir);
+        setOutputDir(dir);
 
         if (vm.count("pad")) {
             setPad(true);
@@ -183,13 +181,13 @@ namespace options {
         os << ("# min window fold-change: ") << minScore << endl;
         os << ("# Read extension length:  ") << _ext_length << endl;
         os << ("#Running modes:\n");
-        os << ("# Number of threads:      ") << getNo_of_thread() << endl;
+        os << ("# Number of threads:      ") << getNoOfThread() << endl;
         os << ("#Output:\n");
-        os << ("# Regions:                ") << getOutput_file() + "_region.bed"
+        os << ("# Regions:                ") << getOutputFile() + "_region.bed"
            << endl;
-        os << ("# Summits:                ") << getOutput_file() + "_summit.bed"
+        os << ("# Summits:                ") << getOutputFile() + "_summit.bed"
            << endl;
-        os << ("# Details of regions:     ") << getOutput_file() + "_details"
+        os << ("# Details of regions:     ") << getOutputFile() + "_details"
            << endl;
         os << ("#HTML reports:            ");
         if (needHtml()) {
@@ -232,8 +230,8 @@ namespace options {
         }
 
 
-        if (maxThreads < getNo_of_thread()) {
-            oss << "number of threads " << getNo_of_thread()
+        if (maxThreads < getNoOfThread()) {
+            oss << "number of threads " << getNoOfThread()
                 << " is not valid. The current system allows up to "
                 << maxThreads << " threads.\n";
             throw not_in_range(oss.str().c_str());

@@ -16,145 +16,73 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
-#include <stdint.h>
+#include <cstdint>
 
 
 typedef std::vector<uint32_t> reads_vec;
 typedef std::map<std::string, reads_vec> reads_t;
-typedef std::map<std::string, reads_vec>::iterator pritr;
-typedef std::vector<uint32_t>::iterator ritr;
+typedef std::map<std::string, reads_vec>::const_iterator pritr;
+typedef std::vector<uint32_t>::const_iterator ritr;
 
 /*
  * Reads are categorized based on strands and chromosomes.
  * No assumptions are posed toward strands and chromosomes.
  * It is possible that a chr contains only pos or neg reads.
- *
- *
- *
  */
+class Reads;
+
+class StrandReads {
+public:
+    friend class Reads;
+    /*
+     * access to all reads;
+     */
+    pritr begin() const;
+
+    pritr end() const;
+
+    /*
+     * access to reads of a chr
+     */
+    ritr begin_of(const std::string &chr) const;
+
+    ritr end_of(const std::string &chr) const;
+
+    /*
+     * reads insertion
+     */
+    void insertRead(std::string &chr, uint32_t &read);
+
+    /*
+     * properties
+     */
+    size_t size() const;
+
+    const std::vector<std::string> & chrs() const;
+
+    bool hasReadsOnChr(const std::string &chr) const;
+
+    void finalize();
+private:
+    std::map<std::string, std::vector<uint32_t> > _reads;
+    std::vector<std::string> _chrs;
+    bool _finalized = false;
+
+    /*
+     * modification
+     */
+    void remove(const std::string &chr);
+};
+
+
 class Reads {
 public:
-    Reads() :
-            pos_reads(*this), neg_reads(*this), _noMorePosReads(false), _noMoreNegReads(
-            false), _pos_is_sorted(false), _neg_is_sorted(false) {
-    }
-
-    struct pos_reads {
-    public:
-        friend class Reads;
-
-        /*
-         * access to all reads;
-         */
-        pritr begin() const;
-
-        pritr end() const;
-
-        /*
-         * access to reads of a chr
-         */
-        ritr begin_of(std::string &chr) const;
-
-        ritr end_of(std::string &chr) const;
-
-        /*
-         * Access to reads in a region
-         */
-        void getReads(std::string &chr, uint32_t start, uint32_t end,
-                      std::vector<uint32_t>::iterator &rstart,
-                      std::vector<uint32_t>::iterator &rend);
-
-        /*
-         * reads insertion
-         */
-        void insertRead(std::string &chr, uint32_t &read);
-
-        /*
-         * properties
-         */
-        uint64_t size() const;
-
-        std::vector<std::string> chrs() const;
-
-        bool hasReadsOnChr(std::string &chr) const;
-
-    private:
-        inline void _posReadsInsertionComplete();
-
-        Reads &_reads;
-
-        pos_reads(Reads &reads) :
-                _reads(reads) {
-        }
-
-        /*
-         * modification
-         */
-        void remove(std::string &chr);
-
-    } pos_reads;
-
-    struct neg_reads {
-    public:
-        friend class Reads;
-
-        typedef std::map<std::string, std::vector<uint32_t> >::iterator pritr;
-
-        /*
-         * access to all reads;
-         */
-        pritr begin() const;
-
-        pritr end() const;
-
-        /*
-         * access to reads of a chr
-         */
-        ritr begin_of(std::string &chr) const;
-
-        ritr end_of(std::string &chr) const;
-
-        /*
-         * Access to reads in a region
-         */
-        void getReads(std::string &chr, uint32_t start, uint32_t end,
-                      std::vector<uint32_t>::iterator &rstart,
-                      std::vector<uint32_t>::iterator &rend);
-
-        /*
-         * reads insertion
-         */
-        void insertRead(std::string &chr, uint32_t &read);
-
-        /*
-         * properties
-         */
-        uint64_t size() const;
-
-        std::vector<std::string> chrs() const;
-
-        bool hasReadsOnChr(std::string &chr) const;
-
-    private:
-        inline void _negReadsInsertionComplete();
-
-        neg_reads(Reads &reads) :
-                _reads(reads) {
-        }
-
-        /*
-         * modification
-         */
-        void remove(std::string &chr);
-
-        Reads &_reads;
-
-    } neg_reads;
+    Reads() = default;
 
     /*
      * return the number of pos and neg reads
      */
-    uint64_t size() const;
+    size_t size() const { return pos_reads.size() + neg_reads.size(); };
 
     /*
      * Properties
@@ -166,42 +94,19 @@ public:
     /*
      * modification
      */
-    void remove(std::string &chr);
+    void remove(const std::string &chr);
 
     /*
      * Quality control
      */
     void removeUnequalChrs();
 
+    void finalize() { pos_reads.finalize(); neg_reads.finalize(); }
+
+    StrandReads pos_reads;
+    StrandReads neg_reads;
 protected:
-    void _insertRead(std::string &chr, uint32_t read, reads_t &reads);
-
-    void sortReadsOnEachChromosome(reads_t &reads) {
-        reads_t::iterator itr = reads.begin();
-        for (; itr != reads.end(); itr++) {
-            LOG_DEBUG3("Sorted " << itr->first);
-            sort(itr->second.begin(), itr->second.end());
-        }
-    }
-
-    void extractChrs(reads_t &reads, std::vector<std::string> &chrs) {
-        for (auto &r: reads) {
-            chrs.push_back(r.first);
-        }
-        sort(chrs.begin(), chrs.end());
-    }
-
-protected:
-    std::map<std::string, std::vector<uint32_t> > _posReads;
-    std::map<std::string, std::vector<uint32_t> > _negReads;
-    std::vector<std::string> _negChrs;
-    std::vector<std::string> _posChrs;
     uint32_t _readlength;
-    bool _noMorePosReads;
-    bool _noMoreNegReads;
-    bool _pos_is_sorted;
-    bool _neg_is_sorted;
-
 };
 
 #endif /* READS_H_ */
