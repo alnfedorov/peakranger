@@ -1,5 +1,16 @@
 # peakranger
-The peak caller for ChIP-Seq data
+
+This fork is **not** the original [peakranger implementation](https://github.com/drestion/peakranger) but can serve as 
+an improved drop-in replacement for it. Implementation of the *bcp/ranger* algorithms 
+**is equivalent**(there are no changes at all).
+
+Fork changelist:
+1. Sources refactoring (+ clang-format).
+2. Multiple treatment/control files support.
+3. Dead code/files elimination.
+4. CMake build file.
+5. Python bindings generation for bcp.
+
 
 Introduction
 ============

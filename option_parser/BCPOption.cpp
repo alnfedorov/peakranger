@@ -19,23 +19,31 @@ namespace options {
 
     int BCPOption::min_args = 2;
 
-    void BCPOption::parse() {
-        hasEnoughArgs(_argc);
+    void BCPOption::parse(int argc, char **argv) {
+        hasEnoughArgs(argc);
+
+        for (auto i = 0; i < argc; ++i)
+            std::cout << argv[i] << std::endl;
+        std::cout << argc << std::endl;
 
         po::store(
-                po::command_line_parser(_argc, _argv).options(all).positional(popt).run(),
+                po::command_line_parser(argc, argv).options(all).positional(popt).run(),
                 mVM);
+        std::cout << "AHDASDA" << std::endl;
         if (mVM.count("help")) {
             oa::printHelp(all, cout);
+            std::cout << "AHDASDA" << std::endl;
             exit(0); //todo: should we move this up?
         }
         if (mVM.count("version")) {
-            cout << "\n" << VERSION << endl;
+            cout << "\n" << _version << endl;
+            std::cout << "AHDASDA" << std::endl;
             exit(0); //todo: should we move this up?
         }
-
+        std::cout << "AHDASDA" << std::endl;
         po::notify(mVM);
 
+        std::cout << "AHDASDA" << std::endl;
         setFormat(to_lower_copy(trim_copy(getFormat())));
 
         if (mVM.count("help")) {
@@ -58,13 +66,16 @@ namespace options {
             oa::file_r_good(_gene_anno_file.c_str());
         }
 
+        std::cout << "AHDASDA" << std::endl;
         verifyOptions();
 
+        std::cout << "AHDASDA" << std::endl;
         string dir, file, file_ext;
         utils::stringutil::get_dir_file(_output_dir, dir, file, file_ext);
         //todo: linux only
         setOutputFile(_output_dir);
         setOutputDir(dir);
+        std::cout << "AHDASDA" << std::endl;
     }
 
     void BCPOption::hasEnoughArgs(int argc) {
@@ -109,7 +120,7 @@ namespace options {
             os << "                          " << f << endl;
         os << ("#Qualities:\n");
         os << ("# P value cut off:         ") << getCutOff() << endl;
-        os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
+//        os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
         os << ("# sliding window size:     ") << getSlidingWinSize() << endl;
         os << ("# Read extension length:   ") << _ext_length << endl;
         os << ("#Output:\n");
@@ -127,11 +138,9 @@ namespace options {
 } /* namespace report */
 
 
-options::BCPOption::BCPOption(int argc, char **argv,
-                              const std::string &version): _argc(argc), _argv(argv),
-                                                            all("\nbcp " + version + "\n\nUsage"), popt(){
+options::BCPOption::BCPOption(const std::string &version): all("\nbcp " + version + "\n\nUsage"), popt(){
     _html = false;
-
+    _version = version;
     opt other("Other");
     opt input("Input");
     opt output("Output");

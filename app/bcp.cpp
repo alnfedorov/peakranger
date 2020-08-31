@@ -14,14 +14,11 @@
 #include "parser/bedParser.h"
 #include "option_parser/cmd_option_parser.h"
 #include "region_detector/bcp_algo.h"
-#include "region_detector/calledpeak.h"
-#include "result_reporter/result_reporter.h"
 #include "wiggle/wiggle_reporter.h"
 #include "utils/logger.h"
 #include "utils/stringutil.h"
 #include "utils/Stamp.h"
 #include "short_reads/readstools.h"
-#include "ggplay/chipseqhtmlreporter.h"
 #include "app/bcp.h"
 #include "option_parser/OptionAux.h"
 #include "app/AppAux.h"
@@ -38,9 +35,9 @@ using namespace ranger::concepts;
 
 namespace app::bcp {
     options::BCPOption parse_options(int argc, char **argv, const std::string &version) {
-        options::BCPOption option(argc, argv, version);
+        options::BCPOption option(version);
         try {
-            option.parse();
+            option.parse(argc, argv);
         } catch (std::exception &e) {
             cout << "\n" << e.what() << "\n";
             cout << "\n" << "Provided args:\n" << printRawOpts(argc, argv)

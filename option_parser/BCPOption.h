@@ -17,9 +17,9 @@ namespace options {
 
     class BCPOption {
     public:
-        BCPOption(int argc, char **argv, const std::string &version);
+        BCPOption(const std::string &version);
 
-        void parse();
+        void parse(int argc, char **argv);
 
         static int min_args;
         std::string version;
@@ -44,8 +44,8 @@ namespace options {
         double getCutOff() const { return _p_cut_off; };
         void setCutOff(double p_cut_off) { _p_cut_off = p_cut_off; };
 
-        double getFdrCutOff() const { return _fdr_cut_off; };
-        void setFdrCutOff(double fdr_cut_off) { _fdr_cut_off = fdr_cut_off; };
+//        double getFdrCutOff() const { return _fdr_cut_off; };
+//        void setFdrCutOff(double fdr_cut_off) { _fdr_cut_off = fdr_cut_off; };
 
         uint32_t getSlidingWinSize() const { return _sliding_win_size; };
         void setSlidingWinSize(uint32_t sliding_win_size) { _sliding_win_size = sliding_win_size; };
@@ -65,18 +65,17 @@ namespace options {
         void hasEnoughArgs(int argc);
 
         void verifyOptions();
-        int _argc;
-        char **_argv;
 
         bool _html;
         uint32_t _html_region_length;
         std::string _gene_anno_file;
+        std::string _version;
 
         std::string _format;
         bool _verboseRequested = false;
 
         double _p_cut_off;
-        double _fdr_cut_off;
+//        double _fdr_cut_off;
         uint32_t _sliding_win_size;
         uint32_t _ext_length;
 
