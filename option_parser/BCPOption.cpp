@@ -54,7 +54,7 @@ namespace options {
             setVerboseRequested(true);
         }
         if (mVM.count("version")) {
-            oa::printVersion(cout, version);
+            oa::printVersion(cout, _version);
         }
         if (mVM.count("report")) {
             _html = true;
@@ -109,7 +109,7 @@ namespace options {
     }
 
     void BCPOption::report(std::ostream &os) const {
-        os << ("#program version:         ") << version << endl;
+        os << ("#program version:         ") << _version << endl;
         os << ("#Data files:\n");
         os << ("# File format:             ") << getFormat() << endl;
         os << ("# Treatment file[s]:") << endl;

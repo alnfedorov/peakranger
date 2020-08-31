@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 #include "option_parser/BCPOption.h"
 #include "short_reads/reads.h"
 #include "app/bcp.h"
@@ -25,9 +26,131 @@ PYBIND11_MODULE(pybcp, m) {
             .def_property("sliding_win_size", &BCPOption::getSlidingWinSize, &BCPOption::setSlidingWinSize)
             .def_property("ext_length", &BCPOption::getExtLength, &BCPOption::setExtLength)
             .def_property_readonly("treat_files", &BCPOption::getTreatFiles)
-            .def_property_readonly("control_files", &BCPOption::getControlFiles);
+            .def_property_readonly("control_files", &BCPOption::getControlFiles)
+            .def("__eq__", [](const BCPOption &p1, const BCPOption &p2) {
+                return p1.version() == p2.version() && p1.getHtmlRegionLength() == p2.getHtmlRegionLength() &&
+                p1.getGeneAnnoFile() == p2.getGeneAnnoFile() && p1.getFormat() == p2.getFormat() &&
+                p1.getVerboseRequested() == p2.getVerboseRequested() && p1.getCutOff() == p2.getCutOff() &&
+                p1.getSlidingWinSize() == p2.getSlidingWinSize() && p1.getExtLength() == p2.getExtLength() &&
+                p1.getTreatFiles() == p2.getTreatFiles() && p1.getControlFiles() == p2.getControlFiles() &&
+                p1.getOutputFile() == p2.getOutputFile() && p1.getOutputDir() == p2.getOutputDir();
+            })
+            .def(py::pickle(
+                    [](const BCPOption &p) { // __getstate__
+                        return py::make_tuple(
+                            p.version(), p.getHtmlRegionLength(), p.getGeneAnnoFile(), p.getFormat(),
+                            p.getVerboseRequested(), p.getCutOff(), p.getSlidingWinSize(), p.getExtLength(),
+                            p.getTreatFiles(), p.getControlFiles(), p.getOutputFile(), p.getOutputDir()
+                        );
+                    },
+                    [](py::tuple t) { // __setstate__
+                        if (t.size() != 12)
+                            throw std::runtime_error("Invalid state!");
 
-    py::class_<Reads>(m, "Reads");
+                        auto p = BCPOption(t[0].cast<std::string>());
+                        p.setHtmlRegionLength(t[1].cast<uint32_t>());
+                        p.setGeneAnnoFile(t[2].cast<std::string>());
+                        p.setFormat(t[3].cast<std::string>());
+                        p.setVerboseRequested(t[4].cast<bool>());
+                        p.setCutOff(t[5].cast<double>());
+                        p.setSlidingWinSize(t[6].cast<uint32_t>());
+                        p.setExtLength(t[7].cast<uint32_t>());
+                        p.setTreatFiles(t[8].cast<std::vector<std::string>>());
+                        p.setControlFiles(t[9].cast<std::vector<std::string>>());
+                        p.setOutputFile(t[10].cast<std::string>());
+                        p.setOutputDir(t[11].cast<std::string>());
+
+                        return p;
+                    }
+            ));
+
+    py::class_<Reads>(m, "Reads")
+            .def("__eq__", [](const BCPOption &p1, const BCPOption &p2) {
+                return p1.version() == p2.version() && p1.getHtmlRegionLength() == p2.getHtmlRegionLength() &&
+                       p1.getGeneAnnoFile() == p2.getGeneAnnoFile() && p1.getFormat() == p2.getFormat() &&
+                       p1.getVerboseRequested() == p2.getVerboseRequested() && p1.getCutOff() == p2.getCutOff() &&
+                       p1.getSlidingWinSize() == p2.getSlidingWinSize() && p1.getExtLength() == p2.getExtLength() &&
+                       p1.getTreatFiles() == p2.getTreatFiles() && p1.getControlFiles() == p2.getControlFiles() &&
+                       p1.getOutputFile() == p2.getOutputFile() && p1.getOutputDir() == p2.getOutputDir();
+            })
+            .def("finalize", &Reads::finalize)
+            .def("size", &Reads::size)
+            .def("poschrs", [](const Reads& r) { return r.pos_reads.chrs(); })
+            .def("negchrs", [](const Reads& r) { return r.neg_reads.chrs(); })
+            .def_property_readonly("readlen", &Reads::getReadlength)
+            .def("__eq__", [](const Reads &r1, const Reads &r2) {
+                // Finalize might be called here(it is not the best thing)
+                if (r1.size() != r2.size() ||
+                    r1.getReadlength() != r2.getReadlength() ||
+                    r1.pos_reads.finalized() != r2.pos_reads.finalized() ||
+                    r1.neg_reads.finalized() != r2.neg_reads.finalized() ||
+                    r1.pos_reads.chrs() != r2.pos_reads.chrs() ||
+                    r1.neg_reads.chrs() != r2.neg_reads.chrs())
+                    return false;
+                std::cout << "here 1" << std::endl;
+
+                for (auto& chr: r1.pos_reads.chrs())
+                    if (!std::equal(r1.pos_reads.begin_of(chr), r1.pos_reads.end_of(chr),
+                                    r2.pos_reads.begin_of(chr), r2.pos_reads.end_of(chr)))
+                        return false;
+
+                std::cout << "here 2" << std::endl;
+                for (auto& chr: r1.neg_reads.chrs())
+                    if (!std::equal(r1.neg_reads.begin_of(chr), r1.neg_reads.end_of(chr),
+                                    r2.neg_reads.begin_of(chr), r2.neg_reads.end_of(chr)))
+                        return false;
+                std::cout << "here 3" << std::endl;
+                return true;
+            })
+            .def(py::pickle(
+                    [](Reads &reads) { // __getstate__
+                        static auto reads_to_buffer = [](StrandReads& sreads) {
+                            auto result = py::list();
+                            sreads.finalize();
+
+                            for (auto& chr: sreads.chrs()) {
+                                auto p = sreads.begin_of(chr);
+                                auto size = sreads.end_of(chr) - p;
+                                auto capsule = py::capsule(p, [](void *vec) { });
+                                auto array = py::array(size, p, std::move(capsule));
+                                result.append(py::make_tuple(chr, std::move(array)));
+                            }
+                            return result;
+                        };
+
+                        auto l = py::list();
+                        l.append(reads.getReadlength());
+                        l.append(reads_to_buffer(reads.pos_reads));
+                        l.append(reads_to_buffer(reads.neg_reads));
+                        return l;
+                    },
+                    [](py::list l) { // __setstate__
+                        if (l.size() != 3)
+                            throw std::runtime_error("Invalid state!");
+
+                        static auto buffer_to_reads = [](const py::list& sreads) {
+                            std::map<std::string, uint32_t*> reads;
+                            std::map<std::string, size_t> sizes;
+
+                            for (auto& e: sreads) {
+                                auto t = e.cast<py::tuple>();
+                                auto chr = t[0].cast<std::string>();
+                                auto arr = t[1].cast<py::array>();
+                                arr.inc_ref();
+                                arr.inc_ref();
+                                reads[chr] = (uint32_t*)arr.mutable_data();
+                                sizes[chr] = arr.size();
+                            }
+                            return StrandReads(std::move(reads), std::move(sizes));
+                        };
+
+                        auto reads = Reads();
+                        reads.setReadlength(l[0].cast<uint32_t>());
+                        reads.pos_reads = buffer_to_reads(l[1].cast<py::list>());
+                        reads.neg_reads = buffer_to_reads(l[2].cast<py::list>());
+                        return reads;
+                    }
+            ));
     py::class_<enriched_regions>(m, "EnrichedRegions");
 
     m.def("parse_options", [](int argc, const std::vector<std::string>& argv) {

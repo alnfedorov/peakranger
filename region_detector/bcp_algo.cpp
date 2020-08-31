@@ -34,7 +34,7 @@ void bcp_algo::loadPosData(data_t &data, const Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
     for (auto &chr: reads.pos_reads.chrs()) {
-        std::vector<uint32_t>::const_iterator it = reads.pos_reads.begin_of(chr);
+        auto it = reads.pos_reads.begin_of(chr);
         while (it != reads.pos_reads.end_of(chr)) {
             // This is safe due to the length of chromosome
             data[chr2Num[chr]].push_back((int) (*it++));
@@ -46,7 +46,7 @@ void bcp_algo::loadNegData(data_t &data, const Reads &reads) {
 
     //Assume reads in Reads already normalized by chrs in the main app.cpp
     for (auto &chr: reads.neg_reads.chrs()) {
-        std::vector<uint32_t>::const_iterator it = reads.neg_reads.begin_of(chr);
+        auto it = reads.neg_reads.begin_of(chr);
         while (it != reads.neg_reads.end_of(chr)) {
             // This is safe due to the length of chromosome
             data[chr2Num[chr]].push_back((int) (*it++));

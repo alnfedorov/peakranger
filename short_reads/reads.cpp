@@ -93,7 +93,9 @@ void Reads::removeUnequalChrs() {
 }
 
 void StrandReads::insertRead(string &chr, uint32_t &read) {
-    _finalized = false;
+    if (_finalized)
+        throw std::runtime_error("StrandReads is finalized, can't add/remove reads");
+
     rt_assert_neq_msg(chr, "", "The name of chr is empty.")
     rt_assert_neq_msg(chr, "*", "The name of chr is *.")
 
@@ -106,8 +108,13 @@ void StrandReads::insertRead(string &chr, uint32_t &read) {
 
 size_t StrandReads::size() const {
     size_t size = 0;
-    for (auto &reads: _reads) {
-        size += reads.second.size();
+    if (_finalized) {
+        for (auto &reads: _sorted_reads_size)
+            size += reads.second;
+    }
+    else {
+        for (auto &reads: _reads)
+            size += reads.second.size();
     }
     return size;
 }
@@ -139,6 +146,8 @@ void StrandReads::finalize() {
     for(auto& it: _reads) {
         LOG_DEBUG3("Sorted " << itr->first);
         sort(it.second.begin(), it.second.end());
+        _sorted_reads[it.first] = it.second.data();
+        _sorted_reads_size[it.first] = it.second.size();
     }
     _finalized = true;
 }
@@ -146,31 +155,20 @@ void StrandReads::finalize() {
 void StrandReads::remove(const string &chr) {
     _reads.erase(chr);
     if (_finalized) {
+        _sorted_reads.erase(chr);
+        _sorted_reads_size.erase(chr);
         auto it = find(_chrs.begin(), _chrs.end(), chr);
         if (it != _chrs.end())
             _chrs.erase(it);
     }
 }
 
-pritr StrandReads::begin() const {
-    if (!_finalized)
-        throw runtime_error("");
-    return _reads.begin();
-}
-
-pritr StrandReads::end() const {
-    if (!_finalized)
-        throw runtime_error("");
-    return _reads.end();
-}
-
 ritr StrandReads::begin_of(const string &chr) const {
     if (!_finalized)
         throw runtime_error("");
     if (hasReadsOnChr(chr)) {
-        return _reads.at(chr).begin();
+        return _sorted_reads.at(chr);
     }
-
     throw ChrNotFound("Chromosome " + chr + " was not found in parsed positive/negative reads.");
 }
 
@@ -178,8 +176,18 @@ ritr StrandReads::end_of(const string &chr) const {
     if (!_finalized)
         throw runtime_error("");
     if (hasReadsOnChr(chr)) {
-        return _reads.at(chr).end();
+        return _sorted_reads.at(chr) + _sorted_reads_size.at(chr);
     }
-
     throw ChrNotFound("Chromosome " + chr + " was not found in parsed positive/negative reads.");
+}
+
+StrandReads::StrandReads(std::map<std::string, uint32_t*> reads, std::map<std::string, size_t> sizes) {
+    _finalized = true;
+    _sorted_reads = std::move(reads);
+    _sorted_reads_size = std::move(sizes);
+
+    for (auto & it : _sorted_reads_size) {
+        _chrs.push_back(it.first);
+    }
+    sort(_chrs.begin(), _chrs.end());
 }

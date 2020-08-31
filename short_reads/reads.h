@@ -21,8 +21,7 @@
 
 typedef std::vector<uint32_t> reads_vec;
 typedef std::map<std::string, reads_vec> reads_t;
-typedef std::map<std::string, reads_vec>::const_iterator pritr;
-typedef std::vector<uint32_t>::const_iterator ritr;
+typedef const uint32_t* ritr;
 
 /*
  * Reads are categorized based on strands and chromosomes.
@@ -31,40 +30,39 @@ typedef std::vector<uint32_t>::const_iterator ritr;
  */
 class Reads;
 
+// Actually there are must be 2 classes for reads. Finalized and not.
 class StrandReads {
 public:
     friend class Reads;
-    /*
-     * access to all reads;
-     */
-    pritr begin() const;
 
-    pritr end() const;
+    StrandReads() = default;
 
-    /*
-     * access to reads of a chr
-     */
+    StrandReads(std::map<std::string, uint32_t*> reads, std::map<std::string, size_t> sizes);
+
     ritr begin_of(const std::string &chr) const;
 
     ritr end_of(const std::string &chr) const;
 
-    /*
-     * reads insertion
-     */
     void insertRead(std::string &chr, uint32_t &read);
 
-    /*
-     * properties
-     */
     size_t size() const;
 
-    const std::vector<std::string> & chrs() const;
+    const std::vector<std::string> &chrs() const;
 
     bool hasReadsOnChr(const std::string &chr) const;
 
+    bool finalized() const { return _finalized; };
+
     void finalize();
+
 private:
     std::map<std::string, std::vector<uint32_t> > _reads;
+
+    // That is very hacky, but allows copy-free memory
+    // managment during pickling/unpickling.
+    std::map<std::string, uint32_t*> _sorted_reads;
+    std::map<std::string, size_t> _sorted_reads_size;
+
     std::vector<std::string> _chrs;
     bool _finalized = false;
 
@@ -101,7 +99,10 @@ public:
      */
     void removeUnequalChrs();
 
-    void finalize() { pos_reads.finalize(); neg_reads.finalize(); }
+    void finalize() {
+        pos_reads.finalize();
+        neg_reads.finalize();
+    }
 
     StrandReads pos_reads;
     StrandReads neg_reads;

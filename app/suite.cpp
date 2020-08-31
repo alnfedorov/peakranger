@@ -12,8 +12,6 @@
 #include "app/PeakRanger.h"
 #include "app/CCAT.h"
 #include "app/NR.h"
-#include "app/WigPE.h"
-#include "app/Wig.h"
 #include "app/LC.h"
 #include "app/bcp.h"
 
@@ -50,8 +48,8 @@ int main(int argc, char **argv) {
     boost::to_lower(cmd);
 
     NR::version = version.str();
-    Wig::version = version.str();
-    WigPE::version = version.str();
+//    Wig::version = version.str();
+//    WigPE::version = version.str();
     PeakRanger::version = version.str();
     CCAT::version = version.str();
     LC::version = version.str();
@@ -59,10 +57,6 @@ int main(int argc, char **argv) {
     try {
         if (cmd == "nr")
             NR::run(argc - 1, argv + 1);
-        else if (cmd == "wig")
-            Wig::run(argc - 1, argv + 1);
-        else if (cmd == "wigpe")
-            WigPE::run(argc - 1, argv + 1);
         else if (cmd == "ranger")
             PeakRanger::run(argc - 1, argv + 1);
         else if (cmd == "ccat")

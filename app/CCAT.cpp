@@ -17,7 +17,7 @@
 #include "region_detector/ccat.h"
 #include "result_reporter/result_reporter.h"
 #include "result_reporter/bed6_result_reporter.h"
-#include "wiggle/wiggle_reporter.h"
+//#include "wiggle/wiggle_reporter.h"
 #include "utils/logger.h"
 #include "utils/stringutil.h"
 #include "utils/Stamp.h"
@@ -246,17 +246,17 @@ namespace app {
             tracer << "\n\nTotal regions passed FDR cutoff:\t" << fdr_passed;
 
             if (option.needHtml()) {
-                tracer << "\n\n Generating reports:\n";
-                chipseq_html_reporter rptr;
-                utilprint::ccatCitation ct;
-                utilprint::citation ct2;
-                rptr.addCitation(ct2.tostring() + " and " + ct.tostring());
-                rptr.setRegionLength(option.getHtmlRegionLength());
-                map<string, vector<called_peak> > passFDR;
-                app::aux::filterByFDR(detector->_resultRegions, passFDR,
-                                      option.getFdrCutOff());
+//                tracer << "\n\n Generating reports:\n";
+//                chipseq_html_reporter rptr;
+//                utilprint::ccatCitation ct;
+//                utilprint::citation ct2;
+//                rptr.addCitation(ct2.tostring() + " and " + ct.tostring());
+//                rptr.setRegionLength(option.getHtmlRegionLength());
+//                map<string, vector<called_peak> > passFDR;
+//                app::aux::filterByFDR(detector->_resultRegions, passFDR,
+//                                      option.getFdrCutOff());
 
-                rptr.generate_report(treads, creads, passFDR, option);
+//                rptr.generate_report(treads, creads, passFDR, option);
 
             }
             tracer << "\n\nProgram finished.\n\n";

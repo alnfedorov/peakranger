@@ -14,7 +14,7 @@
 #include "parser/bedParser.h"
 #include "option_parser/cmd_option_parser.h"
 #include "region_detector/bcp_algo.h"
-#include "wiggle/wiggle_reporter.h"
+//#include "wiggle/wiggle_reporter.h"
 #include "utils/logger.h"
 #include "utils/stringutil.h"
 #include "utils/Stamp.h"
@@ -230,14 +230,6 @@ namespace app::bcp {
 
         // treads, creads
         auto reads = parse_data(options);
-        for (auto& e: reads.first.pos_reads.chrs())
-            std::cerr << e << std::endl;
-        for (auto& e: reads.first.neg_reads.chrs())
-            std::cerr << e << std::endl;
-        for (auto& e: reads.second.pos_reads.chrs())
-            std::cerr << e << std::endl;
-        for (auto& e: reads.second.neg_reads.chrs())
-            std::cerr << e << std::endl;
         auto regions = predict(reads.first, reads.second, options);
 
         size_t fdr_passed = 0;

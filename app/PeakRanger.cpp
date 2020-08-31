@@ -24,8 +24,8 @@
 #include "region_detector/fdr_based_thresholder.h"
 #include "result_reporter/result_reporter.h"
 #include "result_reporter/bed6_result_reporter.h"
-#include "wiggle/wiggle_reporter.h"
-#include "wiggle/JTwigglefile.h"
+//#include "wiggle/wiggle_reporter.h"
+//#include "wiggle/JTwigglefile.h"
 #include "tab_file/NearbyGeneFinder.h"
 #include "utils/logger.h"
 #include "utils/Stamp.h"
@@ -241,9 +241,9 @@ namespace app {
             boost::shared_ptr<region_detector> detector = boost::make_shared<
                     fdr_based_thresholder>();
 
-            boost::shared_ptr<wiggle_reporter> wig = boost::make_shared<
-                    JT_wiggle_file>();
-            wig->use_default_setting();
+//            boost::shared_ptr<wiggle_reporter> wig = boost::make_shared<
+//                    JT_wiggle_file>();
+//            wig->use_default_setting();
 
             Reads treads, creads;
 
@@ -311,16 +311,16 @@ namespace app {
             tracer << "\nTotal regions discovered:\t" << fdr_failed + fdr_passed;
             tracer << "\nTotal regions passed FDR cutoff:\t" << fdr_passed << "\n";
             if (option.needHtml()) {
-                tracer << "\n Generating reports:\n";
-                chipseq_html_reporter rptr;
-                utilprint::citation ct;
-                rptr.addCitation(ct.tostring());
-                rptr.setRegionLength(option.getHtmlRegionLength());
-                map<string, vector<called_peak> > passFDR;
-                app::aux::filterByFDR(detector->_resultRegions, passFDR,
-                                      option.getFdrCutOff());
-                rptr.generate_report(treads, creads, detector->_resultRegions,
-                                     option);
+//                tracer << "\n Generating reports:\n";
+//                chipseq_html_reporter rptr;
+//                utilprint::citation ct;
+//                rptr.addCitation(ct.tostring());
+//                rptr.setRegionLength(option.getHtmlRegionLength());
+//                map<string, vector<called_peak> > passFDR;
+//                app::aux::filterByFDR(detector->_resultRegions, passFDR,
+//                                      option.getFdrCutOff());
+//                rptr.generate_report(treads, creads, detector->_resultRegions,
+//                                     option);
             }
             tracer << "\n\nProgram finished.\n\n";
 

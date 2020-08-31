@@ -106,7 +106,7 @@ void region_profile::get_profile_of_reads(vector<uint32_t> &reads,
     uint32_t arrayEnd = *(reads.end() - 1) + extension;
     uint32_t arrayLength = arrayEnd - arrayStart + 1;
     uint32_t read;
-    vector<uint32_t>::const_iterator it = reads.begin();
+    auto it = reads.begin();
     result.resize(arrayLength);
 
     while (it != reads.end()) {

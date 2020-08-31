@@ -10,7 +10,7 @@ Fork changelist:
 3. Dead code/files elimination.
 4. CMake build file.
 5. Python bindings generation for bcp.
-
+6. Wiggle module is dropped completely.
 
 Introduction
 ============

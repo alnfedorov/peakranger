@@ -152,8 +152,6 @@ void reads_tools::generate_random_reads_based_on_reads(Reads &reads,
     }
 
     result.setReadlength(reads.getReadlength());
-    result.pos_reads.begin();
-    result.neg_reads.begin();
 }
 
 size_t reads_tools::chromSize(const Reads &treads,

@@ -8,7 +8,7 @@
 #ifndef CHIPSEQHTMLREPORTER_H_
 #define CHIPSEQHTMLREPORTER_H_
 
-#include "wiggle/wigbuilder.h"
+//#include "wiggle/wigbuilder.h"
 #include "region_detector/calledpeak.h"
 #include "option_parser/cmd_option_parser.h"
 #include "tab_file/TabGene.h"
@@ -25,9 +25,9 @@ class chipseq_html_reporter {
 public:
     chipseq_html_reporter();
 
-    void generate_report(const Reads &treads, const Reads &creads,
-                         std::map<std::string, std::vector<called_peak> > &peaks,
-                         const cmd_option_parser &option);
+//    void generate_report(const Reads &treads, const Reads &creads,
+//                         std::map<std::string, std::vector<called_peak> > &peaks,
+//                         const cmd_option_parser &option);
 
     void setRegionLength(uint32_t _d);
 
@@ -57,16 +57,16 @@ private:
             std::map<std::string, std::vector<called_peak> > &peaks,
             const cmd_option_parser &option, std::ostream &os);
 
-    void print_pk_img_wig(wigs &wt, wigs &wc, const called_peak &pk,
-                          std::ostream &os);
+//    void print_pk_img_wig(wigs &wt, wigs &wc, const called_peak &pk,
+//                          std::ostream &os);
 
     void print_pk_img_para(std::ostream &os, const called_peak &pk, std::string &rf);
 
-    void print_peak_img_script(const called_peak &pk, std::string rf, wigs &wt,
-                               wigs &wc, std::ostream &os, std::string chr);
+//    void print_peak_img_script(const called_peak &pk, std::string rf, wigs &wt,
+//                               wigs &wc, std::ostream &os, std::string chr);
 
-    void prepare_wigs(const Reads &treads, const Reads &creads, std::string &chr,
-                      const cmd_option_parser &option, wigs &wt, wigs &wc);
+//    void prepare_wigs(const Reads &treads, const Reads &creads, std::string &chr,
+//                      const cmd_option_parser &option, wigs &wt, wigs &wc);
 
     void print_img_script(const Reads &treads, const Reads &creads,
                           const std::map<std::string, std::vector<called_peak> > &peaks,
@@ -95,7 +95,7 @@ private:
     void get_genes_to_filter(const std::string &chr, tab_file::Region &pkrg,
                              std::vector<tab_file::TabGene> &genes_to_filter);
 
-    wig_builder _wig;
+//    wig_builder _wig;
     uint32_t _d;
     uint32_t _binlength;
     std::string _report_name;

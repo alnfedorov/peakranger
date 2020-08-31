@@ -6,7 +6,7 @@
  */
 
 #include "chipseqhtmlreporter.h"
-#include "wiggle/wig.h"
+//#include "wiggle/wig.h"
 #include "tab_file/TabFileParser.h"
 #include "tab_file/TabGene.h"
 #include "tab_file/Region.h"
@@ -613,18 +613,18 @@ void chipseq_html_reporter::print_peak(called_peak &pk, string chr,
        << "<p style=\"font-weight: bold;\">Download the image</p></a></td></tr>\n";
 }
 
-void chipseq_html_reporter::prepare_wigs(const Reads &treads, const Reads &creads,
-                                         string &chr, const cmd_option_parser &option, wigs &wt, wigs &wc) {
-    _wig._binned_wig_compiler(_binlength, treads.getReadlength(),
-                              option.getExtLength(), treads.pos_reads.begin_of(chr),
-                              treads.pos_reads.end_of(chr), treads.neg_reads.begin_of(chr),
-                              treads.neg_reads.end_of(chr), wt);
-
-    _wig._binned_wig_compiler(_binlength, creads.getReadlength(),
-                              option.getExtLength(), creads.pos_reads.begin_of(chr),
-                              creads.pos_reads.end_of(chr), creads.neg_reads.begin_of(chr),
-                              creads.neg_reads.end_of(chr), wc);
-}
+//void chipseq_html_reporter::prepare_wigs(const Reads &treads, const Reads &creads,
+//                                         string &chr, const cmd_option_parser &option, wigs &wt, wigs &wc) {
+//    _wig._binned_wig_compiler(_binlength, treads.getReadlength(),
+//                              option.getExtLength(), treads.pos_reads.begin_of(chr),
+//                              treads.pos_reads.end_of(chr), treads.neg_reads.begin_of(chr),
+//                              treads.neg_reads.end_of(chr), wt);
+//
+//    _wig._binned_wig_compiler(_binlength, creads.getReadlength(),
+//                              option.getExtLength(), creads.pos_reads.begin_of(chr),
+//                              creads.pos_reads.end_of(chr), creads.neg_reads.begin_of(chr),
+//                              creads.neg_reads.end_of(chr), wc);
+//}
 
 void chipseq_html_reporter::print_end(ostream &os) {
     os << "</tbody>";
@@ -704,56 +704,56 @@ void chipseq_html_reporter::print_chr(string &chr,
     }
 }
 
-void chipseq_html_reporter::print_pk_img_wig(wigs &wt, wigs &wc,
-                                             const called_peak &pk, ostream &os) {
-    /*  bb=data.frame(V1=c(),V2=c())
-     cc=data.frame(V1=c(),V2=c())
-     */
-    ostringstream oss;
-    os << "bb=data.frame(V1=c(";
-    wigs::iterator it;
-    uint32_t _xl1, _xl2, m;
-    m = ((pk.first + pk.second) / 2);
-    if (m > (_d)) {
-        _xl1 = m - (_d);
-    } else {
-        _xl1 = 0;
-    }
-    _xl2 = m + (_d);
-    it = wt.begin();
-    for (; it != wt.end(); it++) {
-        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
-            oss << it->getP() << ",";
-        }
-    }
-    oss << "),V2=c(";
-    it = wt.begin();
-    for (; it != wt.end(); it++) {
-        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
-            oss << it->getS() << ",";
-        }
-    }
-    oss << "));";
-    oss << "cc=data.frame(V1=c(";
-    it = wc.begin();
-    for (; it != wc.end(); it++) {
-        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
-            oss << it->getP() << ",";
-        }
-    }
-    oss << "),V2=c(";
-    it = wc.begin();
-    for (; it != wc.end(); it++) {
-        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
-            oss << it->getS() << ",";
-        }
-    }
-    oss << "));";
-    string final = oss.str();
-    boost::replace_all(final, ",),", "),");
-    boost::replace_all(final, ",))", "))");
-    os << final;
-}
+//void chipseq_html_reporter::print_pk_img_wig(wigs &wt, wigs &wc,
+//                                             const called_peak &pk, ostream &os) {
+//    /*  bb=data.frame(V1=c(),V2=c())
+//     cc=data.frame(V1=c(),V2=c())
+//     */
+//    ostringstream oss;
+//    os << "bb=data.frame(V1=c(";
+//    wigs::iterator it;
+//    uint32_t _xl1, _xl2, m;
+//    m = ((pk.first + pk.second) / 2);
+//    if (m > (_d)) {
+//        _xl1 = m - (_d);
+//    } else {
+//        _xl1 = 0;
+//    }
+//    _xl2 = m + (_d);
+//    it = wt.begin();
+//    for (; it != wt.end(); it++) {
+//        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
+//            oss << it->getP() << ",";
+//        }
+//    }
+//    oss << "),V2=c(";
+//    it = wt.begin();
+//    for (; it != wt.end(); it++) {
+//        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
+//            oss << it->getS() << ",";
+//        }
+//    }
+//    oss << "));";
+//    oss << "cc=data.frame(V1=c(";
+//    it = wc.begin();
+//    for (; it != wc.end(); it++) {
+//        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
+//            oss << it->getP() << ",";
+//        }
+//    }
+//    oss << "),V2=c(";
+//    it = wc.begin();
+//    for (; it != wc.end(); it++) {
+//        if (it->getP() >= _xl1 && it->getP() <= _xl2) {
+//            oss << it->getS() << ",";
+//        }
+//    }
+//    oss << "));";
+//    string final = oss.str();
+//    boost::replace_all(final, ",),", "),");
+//    boost::replace_all(final, ",))", "))");
+//    os << final;
+//}
 
 void chipseq_html_reporter::print_pk_img_para(ostream &os, const called_peak &pk,
                                               string &rf) {
@@ -763,40 +763,40 @@ void chipseq_html_reporter::print_pk_img_para(ostream &os, const called_peak &pk
     os << "\",";
 }
 
-void chipseq_html_reporter::print_peak_img_script(const called_peak &pk, string rf,
-                                                  wigs &wt, wigs &wc, ostream &os, string chr) {
-    print_r_head(os);
-    print_pk_img_wig(wt, wc, pk, os);
-    print_pk_img_para(os, pk, rf);
-    print_r_tc_drawing(os);
-    print_gene_annot(pk, chr, os);
-    print_axis_to_end(os);
-}
+//void chipseq_html_reporter::print_peak_img_script(const called_peak &pk, string rf,
+//                                                  wigs &wt, wigs &wc, ostream &os, string chr) {
+//    print_r_head(os);
+//    print_pk_img_wig(wt, wc, pk, os);
+//    print_pk_img_para(os, pk, rf);
+//    print_r_tc_drawing(os);
+//    print_gene_annot(pk, chr, os);
+//    print_axis_to_end(os);
+//}
 
-void chipseq_html_reporter::print_img_script(const Reads &treads, const Reads &creads,
-                                             const std::map<std::string, std::vector<called_peak> > &peaks,
-                                             const cmd_option_parser &option) {
-
-    wigs wt, wc;
-    string dir = option.getOutputDir();
-    string imgs = dir + "/" + _report_name + "/imgs/";
-
-    auto it = peaks.begin();
-    for (; it != peaks.end(); it++) {
-        string chr = it->first;
-        wt.clear();
-        wc.clear();
-        prepare_wigs(treads, creads, chr, option, wt, wc);
-        auto it2 = it->second.begin();
-        for (; it2 != it->second.end(); it2++) {
-            std::ostringstream pkname;
-            pkname << imgs << chr << "_" << it2->first << "_" << it2->second;
-            ofstream os(pkname.str().c_str());
-            pkname << ".png";
-            print_peak_img_script(*it2, pkname.str(), wt, wc, os, chr);
-        }
-    }
-}
+//void chipseq_html_reporter::print_img_script(const Reads &treads, const Reads &creads,
+//                                             const std::map<std::string, std::vector<called_peak> > &peaks,
+//                                             const cmd_option_parser &option) {
+//
+////    wigs wt, wc;
+//    string dir = option.getOutputDir();
+//    string imgs = dir + "/" + _report_name + "/imgs/";
+//
+//    auto it = peaks.begin();
+//    for (; it != peaks.end(); it++) {
+//        string chr = it->first;
+//        wt.clear();
+//        wc.clear();
+////        prepare_wigs(treads, creads, chr, option, wt, wc);
+//        auto it2 = it->second.begin();
+//        for (; it2 != it->second.end(); it2++) {
+//            std::ostringstream pkname;
+//            pkname << imgs << chr << "_" << it2->first << "_" << it2->second;
+//            ofstream os(pkname.str().c_str());
+//            pkname << ".png";
+////            print_peak_img_script(*it2, pkname.str(), wt, wc, os, chr);
+//        }
+//    }
+//}
 
 void chipseq_html_reporter::prepare_report_name(const cmd_option_parser &option) {
     string date;
@@ -807,29 +807,29 @@ void chipseq_html_reporter::prepare_report_name(const cmd_option_parser &option)
     boost::replace_all(_report_name, " ", "_");
 }
 
-void chipseq_html_reporter::generate_report(const Reads &treads, const Reads &creads,
-                                            map<string, vector<called_peak> > &peaks, const cmd_option_parser &option) {
-    prepare_report_name(option);
-    prepare_dir(option, _report_name);
-    string dir = option.getOutputDir();
-    string dir_r = dir + "/" + _report_name;
-    string idx = dir_r + "/index.html";
-    string exp_img = dir_r + "/scripts/tablesorter_expand.png";
-    _gene_anno_file = option.getGeneAnnoFile();
-    setRegionLength(option.getHtmlRegionLength());
-    ofstream os(idx.c_str());
-    ofstream eimg(exp_img.c_str(), ios::binary);
-    _nbgf.setAnnoFile(option.getGeneAnnoFile());
-    _nbgf.setSearchSpan(option.getHtmlRegionLength());
-    ggplay::print_exp_img(eimg);
-    print_head(os, _d);
-    print_html_table(peaks, option, os);
-    print_end(os);
-    print_css(option);
-    prepare_gene_annot();
-    print_img_script(treads, creads, peaks, option);
-    run_img_scripts(option, peaks);
-}
+//void chipseq_html_reporter::generate_report(const Reads &treads, const Reads &creads,
+//                                            map<string, vector<called_peak> > &peaks, const cmd_option_parser &option) {
+//    prepare_report_name(option);
+//    prepare_dir(option, _report_name);
+//    string dir = option.getOutputDir();
+//    string dir_r = dir + "/" + _report_name;
+//    string idx = dir_r + "/index.html";
+//    string exp_img = dir_r + "/scripts/tablesorter_expand.png";
+//    _gene_anno_file = option.getGeneAnnoFile();
+//    setRegionLength(option.getHtmlRegionLength());
+//    ofstream os(idx.c_str());
+//    ofstream eimg(exp_img.c_str(), ios::binary);
+//    _nbgf.setAnnoFile(option.getGeneAnnoFile());
+//    _nbgf.setSearchSpan(option.getHtmlRegionLength());
+//    ggplay::print_exp_img(eimg);
+//    print_head(os, _d);
+//    print_html_table(peaks, option, os);
+//    print_end(os);
+//    print_css(option);
+//    prepare_gene_annot();
+//    print_img_script(treads, creads, peaks, option);
+//    run_img_scripts(option, peaks);
+//}
 
 void chipseq_html_reporter::format_name() {
     boost::replace_all(_report_name, " ", "_");

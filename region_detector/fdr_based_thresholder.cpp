@@ -916,7 +916,7 @@ void fdr_based_thresholder::detectSummits(Reads &treads, Reads &creads,
      * combine results
      */
 
-    vector<uint32_t>::const_iterator treadsstart, treadsend, creadsstart, creadsend;
+    const uint32_t *treadsstart, *treadsend, *creadsstart, *creadsend;
     /**
      * Each thread will fetch its own readsstart and readsend from this map
      */
@@ -1058,14 +1058,14 @@ inline double fdr_based_thresholder::_normalize_reads_onchr(const Reads &treads,
 
     double result = 1;
 
-    vector<uint32_t>::const_iterator preadsstart, ppreadsstart, pppreadsstart,
-            preadsend, ppreadsend, pppreadsend, pcreadsstart, ppcreadsstart,
-            pppcreadsstart, pcreadsend, ppcreadsend, pppcreadsend;
+    const uint32_t *preadsstart, *ppreadsstart, *pppreadsstart,
+            *preadsend, *ppreadsend, *pppreadsend, *pcreadsstart, *ppcreadsstart,
+            *pppcreadsstart, *pcreadsend, *ppcreadsend, *pppcreadsend;
 
-    vector<uint32_t>::const_iterator npreadsstart, nppreadsstart, npppreadsstart,
-            npreadsend, nppreadsend, npppreadsend, npcreadsstart,
-            nppcreadsstart, npppcreadsstart, npcreadsend, nppcreadsend,
-            npppcreadsend;
+    const uint32_t *npreadsstart, *nppreadsstart, *npppreadsstart,
+            *npreadsend, *nppreadsend, *npppreadsend, *npcreadsstart,
+            *nppcreadsstart, *npppcreadsstart, *npcreadsend, *nppcreadsend,
+            *npppcreadsend;
 
     try {
         preadsstart = treads.pos_reads.begin_of(chr);

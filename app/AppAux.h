@@ -24,8 +24,8 @@
 #include "region_detector/fdr_based_thresholder.h"
 #include "result_reporter/result_reporter.h"
 #include "result_reporter/bed6_result_reporter.h"
-#include "wiggle/wiggle_reporter.h"
-#include "wiggle/JTwigglefile.h"
+//#include "wiggle/wiggle_reporter.h"
+//#include "wiggle/JTwigglefile.h"
 
 #include "utils/logger.h"
 #include "utils/stringutil.h"

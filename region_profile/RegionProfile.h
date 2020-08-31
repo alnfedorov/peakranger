@@ -123,58 +123,30 @@ public:
     /*
      * Process both pos and neg strands.
      */
-    template<class neg_read_transformer>
-    static void get_region_profile(Reads &reads, std::string &chr,
-                                   uint32_t start, uint32_t end, uint32_t extension,
-                                   std::vector<uint16_t> &result, neg_read_transformer trans) {
-        auto readsStart = reads.pos_reads.begin_of(chr);
-        auto readsEnd = reads.pos_reads.end_of(chr);
-        uint32_t readlength = reads.getReadlength();
-
-        /*
-         * pos strand
-         */
-        get_region_profile(start, end, extension, readsStart, readsEnd, result);
-
-        readsStart = reads.neg_reads.begin_of(chr);
-        readsEnd = reads.neg_reads.end_of(chr);
-
-        /*
-         * neg strand
-         */
-        get_region_profile(start, end, extension, readlength, readsStart, readsEnd, result, trans);
-    }
-
-    /*
-     * Get the profile using reads on
-     * both strands in the PeakSeq fasion,
-     * which convert neg reads to pos reads
-     * by:
-     * t_read = neg_read + readlength - extension
-     */
-    static void get_region_profile_peakseq(Reads &reads, std::string &chr,
-                                           uint32_t start, uint32_t end, uint32_t extension,
-                                           std::vector<uint16_t> &result) {
-        get_region_profile(reads, chr, start, end, extension, result, neg_read_trans);
-    }
+//    template<class neg_read_transformer>
+//    static void get_region_profile(Reads &reads, std::string &chr,
+//                                   uint32_t start, uint32_t end, uint32_t extension,
+//                                   std::vector<uint16_t> &result, neg_read_transformer trans) {
+//        auto readsStart = reads.pos_reads.begin_of(chr);
+//        auto readsEnd = reads.pos_reads.end_of(chr);
+//        uint32_t readlength = reads.getReadlength();
+//
+//        /*
+//         * pos strand
+//         */
+//        get_region_profile(start, end, extension, readsStart, readsEnd, result);
+//
+//        readsStart = reads.neg_reads.begin_of(chr);
+//        readsEnd = reads.neg_reads.end_of(chr);
+//
+//        /*
+//         * neg strand
+//         */
+//        get_region_profile(start, end, extension, readlength, readsStart, readsEnd, result, trans);
+//    }
 
     static void get_profile_of_reads(std::vector<uint32_t> &reads,
                                      uint32_t extension, std::vector<uint16_t> &result);
-
-private:
-    /*
-     * the basic neg read transfomer using
-     * the algorithm from PeakSeq
-     */
-    static uint32_t neg_read_trans(uint32_t read, uint32_t readlength,
-                                   uint32_t extension) {
-        uint32_t sum = read + readlength;
-        if (sum > extension) {
-            return sum - extension;
-        } else
-            return 0;
-    }
-
 };
 
 #endif /* REGIONPROFILE_H_ */

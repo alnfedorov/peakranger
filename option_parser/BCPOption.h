@@ -21,13 +21,11 @@ namespace options {
 
         void parse(int argc, char **argv);
 
-        static int min_args;
-        std::string version;
-        po::variables_map mVM;
+        void report(std::ostream &os) const;
 
         bool needHtml() const;
 
-        void report(std::ostream &os) const;
+        const std::string& version() const { return _version; };
 
         std::string getFormat() const { return _format; };
         void setFormat(std::string format) { _format = std::move(format); };
@@ -60,11 +58,18 @@ namespace options {
         void setGeneAnnoFile(std::string gene_anno_file) { _gene_anno_file = std::move(gene_anno_file); };
 
         const std::vector<std::string> &getTreatFiles() const { return _treat_files; };
+        void setTreatFiles(std::vector<std::string> treat_files) { _treat_files = std::move(treat_files); };
+
         const std::vector<std::string> &getControlFiles() const { return _control_files; };
+        void setControlFiles(std::vector<std::string> control_files) { _control_files = std::move(control_files); };
     private:
+        static int min_args;
+
         void hasEnoughArgs(int argc);
 
         void verifyOptions();
+
+        po::variables_map mVM;
 
         bool _html;
         uint32_t _html_region_length;
