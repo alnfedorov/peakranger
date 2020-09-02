@@ -25,7 +25,7 @@ target_link_libraries(peakranger PRIVATE Boost::program_options Boost::thread Bo
 target_compile_definitions(peakranger PRIVATE VERSION=${VERSION})
 
 target_compile_options(peakranger PRIVATE -Wall -Wextra -Wno-unused-parameter)
-target_compile_options(peakranger PRIVATE -std=c++17 -flto -static -O3)
+target_compile_options(peakranger PRIVATE -std=c++17 -flto -O3)
 target_link_options(peakranger PRIVATE -flto)
 
 # python bindings - pybind
