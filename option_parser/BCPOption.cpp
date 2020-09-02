@@ -29,21 +29,16 @@ namespace options {
         po::store(
                 po::command_line_parser(argc, argv).options(all).positional(popt).run(),
                 mVM);
-        std::cout << "AHDASDA" << std::endl;
         if (mVM.count("help")) {
             oa::printHelp(all, cout);
-            std::cout << "AHDASDA" << std::endl;
             exit(0); //todo: should we move this up?
         }
         if (mVM.count("version")) {
             cout << "\n" << _version << endl;
-            std::cout << "AHDASDA" << std::endl;
             exit(0); //todo: should we move this up?
         }
-        std::cout << "AHDASDA" << std::endl;
         po::notify(mVM);
 
-        std::cout << "AHDASDA" << std::endl;
         setFormat(to_lower_copy(trim_copy(getFormat())));
 
         if (mVM.count("help")) {
@@ -66,16 +61,13 @@ namespace options {
             oa::file_r_good(_gene_anno_file.c_str());
         }
 
-        std::cout << "AHDASDA" << std::endl;
         verifyOptions();
 
-        std::cout << "AHDASDA" << std::endl;
         string dir, file, file_ext;
         utils::stringutil::get_dir_file(_output_dir, dir, file, file_ext);
         //todo: linux only
         setOutputFile(_output_dir);
         setOutputDir(dir);
-        std::cout << "AHDASDA" << std::endl;
     }
 
     void BCPOption::hasEnoughArgs(int argc) {
