@@ -106,10 +106,10 @@ namespace options {
         os << ("# File format:             ") << getFormat() << endl;
         os << ("# Treatment file[s]:") << endl;
         for (const auto &f: getTreatFiles())
-            os << "                          " << f << endl;
+            os << "#                         " << f << endl;
         os << ("# Control file[s]:") << endl;
         for (const auto &f: getControlFiles())
-            os << "                          " << f << endl;
+            os << "#                         " << f << endl;
         os << ("#Qualities:\n");
         os << ("# P value cut off:         ") << getCutOff() << endl;
 //        os << ("# FDR cut off:             ") << getFdrCutOff() << endl;
