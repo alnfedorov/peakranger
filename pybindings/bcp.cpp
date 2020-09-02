@@ -87,19 +87,16 @@ PYBIND11_MODULE(pybcp, m) {
                     r1.pos_reads.chrs() != r2.pos_reads.chrs() ||
                     r1.neg_reads.chrs() != r2.neg_reads.chrs())
                     return false;
-                std::cout << "here 1" << std::endl;
 
                 for (auto& chr: r1.pos_reads.chrs())
                     if (!std::equal(r1.pos_reads.begin_of(chr), r1.pos_reads.end_of(chr),
                                     r2.pos_reads.begin_of(chr), r2.pos_reads.end_of(chr)))
                         return false;
 
-                std::cout << "here 2" << std::endl;
                 for (auto& chr: r1.neg_reads.chrs())
                     if (!std::equal(r1.neg_reads.begin_of(chr), r1.neg_reads.end_of(chr),
                                     r2.neg_reads.begin_of(chr), r2.neg_reads.end_of(chr)))
                         return false;
-                std::cout << "here 3" << std::endl;
                 return true;
             })
             .def(py::pickle(
