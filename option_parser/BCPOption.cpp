@@ -22,10 +22,6 @@ namespace options {
     void BCPOption::parse(int argc, char **argv) {
         hasEnoughArgs(argc);
 
-        for (auto i = 0; i < argc; ++i)
-            std::cout << argv[i] << std::endl;
-        std::cout << argc << std::endl;
-
         po::store(
                 po::command_line_parser(argc, argv).options(all).positional(popt).run(),
                 mVM);
