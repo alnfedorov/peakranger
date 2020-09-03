@@ -181,10 +181,12 @@ ritr StrandReads::end_of(const string &chr) const {
     throw ChrNotFound("Chromosome " + chr + " was not found in parsed positive/negative reads.");
 }
 
-StrandReads::StrandReads(std::map<std::string, uint32_t*> reads, std::map<std::string, size_t> sizes) {
+StrandReads::StrandReads(std::map<std::string, uint32_t*> reads, std::map<std::string, size_t> sizes,
+                         std::function<void()> destructor_callback) {
     _finalized = true;
     _sorted_reads = std::move(reads);
     _sorted_reads_size = std::move(sizes);
+    _destructor_callback = destructor_callback;
 
     for (auto & it : _sorted_reads_size) {
         _chrs.push_back(it.first);

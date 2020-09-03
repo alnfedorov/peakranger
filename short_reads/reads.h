@@ -17,11 +17,12 @@
 #include <algorithm>
 #include <iostream>
 #include <cstdint>
+#include <functional>
 
 
 typedef std::vector<uint32_t> reads_vec;
 typedef std::map<std::string, reads_vec> reads_t;
-typedef const uint32_t* ritr;
+typedef const uint32_t *ritr;
 
 /*
  * Reads are categorized based on strands and chromosomes.
@@ -37,7 +38,10 @@ public:
 
     StrandReads() = default;
 
-    StrandReads(std::map<std::string, uint32_t*> reads, std::map<std::string, size_t> sizes);
+    ~StrandReads() { if (_destructor_callback) _destructor_callback(); };
+
+    StrandReads(std::map<std::string, uint32_t *> reads, std::map<std::string, size_t> sizes,
+                std::function<void()> destructor_callback);
 
     ritr begin_of(const std::string &chr) const;
 
@@ -60,8 +64,9 @@ private:
 
     // That is very hacky, but allows copy-free memory
     // managment during pickling/unpickling.
-    std::map<std::string, uint32_t*> _sorted_reads;
+    std::map<std::string, uint32_t *> _sorted_reads;
     std::map<std::string, size_t> _sorted_reads_size;
+    std::function<void()> _destructor_callback;
 
     std::vector<std::string> _chrs;
     bool _finalized = false;

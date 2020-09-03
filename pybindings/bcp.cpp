@@ -128,17 +128,19 @@ PYBIND11_MODULE(pybcp, m) {
                         static auto buffer_to_reads = [](const py::list& sreads) {
                             std::map<std::string, uint32_t*> reads;
                             std::map<std::string, size_t> sizes;
+                            std::vector<py::array> arrays;
 
                             for (auto& e: sreads) {
                                 auto t = e.cast<py::tuple>();
                                 auto chr = t[0].cast<std::string>();
                                 auto arr = t[1].cast<py::array>();
-                                arr.inc_ref();
-                                arr.inc_ref();
                                 reads[chr] = (uint32_t*)arr.mutable_data();
                                 sizes[chr] = arr.size();
+                                arr.inc_ref();
+                                arrays.push_back(std::move(arr));
                             }
-                            return StrandReads(std::move(reads), std::move(sizes));
+                            return StrandReads(std::move(reads), std::move(sizes),
+                                               [arrays]() { for(auto& arr: arrays) arr.dec_ref();});
                         };
 
                         auto reads = Reads();
