@@ -153,12 +153,10 @@ PYBIND11_MODULE(pybcp, m) {
     py::class_<enriched_regions>(m, "EnrichedRegions");
 
     m.def("parse_options", [](int argc, const std::vector<std::string>& argv) {
-        std::cout << argc << " " << argv.size() << std::endl;
 
         char** cstrs = new char*[argc];
         for (auto i = 0; i < argc; i++) {
             cstrs[i] = const_cast<char *>(argv[i].c_str());
-            std::cout << argv[i] << std::endl;
         }
 
         static const std::string version = std::to_string(VERSION);
@@ -181,7 +179,6 @@ PYBIND11_MODULE(pybcp, m) {
         char** cstrs = new char*[argc];
         for (auto i = 0; i < argc; i++) {
             cstrs[i] = const_cast<char *>(argv[i].c_str());
-            std::cout << argv[i] << std::endl;
         }
 
         static const std::string version = std::to_string(VERSION);
