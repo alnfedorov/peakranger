@@ -121,7 +121,7 @@ size_t StrandReads::size() const {
 
 const vector<string> &StrandReads::chrs() const {
     if (!_finalized)
-        throw runtime_error("");
+        throw runtime_error("Must be finalized first");
 
     return _chrs;
 }
